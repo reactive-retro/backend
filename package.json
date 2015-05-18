@@ -1,0 +1,31 @@
+{
+  "name": "retro-backend",
+  "description": "Reactive Retros backend",
+  "version": "0.0.1",
+  "contributors": [
+    {
+      "name": "Kyle Kemp",
+      "email": "kyle@seiyria.com"
+    }
+  ],
+  "dependencies": {
+    "connect": "3.0.1",
+    "express": "4.12.3",
+    "minimist": "1.1.0",
+    "serve-static": "1.8.0",
+    "socketcluster": "2.2.x",
+    "socketcluster-client": "2.2.x",
+    "mongodb": "~2.0.31",
+    "promised-mongo": "~0.11.1",
+    "lodash": "~3.8.0"
+  },
+  "keywords": [
+    "websocket",
+    "server",
+    "realtime",
+    "engine.io",
+    "cluster",
+    "parallelized"
+  ],
+  "readmeFilename": "README.md"
+}
