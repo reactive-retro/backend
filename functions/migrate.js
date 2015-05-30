@@ -1,7 +1,14 @@
-module.exports = function(player) {
+var _ = require('lodash');
+
+module.exports = (player) => {
 
     if(!player.unlockedProfessions) {
         player.unlockedProfessions = ['Cleric', 'Mage', 'Fighter'];
+    }
+
+    if(!player.professionLevels) {
+        player.professionLevels = {};
+        _.each(player.unlockedProfessions, (prof) => player.professionLevels[prof] = 1);
     }
 
     if(!player.inventory) {
@@ -29,11 +36,16 @@ module.exports = function(player) {
 
     if(!player.stats) {
         player.stats = {
+            gold: 0,
             xp: {
                 cur: 0,
                 max: 100
             }
         }
+    }
+
+    if(!player.levels[player.profession]) {
+
     }
 
     //this can be repetitively set safely
