@@ -1,3 +1,5 @@
+'use strict';
+
 var Profession = require('../base/Profession');
 
 class Mage extends Profession {

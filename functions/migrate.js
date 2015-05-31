@@ -1,6 +1,6 @@
 var _ = require('lodash');
 
-module.exports = (player) => {
+module.exports = function(player) {
 
     if(!player.unlockedProfessions) {
         player.unlockedProfessions = ['Cleric', 'Mage', 'Fighter'];
@@ -8,7 +8,7 @@ module.exports = (player) => {
 
     if(!player.professionLevels) {
         player.professionLevels = {};
-        _.each(player.unlockedProfessions, (prof) => player.professionLevels[prof] = 1);
+        _.each(player.unlockedProfessions, function(prof) { player.professionLevels[prof] = 1; });
     }
 
     if(!player.inventory) {

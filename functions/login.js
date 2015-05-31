@@ -4,7 +4,7 @@ var _ = require('lodash');
 var migrate = require('./migrate');
 var calculate = require('./calculate');
 
-var validateNewPlayer = (credentials) => {
+var validateNewPlayer = function(credentials) {
     //no name is a bad name
     if(!credentials.name) return MESSAGES.INVALID_NAME;
 
@@ -13,12 +13,12 @@ var validateNewPlayer = (credentials) => {
     if(credentials.name.length < 2)  return MESSAGES.NAME_TOO_SHORT;
 };
 
-var buildPlayerObject = (object) => {
+var buildPlayerObject = function(object) {
     return calculate(migrate(_.omit(object, '_id')));
 };
 
-module.exports = (socket, db) => {
-    socket.on('login', (credentials, respond) => {
+module.exports = function(socket, db) {
+    socket.on('login', function(credentials, respond) {
         var search = _.pick(credentials, ['facebookId']);
         if(_.size(search) === 0) {
             respond(MESSAGES.NO_IDENT);
@@ -29,7 +29,7 @@ module.exports = (socket, db) => {
         //TODO also strip out bad data from the player object before sending to client
         //TODO also have a create player function (tied to migrate above)
 
-        db.players.findOne(search).then((doc) => {
+        db.players.findOne(search).then(function(doc) {
 
             //login
             if(doc) {
@@ -46,7 +46,7 @@ module.exports = (socket, db) => {
                 }
 
                 //try to create the player
-                db.players.insert(credentials, (err, doc) => {
+                db.players.insert(credentials, function(err, doc) {
 
                     //the only failure will probably be a duplicate name
                     if(err) {
