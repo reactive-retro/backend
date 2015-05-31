@@ -1,3 +1,4 @@
+'use strict';
 
 // store parties
 module.exports.run = function (store) {

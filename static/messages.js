@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
     INVALID_NAME: 'Invalid hero name.',
     NAME_TOO_LONG: 'Hero name must be less than 20 characters.',

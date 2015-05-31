@@ -1,3 +1,5 @@
+'use strict';
+
 var pmongo = require('promised-mongo');
 var connectionString = 'mongodb://127.0.0.1/retro';
 
