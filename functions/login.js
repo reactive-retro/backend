@@ -1,8 +1,10 @@
 
 var MESSAGES = require('../static/messages');
 var _ = require('lodash');
+var migrate = require('./migrate');
+var calculate = require('./calculate');
 
-var validateNewPlayer = function(credentials) {
+var validateNewPlayer = (credentials) => {
     //no name is a bad name
     if(!credentials.name) return MESSAGES.INVALID_NAME;
 
@@ -11,28 +13,28 @@ var validateNewPlayer = function(credentials) {
     if(credentials.name.length < 2)  return MESSAGES.NAME_TOO_SHORT;
 };
 
-var buildPlayerObject = function(object) {
-    return _.omit(object, '_id');
+var buildPlayerObject = (object) => {
+    return calculate(migrate(_.omit(object, '_id')));
 };
 
-module.exports = function(socket, db) {
-    socket.on('login', function(credentials, respond) {
+module.exports = (socket, db) => {
+    socket.on('login', (credentials, respond) => {
         var search = _.pick(credentials, ['facebookId']);
         if(_.size(search) === 0) {
             respond(MESSAGES.NO_IDENT);
             return;
         }
 
-        //TODO save player, migrate player (ie, add data that doesn't exist where needed, like weapons)
+        //TODO save player
         //TODO also strip out bad data from the player object before sending to client
         //TODO also have a create player function (tied to migrate above)
 
-        db.players.findOne(search).then(function(doc) {
+        db.players.findOne(search).then((doc) => {
 
             //login
             if(doc) {
-                socket.setAuthToken({heroname: credentials.name});
                 respond(null, {msg: MESSAGES.LOGIN_SUCCESS, player: buildPlayerObject(doc)});
+                socket.setAuthToken({heroname: credentials.name});
 
             } else {
 
@@ -44,7 +46,7 @@ module.exports = function(socket, db) {
                 }
 
                 //try to create the player
-                db.players.insert(credentials, function(err, doc) {
+                db.players.insert(credentials, (err, doc) => {
 
                     //the only failure will probably be a duplicate name
                     if(err) {

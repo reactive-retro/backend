@@ -44,10 +44,6 @@ module.exports = (player) => {
         }
     }
 
-    if(!player.levels[player.profession]) {
-
-    }
-
     //this can be repetitively set safely
     player.defaultEquipment = {
         weapon: {
