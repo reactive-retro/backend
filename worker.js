@@ -10,6 +10,6 @@ module.exports.run = function(worker) {
     db.players.createIndex({name: 1}, {unique: true});
 
     scServer.on('connection', function(socket) {
-        require('./functions/login')(socket, db);
+        require('./src/functions/login')(socket, db);
     });
 };

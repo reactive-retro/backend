@@ -42,6 +42,14 @@ module.exports = function(player) {
             xp: {
                 cur: 0,
                 max: 100
+            },
+            hp: {
+                cur: 10,
+                max: 10
+            },
+            mp: {
+                cur: 0,
+                max: 0
             }
         }
     }

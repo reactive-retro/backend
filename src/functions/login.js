@@ -3,6 +3,7 @@ var MESSAGES = require('../static/messages');
 var _ = require('lodash');
 var migrate = require('./migrate');
 var calculate = require('./calculate');
+var fullheal = require('./fullheal');
 
 var validateNewPlayer = function(credentials) {
     //no name is a bad name
@@ -26,14 +27,12 @@ module.exports = function(socket, db) {
         }
 
         //TODO save player
-        //TODO also strip out bad data from the player object before sending to client
-        //TODO also have a create player function (tied to migrate above)
 
         db.players.findOne(search).then(function(doc) {
 
             //login
             if(doc) {
-                respond(null, {msg: MESSAGES.LOGIN_SUCCESS, player: buildPlayerObject(doc)});
+                respond(null, {msg: MESSAGES.LOGIN_SUCCESS, player: fullheal(buildPlayerObject(doc))});
                 socket.setAuthToken({heroname: credentials.name});
 
             } else {
@@ -55,7 +54,7 @@ module.exports = function(socket, db) {
                     //created successfully
                     } else {
                         socket.setAuthToken({heroname: credentials.name});
-                        respond(null, {msg: MESSAGES.CREATE_SUCCESS, player: buildPlayerObject(doc)});
+                        respond(null, {msg: MESSAGES.CREATE_SUCCESS, player: fullheal(buildPlayerObject(doc))});
                     }
                 });
             }
