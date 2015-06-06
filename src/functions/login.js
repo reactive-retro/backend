@@ -5,6 +5,8 @@ var migrate = require('./migrate');
 var calculate = require('./calculate');
 var fullheal = require('./fullheal');
 
+var db = require('../objects/db');
+
 var validateNewPlayer = function(credentials) {
     //no name is a bad name
     if(!credentials.name) return MESSAGES.INVALID_NAME;
@@ -25,8 +27,6 @@ module.exports = function(socket, db) {
             respond(MESSAGES.NO_IDENT);
             return;
         }
-
-        //TODO save player
 
         db.players.findOne(search).then(function(doc) {
 
