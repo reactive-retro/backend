@@ -20,7 +20,7 @@ var buildPlayerObject = function(object) {
     return calculate(migrate(_.omit(object, '_id')));
 };
 
-module.exports = function(socket, db) {
+module.exports = function(socket) {
     socket.on('login', function(credentials, respond) {
         var search = _.pick(credentials, ['facebookId']);
         if(_.size(search) === 0) {

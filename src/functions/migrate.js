@@ -2,10 +2,12 @@
 
 var _ = require('lodash');
 
+var save = require('./save');
+
 module.exports = function(player) {
 
     if(!player.unlockedProfessions) {
-        player.unlockedProfessions = ['Cleric', 'Mage', 'Fighter'];
+        player.unlockedProfessions = ['Cleric', 'Fighter', 'Mage'];
     }
 
     if(!player.professionLevels) {
@@ -65,6 +67,8 @@ module.exports = function(player) {
             name: 'None'
         }
     };
+
+    save(player);
 
     return player;
 };

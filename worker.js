@@ -5,5 +5,6 @@ module.exports.run = function(worker) {
 
     scServer.on('connection', function(socket) {
         require('./src/functions/socket/login')(socket);
+        require('./src/functions/socket/changeclass')(socket);
     });
 };
