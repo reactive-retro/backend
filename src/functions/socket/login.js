@@ -1,11 +1,11 @@
 
-var MESSAGES = require('../static/messages');
+var MESSAGES = require('../../static/messages');
 var _ = require('lodash');
-var migrate = require('./migrate');
-var calculate = require('./calculate');
-var fullheal = require('./fullheal');
+var migrate = require('./../migrate');
+var calculate = require('./../calculate');
+var fullheal = require('./../fullheal');
 
-var db = require('../objects/db');
+var db = require('../../objects/db');
 
 var validateNewPlayer = function(credentials) {
     //no name is a bad name

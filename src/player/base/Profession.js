@@ -1,4 +1,5 @@
 'use strict';
+
 class Profession {
     static getLevel(player) { return player.professionLevels[player.profession]; }
     static hp(player) { return this.getLevel(player) * 10; }
