@@ -49,9 +49,7 @@ module.exports = function(socket) {
 
                 //try to create the player
                 db.players.insert(credentials, function(err, doc) {
-
-                    console.log(err);
-
+                    
                     //the only failure will probably be a duplicate name
                     if(err) {
                         respond({msg: MESSAGES.NAME_TAKEN});
