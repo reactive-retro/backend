@@ -1,5 +1,7 @@
 'use strict';
 
+var uuid = require('node-uuid');
+
 module.exports.itemId = function() {
-    return Date.now();
+    return uuid.v4();
 };

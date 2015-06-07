@@ -25,7 +25,8 @@ module.exports = {
                 type: 'armor',
                 name: 'Town Clothes',
                 isDefault: true,
-                itemId: itemId()
+                itemId: itemId(),
+                stats: {}
             };
         },
         weapon: function() {
@@ -33,7 +34,8 @@ module.exports = {
                 type: 'weapon',
                 name: 'Fist',
                 isDefault: true,
-                itemId: itemId()
+                itemId: itemId(),
+                stats: {}
             };
         }
     },

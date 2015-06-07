@@ -15,5 +15,8 @@ module.exports = {
     NO_CLASS: 'No class specified.',
     NO_PLAYER: 'Player does not exist.',
     INVALID_PROF: 'Profession does not exist.',
-    PROF_CHANGE_SUCCESS: 'Successfully changed profession.'
+    PROF_CHANGE_SUCCESS: 'Successfully changed profession.',
+    NO_ITEM: 'No item id specified.',
+    BAD_ITEM: 'Item not present in inventory.',
+    EQUIP_SUCCESS: 'Successfully changed equipment.'
 };
