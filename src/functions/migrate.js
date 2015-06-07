@@ -4,10 +4,13 @@ var _ = require('lodash');
 
 var save = require('./save');
 
+var itemId = require('./helpers').itemId;
+var DEFAULTS = require('../static/chardefaults');
+
 module.exports = function(player) {
 
     if(!player.unlockedProfessions) {
-        player.unlockedProfessions = ['Cleric', 'Fighter', 'Mage'];
+        player.unlockedProfessions = DEFAULTS.unlockedProfessions;
     }
 
     if(!player.professionLevels) {
@@ -20,53 +23,32 @@ module.exports = function(player) {
     }
 
     if(!player.equipment) {
-        player.equipment = {
-            weapon: {
-                type: 'weapon',
-                name: 'Knife',
-                stats: {
-                    str: 1
-                }
-            },
-            armor: {
-                type: 'armor',
-                name: 'Shirt',
-                stats: {
-                    agi: 1
-                }
-            }
-        }
+        player.equipment = DEFAULTS.equipment[player.profession]();
+    }
+
+    var defaultWeapon = _.findWhere(player.inventory, {type: 'weapon', isDefault: true});
+    if(!player.equipment.weapon.isDefault && !defaultWeapon) {
+        player.inventory.push({
+            type: 'weapon',
+            name: 'Fist',
+            isDefault: true,
+            itemId: itemId()
+        });
+    }
+
+    var defaultArmor = _.findWhere(player.inventory, {type: 'armor', isDefault: true});
+    if(!player.equipment.armor.isDefault && !defaultArmor) {
+        player.inventory.push({
+            type: 'armor',
+            name: 'None',
+            isDefault: true,
+            itemId: itemId()
+        });
     }
 
     if(!player.stats) {
-        player.stats = {
-            gold: 0,
-            xp: {
-                cur: 0,
-                max: 100
-            },
-            hp: {
-                cur: 10,
-                max: 10
-            },
-            mp: {
-                cur: 0,
-                max: 0
-            }
-        }
+        player.stats = DEFAULTS.stats;
     }
-
-    //this can be repetitively set safely
-    player.defaultEquipment = {
-        weapon: {
-            type: 'weapon',
-            name: 'Fist'
-        },
-        armor: {
-            type: 'armor',
-            name: 'None'
-        }
-    };
 
     save(player);
 
