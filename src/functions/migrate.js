@@ -28,22 +28,12 @@ module.exports = function(player) {
 
     var defaultWeapon = _.findWhere(player.inventory, {type: 'weapon', isDefault: true});
     if(!player.equipment.weapon.isDefault && !defaultWeapon) {
-        player.inventory.push({
-            type: 'weapon',
-            name: 'Fist',
-            isDefault: true,
-            itemId: itemId()
-        });
+        player.inventory.push(DEFAULTS.defaultEquipment.weapon());
     }
 
     var defaultArmor = _.findWhere(player.inventory, {type: 'armor', isDefault: true});
     if(!player.equipment.armor.isDefault && !defaultArmor) {
-        player.inventory.push({
-            type: 'armor',
-            name: 'None',
-            isDefault: true,
-            itemId: itemId()
-        });
+        player.inventory.push(DEFAULTS.defaultEquipment.armor());
     }
 
     if(!player.stats) {

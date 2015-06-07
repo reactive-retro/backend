@@ -19,6 +19,24 @@ module.exports = {
             max: 0
         }
     },
+    defaultEquipment: {
+        armor: function() {
+            return {
+                type: 'armor',
+                name: 'None',
+                isDefault: true,
+                itemId: itemId()
+            };
+        },
+        weapon: function() {
+            return {
+                type: 'weapon',
+                name: 'Fist',
+                isDefault: true,
+                itemId: itemId()
+            };
+        }
+    },
     equipment: {
         Fighter: function() {
             return {
