@@ -23,7 +23,7 @@ module.exports = {
         armor: function() {
             return {
                 type: 'armor',
-                name: 'None',
+                name: 'Town Clothes',
                 isDefault: true,
                 itemId: itemId()
             };
@@ -50,7 +50,7 @@ module.exports = {
                 },
                 armor: {
                     type: 'armor',
-                    name: 'Shirt',
+                    name: 'Fighter Armor',
                     itemId: itemId(),
                     stats: {
                         agi: 1
@@ -91,7 +91,7 @@ module.exports = {
                 },
                 armor: {
                     type: 'armor',
-                    name: 'Shirt',
+                    name: 'Cleric Armor',
                     itemId: itemId(),
                     stats: {
                         agi: 1
