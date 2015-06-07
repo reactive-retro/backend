@@ -29,7 +29,10 @@ module.exports = function(socket) {
         }
 
         // remove bad keys like $default and remove bad object values just in case something leaks through
-        credentials = _.omit(credentials, function(val, key) { return _.startsWith(key, '$') || _.isEmpty(val); });
+        // also, no need to keep tokens around
+        credentials = _.omit(credentials, function(val, key) {
+            return _.startsWith(key, '$') || _.isEmpty(val) || _.contains(key, 'Token');
+        });
 
         db.players.findOne(search).then(function(doc) {
 
@@ -49,7 +52,7 @@ module.exports = function(socket) {
 
                 //try to create the player
                 db.players.insert(credentials, function(err, doc) {
-                    
+
                     //the only failure will probably be a duplicate name
                     if(err) {
                         respond({msg: MESSAGES.NAME_TAKEN});
