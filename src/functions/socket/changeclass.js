@@ -10,6 +10,8 @@ var calculate = require('../calculate');
 var fullheal = require('../fullheal');
 
 module.exports = function(socket) {
+
+    // expect {name, newProfession}
     socket.on('classchange', function(options, respond) {
 
         if(!options.name) {

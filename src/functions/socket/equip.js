@@ -9,6 +9,8 @@ var save = require('../save');
 var calculate = require('../calculate');
 
 module.exports = function(socket) {
+
+    // expect {name, itemId}
     socket.on('equip', function(options, respond) {
 
         if(!options.name) {
