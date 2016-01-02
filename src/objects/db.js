@@ -1,9 +1,24 @@
-var pmongo = require('promised-mongo');
-var connectionString = 'mongodb://127.0.0.1/retro';
+var connectionString = process.env.MONGOLAB_URI;
 
-var db = pmongo(connectionString, ['players', 'places']);
-db.players.createIndex({name: 1}, {unique: true});
-db.places.createIndex({coordinates: 1, name: 1}, {unique: true});
-db.places.createIndex({coordinates: '2dsphere'});
+var _ = require('lodash');
+var q = require('q');
+var MongoClient = require('mongodb').MongoClient;
 
-module.exports = db;
+var dbLoaded = q.defer();
+
+MongoClient.connect(connectionString, function(err, db) {
+
+    if(err) {
+        console.error(err);
+        dbLoaded.reject(err);
+        return;
+    }
+
+    db.collection('players').createIndex({name: 1}, {unique: true}, _.noop);
+
+    dbLoaded.resolve(db);
+});
+
+module.exports = function() {
+    return dbLoaded.promise;
+};

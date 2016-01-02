@@ -2,7 +2,7 @@
 
 var _ = require('lodash');
 
-var db = require('../../objects/db');
+var dbPromise = require('../../objects/db');
 var MESSAGES = require('../../static/messages');
 var save = require('../save');
 
@@ -21,32 +21,36 @@ module.exports = function(socket) {
             return respond({msg: MESSAGES.NO_ITEM});
         }
 
-        db.players.findOne({name: options.name}, function(err, doc) {
+        dbPromise().then(function(db) {
+            var players = db.collection('players');
 
-            if(err) {
-                return respond({msg: MESSAGES.GENERIC});
-            }
+            players.findOne({name: options.name}, function(err, doc) {
 
-            if(!doc) {
-                return respond({msg: MESSAGES.NO_PLAYER});
-            }
+                if (err) {
+                    return respond({msg: MESSAGES.GENERIC});
+                }
 
-            var item = _.findWhere(doc.inventory, {itemId: options.itemId});
+                if (!doc) {
+                    return respond({msg: MESSAGES.NO_PLAYER});
+                }
 
-            if(!item) {
-                return respond({msg: MESSAGES.BAD_ITEM});
-            }
+                var item = _.findWhere(doc.inventory, {itemId: options.itemId});
 
-            // level requirements, maybe.
+                if (!item) {
+                    return respond({msg: MESSAGES.BAD_ITEM});
+                }
 
-            doc.inventory.push(doc.equipment[item.type]);
-            doc.inventory = _.without(doc.inventory, item);
-            doc.equipment[item.type] = item;
+                // level requirements, maybe.
 
-            save(doc);
+                doc.inventory.push(doc.equipment[item.type]);
+                doc.inventory = _.without(doc.inventory, item);
+                doc.equipment[item.type] = item;
 
-            respond(null, {msg: MESSAGES.EQUIP_SUCCESS, player: calculate(doc)});
+                save(doc);
 
+                respond(null, {msg: MESSAGES.EQUIP_SUCCESS, player: calculate(doc)});
+
+            });
         });
 
     });

@@ -45,8 +45,6 @@ module.exports = function(socket) {
                         options.latitude,             options.longitude,
                         res.lastCoordinateRefresh[0], res.lastCoordinateRefresh[1]);
 
-                    console.log(distance);
-
                     sendPlaces();
                 }
 

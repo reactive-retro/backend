@@ -18,5 +18,8 @@ module.exports = {
     PROF_CHANGE_SUCCESS: 'Successfully changed profession.',
     NO_ITEM: 'No item id specified.',
     BAD_ITEM: 'Item not present in inventory.',
-    EQUIP_SUCCESS: 'Successfully changed equipment.'
+    EQUIP_SUCCESS: 'Successfully changed equipment.',
+
+    NO_HOMEPOINT: 'Invalid homepoint specified.',
+    HOMEPOINT_CHANGE_SUCCESS: 'Successfully changed homepoint.'
 };

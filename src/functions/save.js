@@ -1,7 +1,11 @@
 'use strict';
 
-var db = require('../objects/db');
+var _ = require('lodash');
+var dbPromise = require('../objects/db');
 
 module.exports = function(player) {
-    db.players.update({name: player.name}, player);
+    dbPromise().then(function(db) {
+        var players = db.collection('players');
+        players.update({name: player.name}, player, _.noop);
+    });
 };
