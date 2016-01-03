@@ -33,6 +33,7 @@ module.exports = function(socket) {
         }
 
         var authSource = credentials.authsource;
+        var homepoint = credentials.homepoint;
 
         // remove bad keys like $default and remove bad object values just in case something leaks through
         // also, no need to keep tokens around
@@ -40,6 +41,7 @@ module.exports = function(socket) {
             return _.startsWith(key, '$')
                 || _.isEmpty(val)
                 || key === 'authsource'
+                || key === 'homepoint'
                 || _.contains(key, 'Token')
                 || (_.contains(key, 'Id') && authSource+'Id' !== key);
         });
@@ -62,6 +64,8 @@ module.exports = function(socket) {
                     socket.setAuthToken({heroname: credentials.name});
 
                 } else {
+
+                    credentials.homepoint = homepoint;
 
                     //validate the player before creating it
                     var message = validateNewPlayer(credentials);
