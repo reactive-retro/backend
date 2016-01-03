@@ -44,6 +44,8 @@ module.exports = function(socket) {
                 || (_.contains(key, 'Id') && authSource+'Id' !== key);
         });
 
+        console.log(credentials);
+
         dbPromise().then(function(db) {
 
             var players = db.collection('players');
