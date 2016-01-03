@@ -26,27 +26,20 @@ module.exports = function(socket) {
 
     // expect {name, profession, facebookId?, googleId?, twitterId?, redditId?}
     socket.on('login', function(credentials, respond) {
-        var search = _.pick(credentials, ['facebookId', 'googleId']);
+        var authSource = credentials.authsource;
+        var search = _.pick(credentials, [authSource+'Id']);
         if(_.size(search) === 0) {
             respond({msg: MESSAGES.NO_IDENT});
             return;
         }
-
-        var authSource = credentials.authsource;
-        var homepoint = credentials.homepoint;
 
         // remove bad keys like $default and remove bad object values just in case something leaks through
         // also, no need to keep tokens around
         credentials = _.omit(credentials, function(val, key) {
             return _.startsWith(key, '$')
                 || _.isEmpty(val)
-                || key === 'authsource'
-                || key === 'homepoint'
-                || _.contains(key, 'Token')
-                || (_.contains(key, 'Id') && authSource+'Id' !== key);
+                || _.contains(key, 'Token');
         });
-
-        console.log(credentials);
 
         dbPromise().then(function(db) {
 
@@ -64,9 +57,6 @@ module.exports = function(socket) {
                     socket.setAuthToken({heroname: credentials.name});
 
                 } else {
-
-                    credentials.homepoint = homepoint;
-
                     //validate the player before creating it
                     var message = validateNewPlayer(credentials);
                     if (message) {
