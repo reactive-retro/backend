@@ -32,10 +32,16 @@ module.exports = function(socket) {
             return;
         }
 
+        var authSource = credentials.authsource;
+
         // remove bad keys like $default and remove bad object values just in case something leaks through
         // also, no need to keep tokens around
         credentials = _.omit(credentials, function(val, key) {
-            return _.startsWith(key, '$') || _.isEmpty(val) || _.contains(key, 'Token');
+            return _.startsWith(key, '$')
+                || _.isEmpty(val)
+                || key === 'authsource'
+                || _.contains(key, 'Token')
+                || (_.contains(key, 'Id') && authSource+'Id' !== key);
         });
 
         dbPromise().then(function(db) {
