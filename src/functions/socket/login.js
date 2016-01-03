@@ -26,9 +26,9 @@ module.exports = function(socket) {
 
     // expect {name, profession, facebookId?, googleId?, twitterId?, redditId?}
     socket.on('login', function(credentials, respond) {
-        var search = _.pick(credentials, ['facebookId']);
+        var search = _.pick(credentials, ['facebookId', 'googleId']);
         if(_.size(search) === 0) {
-            respond(MESSAGES.NO_IDENT);
+            respond({msg: MESSAGES.NO_IDENT});
             return;
         }
 
