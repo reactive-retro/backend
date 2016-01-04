@@ -1,5 +1,6 @@
 
 import _ from 'lodash';
+import path from 'path';
 import fs from 'fs';
 
 export var run = (worker) => {
