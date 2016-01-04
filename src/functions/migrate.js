@@ -1,13 +1,11 @@
-'use strict';
 
-var _ = require('lodash');
+import _ from 'lodash';
 
-var save = require('./save');
+import save from './save';
+import { itemId } from './helpers';
+import DEFAULTS from '../static/chardefaults';
 
-var itemId = require('./helpers').itemId;
-var DEFAULTS = require('../static/chardefaults');
-
-module.exports = function(player) {
+export default (player) => {
 
     if(!player.unlockedProfessions) {
         player.unlockedProfessions = DEFAULTS.unlockedProfessions;
@@ -15,7 +13,7 @@ module.exports = function(player) {
 
     if(!player.professionLevels) {
         player.professionLevels = {};
-        _.each(player.unlockedProfessions, function(prof) { player.professionLevels[prof] = 1; });
+        _.each(player.unlockedProfessions, (prof) => { player.professionLevels[prof] = 1; });
     }
 
     if(!player.inventory) {

@@ -1,12 +1,12 @@
-var connectionString = process.env.MONGOLAB_URI;
 
-var _ = require('lodash');
-var q = require('q');
-var MongoClient = require('mongodb').MongoClient;
+const _ = require('lodash');
+const q = require('q');
+const MongoClient = require('mongodb').MongoClient;
 
-var dbLoaded = q.defer();
+const connectionString = process.env.MONGOLAB_URI;
+const dbLoaded = q.defer();
 
-MongoClient.connect(connectionString, function(err, db) {
+MongoClient.connect(connectionString, (err, db) => {
 
     if(err) {
         console.error(err);
@@ -19,6 +19,4 @@ MongoClient.connect(connectionString, function(err, db) {
     dbLoaded.resolve(db);
 });
 
-module.exports = function() {
-    return dbLoaded.promise;
-};
+export default () => dbLoaded.promise;

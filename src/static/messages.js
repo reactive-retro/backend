@@ -1,6 +1,5 @@
-'use strict';
 
-module.exports = {
+export default {
     GENERIC: 'Generic error.',
 
     INVALID_NAME: 'Invalid hero name.',

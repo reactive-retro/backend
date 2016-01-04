@@ -1,13 +1,14 @@
 
-var MESSAGES = require('../../static/messages');
-var _ = require('lodash');
-var migrate = require('./../migrate');
-var calculate = require('./../calculate');
-var fullheal = require('./../fullheal');
+import _ from 'lodash';
 
-var dbPromise = require('../../objects/db');
+import dbPromise from '../../objects/db';
+import MESSAGES from '../../static/messages';
+import save from '../save';
+import calculate from '../calculate';
+import migrate from '../migrate';
+import fullheal from '../fullheal';
 
-var validateNewPlayer = function(credentials) {
+const validateNewPlayer = (credentials) => {
     //no name is a bad name
     if(!credentials.name) return MESSAGES.INVALID_NAME;
 
@@ -18,14 +19,12 @@ var validateNewPlayer = function(credentials) {
     if(!credentials.homepoint || !credentials.homepoint.lat || !credentials.homepoint.lon) return MESSAGES.NO_HOMEPOINT;
 };
 
-var buildPlayerObject = function(object) {
-    return calculate(migrate(_.omit(object, '_id')));
-};
+const buildPlayerObject = (object) => calculate(migrate(_.omit(object, '_id')));
 
-module.exports = function(socket) {
+export default (socket) => {
 
     // expect {name, profession, facebookId?, googleId?, twitterId?, redditId?}
-    socket.on('login', function(credentials, respond) {
+    socket.on('login', (credentials, respond) => {
         var authSource = credentials.authsource;
         var search = _.pick(credentials, [authSource+'Id']);
         if(_.size(search) === 0) {
@@ -35,17 +34,17 @@ module.exports = function(socket) {
 
         // remove bad keys like $default and remove bad object values just in case something leaks through
         // also, no need to keep tokens around
-        credentials = _.omit(credentials, function(val, key) {
+        credentials = _.omit(credentials, (val, key) => {
             return _.startsWith(key, '$')
                 || _.isEmpty(val)
                 || _.contains(key, 'Token');
         });
 
-        dbPromise().then(function(db) {
+        dbPromise().then(db => {
 
             var players = db.collection('players');
 
-            players.findOne(search, function(err, doc) {
+            players.findOne(search, (err, doc) => {
 
                 if(err) {
                     return respond({msg: MESSAGES.GENERIC});
@@ -65,7 +64,7 @@ module.exports = function(socket) {
                     }
 
                     //try to create the player
-                    players.insert(credentials, {w:1}, function (err, docs) {
+                    players.insert(credentials, {w:1}, (err, docs) => {
 
                         var newPlayer = docs.ops[0];
 

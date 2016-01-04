@@ -1,6 +1,5 @@
-'use strict';
 
 // store parties
-module.exports.run = function (store) {
+export var run = (store) => {
     console.log('   >> Store PID:', process.pid);
 };

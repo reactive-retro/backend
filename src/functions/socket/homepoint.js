@@ -1,17 +1,15 @@
-'use strict';
 
-var _ = require('lodash');
+import _ from 'lodash';
 
-var dbPromise = require('../../objects/db');
-var MESSAGES = require('../../static/messages');
-var save = require('../save');
+import dbPromise from '../../objects/db';
+import MESSAGES from '../../static/messages';
+import save from '../save';
+import calculate from '../calculate';
 
-var calculate = require('../calculate');
-
-module.exports = function(socket) {
+export default (socket) => {
 
     // expect {name, homepoint}
-    socket.on('homepoint', function(options, respond) {
+    socket.on('homepoint', (options, respond) => {
 
         if(!options.name) {
             return respond({msg: MESSAGES.NO_NAME});
@@ -21,9 +19,9 @@ module.exports = function(socket) {
             return respond({msg: MESSAGES.NO_HOMEPOINT});
         }
 
-        dbPromise().then(function(db) {
+        dbPromise().then(db => {
             var players = db.collection('players');
-            players.findOne({name: options.name}, function (err, doc) {
+            players.findOne({name: options.name}, (err, doc) => {
 
                 if (err) {
                     return respond({msg: MESSAGES.GENERIC});

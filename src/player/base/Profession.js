@@ -1,6 +1,5 @@
-'use strict';
 
-class Profession {
+export default class Profession {
     static getLevel(player) { return player.professionLevels[player.profession]; }
     static hp(player) { return this.getLevel(player) * 10; }
     static mp() { return 0; }
@@ -8,6 +7,4 @@ class Profession {
     static int() { return 1; }
     static agi() { return 1; }
     static luk() { return 1; }
-};
-
-module.exports = Profession;
+}

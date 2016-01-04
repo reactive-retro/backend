@@ -1,8 +1,7 @@
-'use strict';
 
-var itemId = require('../functions/helpers').itemId;
+import { itemId } from '../functions/helpers';
 
-module.exports = {
+export default {
     unlockedProfessions: ['Cleric', 'Fighter', 'Mage'],
     stats: {
         gold: 0,
@@ -20,7 +19,7 @@ module.exports = {
         }
     },
     defaultEquipment: {
-        armor: function() {
+        armor: () => {
             return {
                 type: 'armor',
                 name: 'Town Clothes',
@@ -29,7 +28,7 @@ module.exports = {
                 stats: {}
             };
         },
-        weapon: function() {
+        weapon: () => {
             return {
                 type: 'weapon',
                 name: 'Fist',
@@ -40,7 +39,7 @@ module.exports = {
         }
     },
     equipment: {
-        Fighter: function() {
+        Fighter: () => {
             return {
                 weapon: {
                     type: 'weapon',
@@ -60,7 +59,7 @@ module.exports = {
                 }
             };
         },
-        Mage: function() {
+        Mage: () => {
             return {
                 weapon: {
                     type: 'weapon',
@@ -80,7 +79,7 @@ module.exports = {
                 }
             };
         },
-        Cleric: function() {
+        Cleric: () => {
             return {
                 weapon: {
                     type: 'weapon',

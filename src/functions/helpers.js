@@ -1,14 +1,11 @@
-'use strict';
 
-var uuid = require('node-uuid');
+import uuid from 'node-uuid';
 
-module.exports.itemId = function() {
-    return uuid.v4();
-};
+export var itemId = () => uuid.v4();
 
-module.exports.calcDistanceBetween = function(lat1, lon1, lat2, lon2) {
+export var calcDistanceBetween = (lat1, lon1, lat2, lon2) => {
     var R = 6371;
-    var toRad = function(num) { return num * (Math.PI / 180); }
+    var toRad = (num) => num * (Math.PI / 180);
 
     var dLat = toRad(lat2-lat1);
     var dLon = toRad(lon2-lon1);

@@ -1,11 +1,10 @@
-'use strict';
 
-var _ = require('lodash');
-var dbPromise = require('../objects/db');
+import _ from 'lodash';
+import dbPromise from '../objects/db';
 
-module.exports = function(player) {
-    dbPromise().then(function(db) {
-        var players = db.collection('players');
+export default (player) => {
+    dbPromise().then(db => {
+        const players = db.collection('players');
         players.update({name: player.name}, player, _.noop);
     });
 };

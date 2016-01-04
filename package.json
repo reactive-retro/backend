@@ -8,7 +8,12 @@
       "email": "kyle@seiyria.com"
     }
   ],
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
+    "babel-preset-es2015": "^6.3.13",
+    "babel-register": "^6.3.13",
     "connect": "3.0.1",
     "express": "4.12.3",
     "googleplaces": "^0.5.1",
