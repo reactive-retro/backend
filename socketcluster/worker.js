@@ -1,6 +1,5 @@
 
 import _ from 'lodash';
-import path from 'path';
 import fs from 'fs';
 
 export var run = (worker) => {
@@ -11,7 +10,7 @@ export var run = (worker) => {
         const normalizedPath = path.join(__dirname, '..', 'src', 'functions', 'socket');
 
         _.each(fs.readdirSync(normalizedPath), file => {
-            console.log(file);
+            console.log(require(`../src/functions/socket/${file}`));
             require(`../src/functions/socket/${file}`)(socket);
         });
     });
