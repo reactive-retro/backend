@@ -9,7 +9,7 @@ export var run = (worker) => {
         const normalizedPath = require('path').join(__dirname, 'src', 'functions', 'socket');
 
         _.each(require('fs').readdirSync(normalizedPath), (file) => {
-            require('./src/functions/socket/'+file)(socket);
+            require(`./src/functions/socket/${file}`)(socket);
         });
     });
 };
