@@ -1,7 +1,7 @@
 
-const _ = require('lodash');
-const q = require('q');
-const MongoClient = require('mongodb').MongoClient;
+import _ from 'lodash';
+import q from 'q';
+import { MongoClient } from 'mongodb';
 
 const connectionString = process.env.MONGOLAB_URI;
 const dbLoaded = q.defer();
