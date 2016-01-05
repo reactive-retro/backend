@@ -12,6 +12,10 @@ export default (socket) => {
     // expect {name, newProfession}
     socket.on('classchange', (options, respond) => {
 
+        if(!socket.getAuthToken()) {
+            return respond({msg: MESSAGES.INVALID_TOKEN});
+        }
+
         if(!options.name) {
             return respond({msg: MESSAGES.NO_NAME});
         }

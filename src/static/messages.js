@@ -9,6 +9,7 @@ export default {
     NAME_TAKEN: 'Hero name already taken.',
     CREATE_SUCCESS: 'Hero created successfully.',
     NO_IDENT: 'No identifying information available.',
+    INVALID_TOKEN: 'Your authentication token is invalid.',
 
     NO_NAME: 'No hero name specified.',
     NO_CLASS: 'No class specified.',

@@ -1,5 +1,7 @@
 
 import _ from 'lodash';
+import jwt from 'jsonwebtoken';
+import atob from 'atob';
 
 import dbPromise from '../../objects/db';
 import MESSAGES from '../../static/messages';
@@ -7,6 +9,8 @@ import save from '../save';
 import calculate from '../calculate';
 import migrate from '../migrate';
 import fullheal from '../fullheal';
+
+const AUTH0_SECRET = process.env.AUTH0_SECRET;
 
 const validateNewPlayer = (credentials) => {
     //no name is a bad name
@@ -23,37 +27,37 @@ const buildPlayerObject = (object) => calculate(migrate(_.omit(object, '_id')));
 
 export default (socket) => {
 
-    // expect {name, profession, facebookId?, googleId?, twitterId?, redditId?}
+    // expect {name, profession, homepoint, userId, token}
     socket.on('login', (credentials, respond) => {
-        var authSource = credentials.authsource;
-        var search = _.pick(credentials, [authSource+'Id']);
-        if(_.size(search) === 0) {
+        if(!credentials.userId || !credentials.token) {
             respond({msg: MESSAGES.NO_IDENT});
             return;
         }
 
-        // remove bad keys like $default and remove bad object values just in case something leaks through
-        // also, no need to keep tokens around
-        credentials = _.omit(credentials, (val, key) => {
-            return _.startsWith(key, '$')
-                || _.isEmpty(val)
-                || _.contains(key, 'Token');
-        });
+        if(AUTH0_SECRET) {
+            try {
+                jwt.verify(credentials.token, atob(AUTH0_SECRET), { algorithms: ['HS256'] });
+            } catch(e) {
+                console.error(credentials, e, e.stack);
+                return respond({msg: MESSAGES.INVALID_TOKEN});
+            }
+        }
 
         dbPromise().then(db => {
 
             var players = db.collection('players');
 
-            players.findOne(search, (err, doc) => {
+            players.findOne({userId: credentials.userId}, (err, doc) => {
 
                 if(err) {
+                    console.error(err);
                     return respond({msg: MESSAGES.GENERIC});
                 }
 
                 //login
                 if (doc) {
                     respond(null, {msg: MESSAGES.LOGIN_SUCCESS, player: fullheal(buildPlayerObject(doc))});
-                    socket.setAuthToken({heroname: credentials.name});
+                    socket.setAuthToken({heroname: doc.name, token: credentials.token});
 
                 } else {
                     //validate the player before creating it
@@ -63,8 +67,12 @@ export default (socket) => {
                         return;
                     }
 
+                    //token doesn't need to be on the object
+                    const credentialClone = _.clone(credentials);
+                    credentialClone.token = null;
+
                     //try to create the player
-                    players.insert(credentials, {w:1}, (err, docs) => {
+                    players.insert(credentialClone, {w:1}, (err, docs) => {
 
                         var newPlayer = docs.ops[0];
 
@@ -74,7 +82,7 @@ export default (socket) => {
 
                             //created successfully
                         } else {
-                            socket.setAuthToken({heroname: credentials.name});
+                            socket.setAuthToken({heroname: credentials.name, token: credentials.token});
                             respond(null, {msg: MESSAGES.CREATE_SUCCESS, player: fullheal(buildPlayerObject(newPlayer))});
                         }
                     });

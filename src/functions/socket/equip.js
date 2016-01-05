@@ -11,6 +11,10 @@ export default (socket) => {
     // expect {name, itemId}
     socket.on('equip', (options, respond) => {
 
+        if(!socket.getAuthToken()) {
+            return respond({msg: MESSAGES.INVALID_TOKEN});
+        }
+
         if(!options.name) {
             return respond({msg: MESSAGES.NO_NAME});
         }
