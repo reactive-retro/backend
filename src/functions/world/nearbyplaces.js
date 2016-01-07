@@ -13,7 +13,7 @@ export default (homepoint) => {
 
     const defer = q.defer();
 
-    // TODO cache this
+    // TODO cache this -- maybe cache them client side and if the homepoint hasn't changed server-side, don't query for places
     placesFactory.placeSearch({location: [homepoint.lat, homepoint.lon], radius: RADIUS}, function(err, res) {
 
         if(err) {
@@ -21,7 +21,6 @@ export default (homepoint) => {
         }
 
         var places = _.map(res.results, _.partialRight(_.pick, ['geometry', 'id', 'name', 'types']));
-        console.log(places);
 
         defer.resolve(places);
 
