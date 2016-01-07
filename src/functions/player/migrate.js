@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 import save from './save';
 import { itemId } from './helpers';
-import DEFAULTS from '../static/chardefaults';
+import DEFAULTS from '../../static/chardefaults';
 
 export default (player) => {
 

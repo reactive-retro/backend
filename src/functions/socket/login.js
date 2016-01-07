@@ -5,10 +5,10 @@ import atob from 'atob';
 
 import dbPromise from '../../objects/db';
 import MESSAGES from '../../static/messages';
-import save from '../save';
-import calculate from '../calculate';
-import migrate from '../migrate';
-import fullheal from '../fullheal';
+import save from '../player/save';
+import calculate from '../player/calculate';
+import migrate from '../player/migrate';
+import fullheal from '../player/fullheal';
 
 const AUTH0_SECRET = process.env.AUTH0_SECRET;
 

@@ -3,8 +3,8 @@ import _ from 'lodash';
 
 import dbPromise from '../../objects/db';
 import MESSAGES from '../../static/messages';
-import save from '../save';
-import calculate from '../calculate';
+import save from '../player/save';
+import calculate from '../player/calculate';
 
 export default (socket) => {
 

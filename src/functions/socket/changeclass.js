@@ -3,9 +3,9 @@ import _ from 'lodash';
 
 import dbPromise from '../../objects/db';
 import MESSAGES from '../../static/messages';
-import save from '../save';
-import calculate from '../calculate';
-import fullheal from '../fullheal';
+import save from '../player/save';
+import calculate from '../player/calculate';
+import fullheal from '../player/fullheal';
 
 export default (socket) => {
 

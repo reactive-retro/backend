@@ -1,6 +1,6 @@
 
 import _ from 'lodash';
-import dbPromise from '../objects/db';
+import dbPromise from '../../objects/db';
 
 export default (player) => {
     dbPromise().then(db => {
