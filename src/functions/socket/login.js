@@ -10,6 +10,8 @@ import calculate from '../player/calculate';
 import migrate from '../player/migrate';
 import fullheal from '../player/fullheal';
 
+import SETTINGS from '../../static/settings';
+
 const AUTH0_SECRET = process.env.AUTH0_SECRET;
 
 const validateNewPlayer = (credentials) => {
@@ -56,7 +58,7 @@ export default (socket) => {
 
                 //login
                 if (doc) {
-                    respond(null, {msg: MESSAGES.LOGIN_SUCCESS, player: fullheal(buildPlayerObject(doc))});
+                    respond(null, {msg: MESSAGES.LOGIN_SUCCESS, player: fullheal(buildPlayerObject(doc)), settings: SETTINGS});
                     socket.setAuthToken({heroname: doc.name, token: credentials.token});
 
                 } else {
@@ -83,7 +85,7 @@ export default (socket) => {
                             //created successfully
                         } else {
                             socket.setAuthToken({heroname: credentials.name, token: credentials.token});
-                            respond(null, {msg: MESSAGES.CREATE_SUCCESS, player: fullheal(buildPlayerObject(newPlayer))});
+                            respond(null, {msg: MESSAGES.CREATE_SUCCESS, player: fullheal(buildPlayerObject(newPlayer)), settings: SETTINGS});
                         }
                     });
                 }

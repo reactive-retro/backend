@@ -2,6 +2,20 @@
 var argv = require('minimist')(process.argv.slice(2));
 var SocketCluster = require('socketcluster').SocketCluster;
 
+var _ = require('lodash');
+var os = require('os');
+
+var ip = _(os.networkInterfaces())
+    .values()
+    .flatten()
+    .filter(val => val.family === 'IPv4' && val.internal === false)
+    .pluck('address')
+    .first();
+
+if(ip) {
+    console.log(`Your IP is: ${ip}`);
+}
+
 var socketCluster = new SocketCluster({
     workers: Number(argv.w) || 1,
     stores: Number(argv.s) || 1,

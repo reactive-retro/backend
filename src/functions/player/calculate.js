@@ -1,6 +1,6 @@
 
 export default (player) => {
-    var profession = require(`../player/professions/${player.profession}`).default;
+    var profession = require(`../../player/professions/${player.profession}`).default;
     player.stats.hp.max = profession.hp(player);
     player.stats.mp.max = profession.mp(player);
     player.equipment.profession = {
