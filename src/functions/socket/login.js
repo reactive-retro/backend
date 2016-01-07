@@ -10,6 +10,8 @@ import calculate from '../player/calculate';
 import migrate from '../player/migrate';
 import fullheal from '../player/fullheal';
 
+import nearbyplaces from '../world/nearbyplaces';
+
 import SETTINGS from '../../static/settings';
 
 const AUTH0_SECRET = process.env.AUTH0_SECRET;
@@ -26,6 +28,14 @@ const validateNewPlayer = (credentials) => {
 };
 
 const buildPlayerObject = (object) => calculate(migrate(_.omit(object, '_id')));
+
+const respondWithPlayer = (socket, respond, msg, token, player) => {
+    console.log(player.homepoint);
+    nearbyplaces(player.homepoint).then(places => {
+        socket.setAuthToken({heroname: player.name, token: token});
+        respond(null, {msg, player: fullheal(buildPlayerObject(player)), places, settings: SETTINGS});
+    });
+};
 
 export default (socket) => {
 
@@ -58,8 +68,7 @@ export default (socket) => {
 
                 //login
                 if (doc) {
-                    respond(null, {msg: MESSAGES.LOGIN_SUCCESS, player: fullheal(buildPlayerObject(doc)), settings: SETTINGS});
-                    socket.setAuthToken({heroname: doc.name, token: credentials.token});
+                    respondWithPlayer(socket, respond, MESSAGES.LOGIN_SUCCESS, credentials.token, doc);
 
                 } else {
                     //validate the player before creating it
@@ -84,8 +93,7 @@ export default (socket) => {
 
                             //created successfully
                         } else {
-                            socket.setAuthToken({heroname: credentials.name, token: credentials.token});
-                            respond(null, {msg: MESSAGES.CREATE_SUCCESS, player: fullheal(buildPlayerObject(newPlayer)), settings: SETTINGS});
+                            respondWithPlayer(socket, respond, MESSAGES.CREATE_SUCCESS, newPlayer, credentials.token);
                         }
                     });
                 }
