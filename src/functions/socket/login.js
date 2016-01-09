@@ -30,7 +30,6 @@ const validateNewPlayer = (credentials) => {
 const buildPlayerObject = (object) => calculate(migrate(_.omit(object, '_id')));
 
 const respondWithPlayer = (socket, respond, msg, token, player) => {
-    console.log(player.homepoint);
     nearbyplaces(player.homepoint).then(places => {
         socket.setAuthToken({heroname: player.name, token: token});
         respond(null, {msg, player: fullheal(buildPlayerObject(player)), places, settings: SETTINGS});

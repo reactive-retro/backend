@@ -8,6 +8,10 @@ export var run = (worker) => {
 
     scServer.on('connection', socket => {
 
+        socket.on('error', e => {
+            console.error(e.message);
+        });
+
         const normalizedPath = path.join(__dirname, '..', 'src', 'functions', 'socket');
 
         _.each(fs.readdirSync(normalizedPath), file => {
