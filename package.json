@@ -8,6 +8,9 @@
       "email": "kyle@seiyria.com"
     }
   ],
+  "engines": {
+    "node": "4.2.2"
+  },
   "scripts": {
     "start": "node index.js"
   },
