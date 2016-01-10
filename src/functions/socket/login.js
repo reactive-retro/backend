@@ -11,6 +11,7 @@ import migrate from '../player/migrate';
 import fullheal from '../player/fullheal';
 
 import nearbyplaces from '../world/nearbyplaces';
+import nearbymonsters from '../world/nearbymonsters';
 
 import SETTINGS from '../../static/settings';
 
@@ -30,9 +31,15 @@ const validateNewPlayer = (credentials) => {
 const buildPlayerObject = (object) => calculate(migrate(_.omit(object, '_id')));
 
 const respondWithPlayer = (socket, respond, msg, token, player) => {
+    const monsters = nearbymonsters(player.homepoint);
     nearbyplaces(player.homepoint).then(places => {
         socket.setAuthToken({heroname: player.name, token: token});
-        respond(null, {msg, player: fullheal(buildPlayerObject(player)), places, settings: SETTINGS});
+        respond(null, {
+            msg,
+            monsters,
+            player: fullheal(buildPlayerObject(player)),
+            places, settings: SETTINGS
+        });
     });
 };
 
