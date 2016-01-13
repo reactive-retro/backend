@@ -2,7 +2,7 @@
 import { itemId } from '../functions/player/helpers';
 
 export default {
-    unlockedProfessions: ['Cleric', 'Fighter', 'Mage'],
+    unlockedProfessions: ['Thief', 'Fighter', 'Mage'],
     stats: {
         gold: 0,
         xp: {
@@ -72,6 +72,26 @@ export default {
                 armor: {
                     type: 'armor',
                     name: 'Robe',
+                    itemId: itemId(),
+                    stats: {
+                        agi: 1
+                    }
+                }
+            };
+        },
+        Thief: () => {
+            return {
+                weapon: {
+                    type: 'weapon',
+                    name: 'Dagger',
+                    itemId: itemId(),
+                    stats: {
+                        dex: 2
+                    }
+                },
+                armor: {
+                    type: 'armor',
+                    name: 'Leather Armor',
                     itemId: itemId(),
                     stats: {
                         agi: 1
