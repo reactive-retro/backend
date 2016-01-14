@@ -19,7 +19,7 @@ const OFFSETS = {
 
 const randomBetween = (rng = Math.random, min, max) => rng() * (max - min) + min;
 
-export default (homepoint) => {
+export default (homepoint = {}) => {
     const { lat, lon } = homepoint;
 
     // seed monsters based on the hour

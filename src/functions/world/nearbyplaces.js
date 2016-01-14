@@ -9,7 +9,7 @@ import SETTINGS from '../../static/settings';
 const RADIUS = SETTINGS.RADIUS;
 const placesFactory = places(process.env.GOOGLE_PLACES_API_KEY, 'json');
 
-export default (homepoint) => {
+export default (homepoint = {}) => {
 
     const defer = q.defer();
 

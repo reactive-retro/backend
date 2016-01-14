@@ -89,9 +89,7 @@ export default (socket) => {
                     credentialClone.token = null;
 
                     //try to create the player
-                    players.insert(credentialClone, {w:1}, (err, docs) => {
-
-                        var newPlayer = docs.ops[0];
+                    players.insert(credentialClone, {w:1}, (err) => {
 
                         //the only failure will probably be a duplicate name
                         if (err) {
@@ -99,7 +97,7 @@ export default (socket) => {
 
                             //created successfully
                         } else {
-                            respondWithPlayer(socket, respond, MESSAGES.CREATE_SUCCESS, newPlayer, credentials.token);
+                            respondWithPlayer(socket, respond, MESSAGES.CREATE_SUCCESS, credentials.token, credentialClone);
                         }
                     });
                 }
