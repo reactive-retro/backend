@@ -6,8 +6,9 @@ export default (player) => {
     player.equipment.profession = {
         stats: {
             str: profession.str(player),
-            int: profession.int(player),
-            agi: profession.agi(player),
+            mnt: profession.mnt(player),
+            dex: profession.dex(player),
+            vit: profession.vit(player),
             luk: profession.luk(player)
         }
     };

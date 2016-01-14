@@ -54,7 +54,7 @@ export default {
                     name: 'Fighter Armor',
                     itemId: itemId(),
                     stats: {
-                        agi: 1
+                        dex: 1
                     }
                 }
             };
@@ -74,7 +74,7 @@ export default {
                     name: 'Robe',
                     itemId: itemId(),
                     stats: {
-                        agi: 1
+                        dex: 1
                     }
                 }
             };
@@ -94,7 +94,7 @@ export default {
                     name: 'Leather Armor',
                     itemId: itemId(),
                     stats: {
-                        agi: 1
+                        vit: 1
                     }
                 }
             };
@@ -106,7 +106,7 @@ export default {
                     name: 'Mace',
                     itemId: itemId(),
                     stats: {
-                        int: 1,
+                        mnt: 1,
                         str: 1
                     }
                 },
@@ -115,7 +115,7 @@ export default {
                     name: 'Cleric Armor',
                     itemId: itemId(),
                     stats: {
-                        agi: 1
+                        dex: 1
                     }
                 }
             };
