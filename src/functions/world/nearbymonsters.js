@@ -7,7 +7,7 @@ import _ from 'lodash';
 import MESSAGES from '../../static/messages';
 import SETTINGS from '../../static/settings';
 
-import monstergenerate from '../../objects/monstergenerator';
+import monstergenerate, { verify as monsterverify } from '../../objects/monstergenerator';
 
 // the offsets and directions to generate the bounds at which monsters spawn
 const OFFSETS = {
@@ -39,12 +39,15 @@ export default (homepoint = {}) => {
         const monLat = randomBetween(rng, lat+OFFSETS.latDown, lat+OFFSETS.latUp);
         const monLon = randomBetween(rng, lon+OFFSETS.lonDown, lon+OFFSETS.lonUp);
 
-        monsters.push(monstergenerate({
+        const monster = monstergenerate({
             location: {
                 lat: monLat,
                 lon: monLon
-            }
-        }))
+            },
+            seed
+        });
+
+        monsters.push(monster);
     }
 
     return monsters;
