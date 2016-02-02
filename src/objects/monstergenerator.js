@@ -4,7 +4,7 @@ import crypto from 'crypto';
 
 import Monster from '../character/base/Monster';
 
-const serverSalt = crypto.createHash('md5').update(Math.random()).digest('hex');
+const serverSalt = crypto.createHash('md5').update(''+Math.random()).digest('hex');
 
 export default (baseOpts) => {
     const opts = _.clone(baseOpts);
@@ -12,7 +12,7 @@ export default (baseOpts) => {
     opts.name = 'Goblin';
     opts.rating = 1;
 
-    opts.verifyToken = generate(monster);
+    opts.verifyToken = generate(baseOpts);
 
     return new Monster(opts);
 }
