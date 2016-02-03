@@ -21,5 +21,9 @@ export default {
     EQUIP_SUCCESS: 'Successfully changed equipment.',
 
     NO_HOMEPOINT: 'Invalid homepoint specified.',
-    HOMEPOINT_CHANGE_SUCCESS: 'Successfully changed homepoint.'
+    HOMEPOINT_CHANGE_SUCCESS: 'Successfully changed homepoint.',
+
+    BAD_SLOT: 'Invalid slot specified for skill.',
+    NO_SKILL: 'Invalid skill name specified.',
+    SKILL_CHANGE_SUCCESS: 'Successfully changed skill.'
 };

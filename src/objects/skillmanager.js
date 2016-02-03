@@ -13,7 +13,18 @@ const skills = _(skillsHash)
     .flatten()
     .value();
 
+const skillNames = _.pluck(skills, 'prototype.spellName');
+
 export default class SkillManager {
+
+    static doesSkillExist(skill) {
+        return _.contains(skillNames, skill);
+    }
+
+    static getSkillsThatDontExist(player) {
+        return _.difference(player.skills, skillNames);
+    }
+
     static getSkills(player) {
         return _(skills)
             .map(skill => skill.prototype)

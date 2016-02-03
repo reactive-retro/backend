@@ -4,6 +4,7 @@ import _ from 'lodash';
 import save from './save';
 import { itemId } from './helpers';
 import DEFAULTS from '../../static/chardefaults';
+import SkillManager from '../../objects/skillmanager';
 
 export default (player) => {
 
@@ -36,6 +37,15 @@ export default (player) => {
 
     if(!player.stats) {
         player.stats = DEFAULTS.stats;
+    }
+
+    if(!player.skills) {
+        player.skills = [null, null, null, null, null, null];
+    }
+
+    const nonExistentSkills = SkillManager.getSkillsThatDontExist(player);
+    if(nonExistentSkills.length > 0) {
+        player.skills = _.without(player.skills, ...nonExistentSkills);
     }
 
     save(player);
