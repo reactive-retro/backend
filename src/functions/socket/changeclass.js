@@ -47,6 +47,7 @@ export default (socket) => {
                 }
 
                 doc.profession = newProfession;
+                doc.skills = [];
 
                 save(doc);
 
