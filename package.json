@@ -28,6 +28,7 @@
     "mongodb": "~2.0.31",
     "node-uuid": "^1.4.3",
     "q": "^1.4.1",
+    "require-dir": "^0.3.0",
     "seedrandom": "^2.4.2",
     "serve-static": "1.8.0",
     "socketcluster": "^3.0.0"

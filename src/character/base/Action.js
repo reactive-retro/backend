@@ -8,6 +8,7 @@ export default class Action {
         if(_.isUndefined(this.spellCost))       console.error('No spell cost set.', this);
         if(_.isUndefined(this.spellCooldown))   console.error('No spell cooldown set.', this);
         if(_.isUndefined(this.spellClasses))    console.error('No spell classes set.', this);
+        if(_.isUndefined(this.spellDescription))console.error('No spell desc set.', this);
     }
 
     clientInfo() {
@@ -21,6 +22,7 @@ export default class Action {
 }
 
 export const ActionTargets = {
+    SELF: 'Self',
     SINGLE_ENEMY: 'Single Enemy',
     SINGLE_ALLY: 'Single Ally',
     ALL_ENEMY: 'All Enemies',
