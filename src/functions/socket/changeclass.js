@@ -16,17 +16,19 @@ export default (socket) => {
             return respond({msg: MESSAGES.INVALID_TOKEN});
         }
 
-        if(!options.name) {
+        const { name, newProfession } = options;
+
+        if(!name) {
             return respond({msg: MESSAGES.NO_NAME});
         }
 
-        if(!options.newProfession) {
+        if(!newProfession) {
             return respond({msg: MESSAGES.NO_CLASS});
         }
 
         dbPromise().then(db => {
             var players = db.collection('players');
-            players.findOne({name: options.name}, (err, doc) => {
+            players.findOne({name: name}, (err, doc) => {
 
                 if(err) {
                     return respond({msg: MESSAGES.GENERIC});
@@ -36,15 +38,15 @@ export default (socket) => {
                     return respond({msg: MESSAGES.NO_PLAYER});
                 }
 
-                if(!_.contains(doc.unlockedProfessions, options.newProfession)) {
+                if(!_.contains(doc.unlockedProfessions, newProfession)) {
                     return respond({msg: MESSAGES.INVALID_PROF});
                 }
 
-                if(!doc.professionLevels[options.newProfession]) {
-                    doc.professionLevels[options.newProfession] = 1;
+                if(!doc.professionLevels[newProfession]) {
+                    doc.professionLevels[newProfession] = 1;
                 }
 
-                doc.profession = options.newProfession;
+                doc.profession = newProfession;
 
                 save(doc);
 

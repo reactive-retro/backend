@@ -11,17 +11,23 @@ export default (socket) => {
     // expect {name, homepoint}
     socket.on('homepoint', (options, respond) => {
 
-        if(!options.name) {
+        if(!socket.getAuthToken()) {
+            return respond({msg: MESSAGES.INVALID_TOKEN});
+        }
+
+        const { name, homepoint } = options;
+
+        if(!name) {
             return respond({msg: MESSAGES.NO_NAME});
         }
 
-        if(!options.homepoint || !options.homepoint.lat || !options.homepoint.lon) {
+        if(!homepoint || !homepoint.lat || !homepoint.lon) {
             return respond({msg: MESSAGES.NO_HOMEPOINT});
         }
 
         dbPromise().then(db => {
             var players = db.collection('players');
-            players.findOne({name: options.name}, (err, doc) => {
+            players.findOne({name: name}, (err, doc) => {
 
                 if (err) {
                     return respond({msg: MESSAGES.GENERIC});
@@ -31,7 +37,7 @@ export default (socket) => {
                     return respond({msg: MESSAGES.NO_PLAYER});
                 }
 
-                doc.homepoint = options.homepoint;
+                doc.homepoint = homepoint;
 
                 save(doc);
 

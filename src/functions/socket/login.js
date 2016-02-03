@@ -47,14 +47,17 @@ export default (socket) => {
 
     // expect {name, profession, homepoint, userId, token}
     socket.on('login', (credentials, respond) => {
-        if(!credentials.userId || !credentials.token) {
+
+        const { name, profession, homepoint, userId, token } = credentials;
+
+        if(!userId || !token) {
             respond({msg: MESSAGES.NO_IDENT});
             return;
         }
 
         if(AUTH0_SECRET) {
             try {
-                jwt.verify(credentials.token, atob(AUTH0_SECRET), { algorithms: ['HS256'] });
+                jwt.verify(token, atob(AUTH0_SECRET), { algorithms: ['HS256'] });
             } catch(e) {
                 console.error(credentials, e, e.stack);
                 return respond({msg: MESSAGES.INVALID_TOKEN});
@@ -65,7 +68,7 @@ export default (socket) => {
 
             var players = db.collection('players');
 
-            players.findOne({userId: credentials.userId}, (err, doc) => {
+            players.findOne({userId: userId}, (err, doc) => {
 
                 if(err) {
                     console.error(err);
@@ -74,7 +77,7 @@ export default (socket) => {
 
                 //login
                 if (doc) {
-                    respondWithPlayer(socket, respond, MESSAGES.LOGIN_SUCCESS, credentials.token, doc);
+                    respondWithPlayer(socket, respond, MESSAGES.LOGIN_SUCCESS, token, doc);
 
                 } else {
                     //validate the player before creating it

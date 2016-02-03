@@ -15,18 +15,20 @@ export default (socket) => {
             return respond({msg: MESSAGES.INVALID_TOKEN});
         }
 
-        if(!options.name) {
+        const { name, itemId } = options;
+
+        if(!name) {
             return respond({msg: MESSAGES.NO_NAME});
         }
 
-        if(!options.itemId) {
+        if(!itemId) {
             return respond({msg: MESSAGES.NO_ITEM});
         }
 
         dbPromise().then(db => {
             var players = db.collection('players');
 
-            players.findOne({name: options.name}, (err, doc) => {
+            players.findOne({name: name}, (err, doc) => {
 
                 if (err) {
                     return respond({msg: MESSAGES.GENERIC});
@@ -36,7 +38,7 @@ export default (socket) => {
                     return respond({msg: MESSAGES.NO_PLAYER});
                 }
 
-                var item = _.findWhere(doc.inventory, {itemId: options.itemId});
+                var item = _.findWhere(doc.inventory, {itemId: itemId});
 
                 if (!item) {
                     return respond({msg: MESSAGES.BAD_ITEM});
