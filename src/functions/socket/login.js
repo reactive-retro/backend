@@ -33,19 +33,20 @@ const validateNewPlayer = (credentials) => {
 const buildPlayerObject = (object) => calculate(migrate(_.omit(object, '_id')));
 
 const respondWithPlayer = (socket, respond, msg, token, player) => {
-    const monsters = nearbymonsters(player.homepoint);
+
     nearbyplaces(player.homepoint).then(places => {
-        socket.setAuthToken({heroname: player.name, token: token});
-
-        socket.emit('update:player', fullheal(buildPlayerObject(player)));
-        socket.emit('update:skills', SkillManager.getSkills(player));
-
-        respond(null, {
-            msg,
-            monsters,
-            places, settings: SETTINGS
-        });
+        socket.emit('update:places', places);
     });
+
+    const monsters = nearbymonsters(player.homepoint);
+
+    socket.setAuthToken({heroname: player.name, token: token});
+
+    socket.emit('update:monsters', monsters);
+    socket.emit('update:player', fullheal(buildPlayerObject(player)));
+    socket.emit('update:skills', SkillManager.getSkills(player));
+
+    respond(null, { msg, settings: SETTINGS });
 };
 
 export default (socket) => {
