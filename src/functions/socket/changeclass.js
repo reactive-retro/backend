@@ -7,6 +7,8 @@ import save from '../player/save';
 import calculate from '../player/calculate';
 import fullheal from '../player/fullheal';
 
+import SkillManager from '../../objects/skillmanager';
+
 export default (socket) => {
 
     const changeClass = ({ name, newProfession }, respond) => {
@@ -38,10 +40,13 @@ export default (socket) => {
 
             save(doc);
 
-            respond(null, {msg: MESSAGES.PROF_CHANGE_SUCCESS, player: fullheal(calculate(doc))});
+            socket.emit('update:skills', SkillManager.getSkills(doc));
+            socket.emit('update:player', fullheal(calculate(doc)));
+
+            respond(null, {msg: MESSAGES.PROF_CHANGE_SUCCESS});
         });
 
     };
 
-    socket.on('classchange', changeClass);
+    socket.on('player:change:class', changeClass);
 };

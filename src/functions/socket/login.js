@@ -10,6 +10,8 @@ import calculate from '../player/calculate';
 import migrate from '../player/migrate';
 import fullheal from '../player/fullheal';
 
+import SkillManager from '../../objects/skillmanager';
+
 import nearbyplaces from '../world/nearbyplaces';
 import nearbymonsters from '../world/nearbymonsters';
 
@@ -34,10 +36,13 @@ const respondWithPlayer = (socket, respond, msg, token, player) => {
     const monsters = nearbymonsters(player.homepoint);
     nearbyplaces(player.homepoint).then(places => {
         socket.setAuthToken({heroname: player.name, token: token});
+
+        socket.emit('update:player', fullheal(buildPlayerObject(player)));
+        socket.emit('update:skills', SkillManager.getSkills(player));
+
         respond(null, {
             msg,
             monsters,
-            player: fullheal(buildPlayerObject(player)),
             places, settings: SETTINGS
         });
     });

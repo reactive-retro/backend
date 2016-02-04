@@ -28,11 +28,13 @@ export default (socket) => {
 
             save(doc);
 
-            respond(null, {msg: MESSAGES.HOMEPOINT_CHANGE_SUCCESS, player: calculate(doc)});
+            socket.emit('update:player', calculate(doc));
+
+            respond(null, {msg: MESSAGES.HOMEPOINT_CHANGE_SUCCESS});
 
         });
 
     };
 
-    socket.on('homepoint', setHomepoint);
+    socket.on('player:change:homepoint', setHomepoint);
 };

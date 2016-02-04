@@ -39,11 +39,13 @@ export default (socket) => {
 
             save(doc);
 
-            respond(null, {msg: MESSAGES.SKILL_CHANGE_SUCCESS, player: fullheal(calculate(doc))});
+            socket.emit('update:player', fullheal(calculate(doc)));
+
+            respond(null, {msg: MESSAGES.SKILL_CHANGE_SUCCESS});
 
         });
 
     };
 
-    socket.on('skillchange', skillChange);
+    socket.on('player:change:skill', skillChange);
 };

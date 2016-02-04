@@ -38,11 +38,13 @@ export default (socket) => {
 
             save(doc);
 
-            respond(null, {msg: MESSAGES.EQUIP_SUCCESS, player: calculate(doc)});
+            socket.emit('update:player', calculate(doc));
+
+            respond(null, {msg: MESSAGES.EQUIP_SUCCESS});
 
         });
 
     };
 
-    socket.on('equip', equip);
+    socket.on('player:change:equipment', equip);
 };
