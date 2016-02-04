@@ -22,8 +22,15 @@ export var run = (worker) => {
 
         const normalizedPath = path.join(__dirname, '..', 'src', 'functions', 'socket');
 
-        _.each(fs.readdirSync(normalizedPath), file => {
-            require(`../src/functions/socket/${file}`).default(socket);
-        });
+        const allSocketFunctions = require('require-dir')(normalizedPath, { recurse: true });
+
+        const requireRecursive = (obj) => {
+            _.each(obj, (val) => {
+                if(!val.default) return requireRecursive(val);
+                val.default(socket);
+            });
+        };
+
+        requireRecursive(allSocketFunctions);
     });
 };

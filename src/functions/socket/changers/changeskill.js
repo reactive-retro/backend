@@ -1,13 +1,13 @@
 
 import _ from 'lodash';
 
-import getPlayer from '../player/getbyname';
-import MESSAGES from '../../static/messages';
-import save from '../player/save';
-import calculate from '../player/calculate';
-import fullheal from '../player/fullheal';
+import getPlayer from '../../player/getbyname';
+import MESSAGES from '../../../static/messages';
+import save from '../../player/save';
+import calculate from '../../player/calculate';
+import fullheal from '../../player/fullheal';
 
-import SkillManager from '../../objects/skillmanager';
+import SkillManager from '../../../objects/skillmanager';
 
 // 6 skill slots
 const MIN_SLOT = 0;

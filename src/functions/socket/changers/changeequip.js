@@ -1,10 +1,10 @@
 
 import _ from 'lodash';
 
-import getPlayer from '../player/getbyname';
-import MESSAGES from '../../static/messages';
-import save from '../player/save';
-import calculate from '../player/calculate';
+import getPlayer from '../../player/getbyname';
+import MESSAGES from '../../../static/messages';
+import save from '../../player/save';
+import calculate from '../../player/calculate';
 
 export default (socket) => {
 
