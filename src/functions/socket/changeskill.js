@@ -1,7 +1,7 @@
 
 import _ from 'lodash';
 
-import dbPromise from '../../objects/db';
+import getPlayer from '../player/getbyname';
 import MESSAGES from '../../static/messages';
 import save from '../player/save';
 import calculate from '../player/calculate';
@@ -15,14 +15,11 @@ const MAX_SLOT = 5;
 
 export default (socket) => {
 
-    // expect {name, skillName, skillSlot}
-    socket.on('skillchange', (options, respond) => {
+    const skillChange = ({ name, skillName, skillSlot }, respond) => {
 
         if(!socket.getAuthToken()) {
             return respond({msg: MESSAGES.INVALID_TOKEN});
         }
-
-        const { name, skillName, skillSlot } = options;
 
         if(!name) {
             return respond({msg: MESSAGES.NO_NAME});
@@ -36,26 +33,17 @@ export default (socket) => {
             return respond({msg: MESSAGES.BAD_SLOT})
         }
 
-        dbPromise().then(db => {
-            var players = db.collection('players');
-            players.findOne({name: name}, (err, doc) => {
+        getPlayer(name, respond).then(doc => {
 
-                if(err) {
-                    return respond({msg: MESSAGES.GENERIC});
-                }
+            doc.skills[skillSlot] = skillName;
 
-                if(!doc) {
-                    return respond({msg: MESSAGES.NO_PLAYER});
-                }
+            save(doc);
 
-                doc.skills[skillSlot] = skillName;
+            respond(null, {msg: MESSAGES.SKILL_CHANGE_SUCCESS, player: fullheal(calculate(doc))});
 
-                save(doc);
-
-                respond(null, {msg: MESSAGES.SKILL_CHANGE_SUCCESS, player: fullheal(calculate(doc))});
-
-            });
         });
 
-    });
+    };
+
+    socket.on('skillchange', skillChange);
 };

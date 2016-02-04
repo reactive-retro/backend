@@ -1,7 +1,7 @@
 
 import _ from 'lodash';
 
-import dbPromise from '../../objects/db';
+import getPlayer from '../player/getbyname';
 import MESSAGES from '../../static/messages';
 import save from '../player/save';
 import calculate from '../player/calculate';
@@ -9,14 +9,11 @@ import fullheal from '../player/fullheal';
 
 export default (socket) => {
 
-    // expect {name, newProfession}
-    socket.on('classchange', (options, respond) => {
+    const changeClass = ({ name, newProfession }, respond) => {
 
         if(!socket.getAuthToken()) {
             return respond({msg: MESSAGES.INVALID_TOKEN});
         }
-
-        const { name, newProfession } = options;
 
         if(!name) {
             return respond({msg: MESSAGES.NO_NAME});
@@ -26,35 +23,25 @@ export default (socket) => {
             return respond({msg: MESSAGES.NO_CLASS});
         }
 
-        dbPromise().then(db => {
-            var players = db.collection('players');
-            players.findOne({name: name}, (err, doc) => {
+        getPlayer(name, respond).then(doc => {
 
-                if(err) {
-                    return respond({msg: MESSAGES.GENERIC});
-                }
+            if(!_.contains(doc.unlockedProfessions, newProfession)) {
+                return respond({msg: MESSAGES.INVALID_PROF});
+            }
 
-                if(!doc) {
-                    return respond({msg: MESSAGES.NO_PLAYER});
-                }
+            if(!doc.professionLevels[newProfession]) {
+                doc.professionLevels[newProfession] = 1;
+            }
 
-                if(!_.contains(doc.unlockedProfessions, newProfession)) {
-                    return respond({msg: MESSAGES.INVALID_PROF});
-                }
+            doc.profession = newProfession;
+            doc.skills = [];
 
-                if(!doc.professionLevels[newProfession]) {
-                    doc.professionLevels[newProfession] = 1;
-                }
+            save(doc);
 
-                doc.profession = newProfession;
-                doc.skills = [];
-
-                save(doc);
-
-                respond(null, {msg: MESSAGES.PROF_CHANGE_SUCCESS, player: fullheal(calculate(doc))});
-
-            });
+            respond(null, {msg: MESSAGES.PROF_CHANGE_SUCCESS, player: fullheal(calculate(doc))});
         });
 
-    });
+    };
+
+    socket.on('classchange', changeClass);
 };

@@ -1,21 +1,18 @@
 
 import _ from 'lodash';
 
-import dbPromise from '../../objects/db';
+import getPlayer from '../player/getbyname';
 import MESSAGES from '../../static/messages';
 import save from '../player/save';
 import calculate from '../player/calculate';
 
 export default (socket) => {
 
-    // expect {name, itemId}
-    socket.on('equip', (options, respond) => {
+    const equip = ({ name, itemId }, respond) => {
 
         if(!socket.getAuthToken()) {
             return respond({msg: MESSAGES.INVALID_TOKEN});
         }
-
-        const { name, itemId } = options;
 
         if(!name) {
             return respond({msg: MESSAGES.NO_NAME});
@@ -25,37 +22,27 @@ export default (socket) => {
             return respond({msg: MESSAGES.NO_ITEM});
         }
 
-        dbPromise().then(db => {
-            var players = db.collection('players');
+        getPlayer(name, respond).then(doc => {
 
-            players.findOne({name: name}, (err, doc) => {
+            var item = _.findWhere(doc.inventory, {itemId: itemId});
 
-                if (err) {
-                    return respond({msg: MESSAGES.GENERIC});
-                }
+            if (!item) {
+                return respond({msg: MESSAGES.BAD_ITEM});
+            }
 
-                if (!doc) {
-                    return respond({msg: MESSAGES.NO_PLAYER});
-                }
+            // level requirements, maybe.
 
-                var item = _.findWhere(doc.inventory, {itemId: itemId});
+            doc.inventory.push(doc.equipment[item.type]);
+            doc.inventory = _.without(doc.inventory, item);
+            doc.equipment[item.type] = item;
 
-                if (!item) {
-                    return respond({msg: MESSAGES.BAD_ITEM});
-                }
+            save(doc);
 
-                // level requirements, maybe.
+            respond(null, {msg: MESSAGES.EQUIP_SUCCESS, player: calculate(doc)});
 
-                doc.inventory.push(doc.equipment[item.type]);
-                doc.inventory = _.without(doc.inventory, item);
-                doc.equipment[item.type] = item;
-
-                save(doc);
-
-                respond(null, {msg: MESSAGES.EQUIP_SUCCESS, player: calculate(doc)});
-
-            });
         });
 
-    });
+    };
+
+    socket.on('equip', equip);
 };

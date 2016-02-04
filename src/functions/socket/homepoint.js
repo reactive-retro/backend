@@ -1,21 +1,18 @@
 
 import _ from 'lodash';
 
-import dbPromise from '../../objects/db';
+import getPlayer from '../player/getbyname';
 import MESSAGES from '../../static/messages';
 import save from '../player/save';
 import calculate from '../player/calculate';
 
 export default (socket) => {
 
-    // expect {name, homepoint}
-    socket.on('homepoint', (options, respond) => {
+    const setHomepoint = ({ name, homepoint }, respond) => {
 
         if(!socket.getAuthToken()) {
             return respond({msg: MESSAGES.INVALID_TOKEN});
         }
-
-        const { name, homepoint } = options;
 
         if(!name) {
             return respond({msg: MESSAGES.NO_NAME});
@@ -25,26 +22,17 @@ export default (socket) => {
             return respond({msg: MESSAGES.NO_HOMEPOINT});
         }
 
-        dbPromise().then(db => {
-            var players = db.collection('players');
-            players.findOne({name: name}, (err, doc) => {
+        getPlayer(name, respond).then(doc => {
 
-                if (err) {
-                    return respond({msg: MESSAGES.GENERIC});
-                }
+            doc.homepoint = homepoint;
 
-                if (!doc) {
-                    return respond({msg: MESSAGES.NO_PLAYER});
-                }
+            save(doc);
 
-                doc.homepoint = homepoint;
+            respond(null, {msg: MESSAGES.HOMEPOINT_CHANGE_SUCCESS, player: calculate(doc)});
 
-                save(doc);
-
-                respond(null, {msg: MESSAGES.HOMEPOINT_CHANGE_SUCCESS, player: calculate(doc)});
-
-            });
         });
 
-    });
+    };
+
+    socket.on('homepoint', setHomepoint);
 };
