@@ -1,12 +1,12 @@
 
 export default class Monster {
-    constructor(options) {
-        this.seed = options.seed;
-        this.verifyToken = options.verifyToken;
-        this.name = options.name;
-        this.profession = options.profession;
-        this.location = options.location;
-        this.rating = options.rating;
-        this.professionLevels = { Monster: 1 };
+    constructor({ seed, verifyToken, name, profession, location, rating, professionLevels }) {
+        this.seed = seed;
+        this.verifyToken = verifyToken;
+        this.name = name;
+        this.profession = profession;
+        this.location = location;
+        this.rating = rating;
+        this.professionLevels = professionLevels || { Monster: 1 };
     }
 }
