@@ -8,7 +8,7 @@ import { name, cost, cooldown, classes, targets, description, effect } from '../
 @classes({ Mage: 1 })
 @targets(ActionTargets.SELF)
 @description('Sit down in the middle of combat and begin meditating, restoring your MP.')
-@effect('Refresh', { roll: 'f(1d[mp.max] / 4) + f([mp.max] / 4)', string: 'MP' })
+@effect('Refresh', { roll: '1df([mp.max] / 4) + f([mp.max] / 4)', string: 'MP' })
 export default class Meditate extends Action {
 
 }

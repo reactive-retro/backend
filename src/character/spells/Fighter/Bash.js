@@ -9,7 +9,7 @@ import { name, cost, cooldown, classes, targets, description, effect } from '../
 @targets(ActionTargets.SINGLE_ENEMY)
 @description('Deal low damage to an enemy with a chance to stun them.')
 @effect('Stun', { chance: 25, roll: '1d1', string: 'round' })
-@effect('Damage', { roll: 'f(1d[str] / 2) + 1' })
+@effect('Damage', { roll: '1df([str] / 2) + 1' })
 export default class Bash extends Action {
 
 }
