@@ -13,6 +13,13 @@ export var run = (worker) => {
 
         socket.on('error', e => console.error(e.message));
 
+        socket.on('disconnect', function() {
+            const { heroname } = socket.getAuthToken();
+            if(!heroname) return;
+
+            // disconnect from parties, lose battles, etc
+        });
+
         const normalizedPath = path.join(__dirname, '..', 'src', 'functions', 'socket');
 
         _.each(fs.readdirSync(normalizedPath), file => {
