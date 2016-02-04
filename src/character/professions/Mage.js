@@ -1,11 +1,13 @@
 
 import Profession from '../base/Profession';
+import { hp, mp, str, dex, vit, mnt, luk } from '../../static/decorators';
 
+@hp(5)
+@mp(5, (prof, player) => prof.getStat(player, 'mnt') * 2)
+@str(1)
+@dex(1)
+@vit(1)
+@mnt(2)
+@luk(0.5)
 export default class Mage extends Profession {
-    static hp(player) { return this.getLevel(player) * 5; }
-    static mp(player) { return this.getLevel(player) * 5 + this.getStat(player, 'mnt') * 2; }
-    static str(player) { return this.getLevel(player) * 1; }
-    static mnt(player) { return this.getLevel(player) * 2; }
-    static dex(player) { return this.getLevel(player) * 1; }
-    static vit(player) { return this.getLevel(player) * 1; }
 }
