@@ -3,7 +3,7 @@ import Profession from '../base/Profession';
 
 export default class Cleric extends Profession {
     static hp(player) { return this.getLevel(player) * 7; }
-    static mp(player) { return this.getLevel(player) * 3; }
+    static mp(player) { return this.getLevel(player) * 3 + this.getStat(player, 'mnt'); }
     static str(player) { return this.getLevel(player) * 2; }
     static mnt(player) { return this.getLevel(player) * 2; }
     static dex(player) { return this.getLevel(player) * 1; }

@@ -5,3 +5,16 @@ export const cooldown   = (cooldown) => (target) => { return target.prototype.sp
 export const classes    = (classes)  => (target) => { return target.prototype.spellClasses = classes, target; };
 export const targets    = (targets)  => (target) => { return target.prototype.spellTargets = targets, target; };
 export const description= (desc)     => (target) => { return target.prototype.spellDescription = desc, target; };
+
+export const effect     = (effect, effVal) => (target) => {
+    if(!target.prototype.spellEffects) {
+        target.prototype.spellEffects = {};
+    }
+
+    if(!effVal.chance) {
+        effVal.chance = 100;
+    }
+
+    target.prototype.spellEffects[effect] = effVal;
+    return target;
+};

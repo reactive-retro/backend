@@ -16,7 +16,12 @@ export default {
         mp: {
             cur: 0,
             max: 0
-        }
+        },
+        str: 0,
+        vit: 0,
+        dex: 0,
+        mnt: 0,
+        luk: 0
     },
     defaultEquipment: {
         armor: () => {
