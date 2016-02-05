@@ -14,7 +14,7 @@ export var run = (worker) => {
         socket.on('error', e => console.error(e.message));
 
         socket.on('disconnect', function() {
-            if(!socket.getAuthToken()) return;ß
+            if(!socket.getAuthToken()) return;
             const { heroname } = socket.getAuthToken();
             if(!heroname) return;
 
