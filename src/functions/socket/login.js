@@ -5,11 +5,8 @@ import atob from 'atob';
 
 import dbPromise from '../../objects/db';
 import MESSAGES from '../../static/messages';
-import save from '../player/save';
-import calculate from '../player/calculate';
-import migrate from '../player/migrate';
-import fullheal from '../player/fullheal';
 
+import Player from '../../character/base/Player';
 import SkillManager from '../../objects/skillmanager';
 
 import nearbyplaces from '../world/nearbyplaces';
@@ -30,7 +27,11 @@ const validateNewPlayer = (credentials) => {
     if(!credentials.homepoint || !credentials.homepoint.lat || !credentials.homepoint.lon) return MESSAGES.NO_HOMEPOINT;
 };
 
-const buildPlayerObject = (object) => calculate(migrate(_.omit(object, '_id')));
+const buildPlayerObject = (object) => {
+    const player = new Player(object);
+    player._id = undefined;
+    return player;
+};
 
 const respondWithPlayer = (socket, respond, msg, token, player) => {
 
@@ -43,8 +44,12 @@ const respondWithPlayer = (socket, respond, msg, token, player) => {
     socket.setAuthToken({heroname: player.name, token: token});
 
     socket.emit('update:monsters', monsters);
-    socket.emit('update:player', fullheal(buildPlayerObject(player)));
-    socket.emit('update:skills', SkillManager.getSkills(player));
+
+    const playerInst = buildPlayerObject(player);
+    playerInst.fullheal();
+
+    socket.emit('update:player', playerInst);
+    socket.emit('update:skills', SkillManager.getSkills(playerInst));
 
     respond(null, { msg, settings: SETTINGS });
 };

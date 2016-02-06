@@ -3,9 +3,7 @@ import _ from 'lodash';
 
 import getPlayer from '../../player/getbyname';
 import MESSAGES from '../../../static/messages';
-import save from '../../player/save';
-import calculate from '../../player/calculate';
-import fullheal from '../../player/fullheal';
+import Player from '../../../character/base/Player';
 
 import SkillManager from '../../../objects/skillmanager';
 
@@ -37,9 +35,8 @@ export default (socket) => {
 
             doc.skills[skillSlot] = skillName;
 
-            save(doc);
-
-            socket.emit('update:player', fullheal(calculate(doc)));
+            const player = new Player(doc);
+            socket.emit('update:player', player);
 
             respond(null, {msg: MESSAGES.SKILL_CHANGE_SUCCESS});
 

@@ -3,8 +3,7 @@ import _ from 'lodash';
 
 import getPlayer from '../../player/getbyname';
 import MESSAGES from '../../../static/messages';
-import save from '../../player/save';
-import calculate from '../../player/calculate';
+import Player from '../../../character/base/Player';
 
 export default (socket) => {
 
@@ -26,9 +25,8 @@ export default (socket) => {
 
             doc.homepoint = homepoint;
 
-            save(doc);
-
-            socket.emit('update:player', calculate(doc));
+            const player = new Player(doc);
+            socket.emit('update:player', player);
 
             respond(null, {msg: MESSAGES.HOMEPOINT_CHANGE_SUCCESS});
 

@@ -44,86 +44,78 @@ export default {
         }
     },
     equipment: {
-        Fighter: () => {
-            return {
-                weapon: {
-                    type: 'weapon',
-                    name: 'Knife',
-                    itemId: itemId(),
-                    stats: {
-                        str: 2
-                    }
-                },
-                armor: {
-                    type: 'armor',
-                    name: 'Fighter Armor',
-                    itemId: itemId(),
-                    stats: {
-                        dex: 1
-                    }
+        Fighter: () => ({
+            weapon: {
+                type: 'weapon',
+                name: 'Knife',
+                itemId: itemId(),
+                stats: {
+                    str: 2
                 }
-            };
-        },
-        Mage: () => {
-            return {
-                weapon: {
-                    type: 'weapon',
-                    name: 'Wand',
-                    itemId: itemId(),
-                    stats: {
-                        int: 2
-                    }
-                },
-                armor: {
-                    type: 'armor',
-                    name: 'Robe',
-                    itemId: itemId(),
-                    stats: {
-                        dex: 1
-                    }
+            },
+            armor: {
+                type: 'armor',
+                name: 'Fighter Armor',
+                itemId: itemId(),
+                stats: {
+                    dex: 1
                 }
-            };
-        },
-        Thief: () => {
-            return {
-                weapon: {
-                    type: 'weapon',
-                    name: 'Dagger',
-                    itemId: itemId(),
-                    stats: {
-                        dex: 2
-                    }
-                },
-                armor: {
-                    type: 'armor',
-                    name: 'Leather Armor',
-                    itemId: itemId(),
-                    stats: {
-                        vit: 1
-                    }
+            }
+        }),
+        Mage: () => ({
+            weapon: {
+                type: 'weapon',
+                name: 'Wand',
+                itemId: itemId(),
+                stats: {
+                    int: 2
                 }
-            };
-        },
-        Cleric: () => {
-            return {
-                weapon: {
-                    type: 'weapon',
-                    name: 'Mace',
-                    itemId: itemId(),
-                    stats: {
-                        mnt: 1,
-                        str: 1
-                    }
-                },
-                armor: {
-                    type: 'armor',
-                    name: 'Cleric Armor',
-                    itemId: itemId(),
-                    stats: {
-                        dex: 1
-                    }
+            },
+            armor: {
+                type: 'armor',
+                name: 'Robe',
+                itemId: itemId(),
+                stats: {
+                    dex: 1
                 }
-            };
-        }
+            }
+        }),
+        Thief: () => ({
+            weapon: {
+                type: 'weapon',
+                name: 'Dagger',
+                itemId: itemId(),
+                stats: {
+                    dex: 2
+                }
+            },
+            armor: {
+                type: 'armor',
+                name: 'Leather Armor',
+                itemId: itemId(),
+                stats: {
+                    vit: 1
+                }
+            }
+        }),
+        Cleric: () => ({
+            weapon: {
+                type: 'weapon',
+                name: 'Mace',
+                itemId: itemId(),
+                stats: {
+                    mnt: 1,
+                    str: 1
+                }
+            },
+            armor: {
+                type: 'armor',
+                name: 'Cleric Armor',
+                itemId: itemId(),
+                stats: {
+                    dex: 1
+                }
+            }
+        })
     }
 };

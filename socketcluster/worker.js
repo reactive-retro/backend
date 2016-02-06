@@ -3,6 +3,8 @@ import _ from 'lodash';
 import path from 'path';
 import fs from 'fs';
 
+import clearBattle from '../src/functions/player/clearbattle';
+
 export var run = (worker) => {
     const scServer = worker.scServer;
 
@@ -18,7 +20,8 @@ export var run = (worker) => {
             const { heroname } = socket.getAuthToken();
             if(!heroname) return;
 
-            // disconnect from parties, lose battles, etc
+            // disconnect = lose battle
+            clearBattle(heroname);
         });
 
         const normalizedPath = path.join(__dirname, '..', 'src', 'functions', 'socket');

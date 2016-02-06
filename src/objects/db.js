@@ -15,6 +15,7 @@ MongoClient.connect(connectionString, (err, db) => {
     }
 
     db.collection('players').createIndex({name: 1}, {unique: true}, _.noop);
+    db.collection('battles').deleteMany({}, _.noop);
 
     dbLoaded.resolve(db);
 });

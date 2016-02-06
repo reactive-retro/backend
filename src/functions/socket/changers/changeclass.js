@@ -3,9 +3,7 @@ import _ from 'lodash';
 
 import getPlayer from '../../player/getbyname';
 import MESSAGES from '../../../static/messages';
-import save from '../../player/save';
-import calculate from '../../player/calculate';
-import fullheal from '../../player/fullheal';
+import Player from '../../../character/base/Player';
 
 import SkillManager from '../../../objects/skillmanager';
 
@@ -38,10 +36,11 @@ export default (socket) => {
             doc.profession = newProfession;
             doc.skills = [];
 
-            save(doc);
+            const player = new Player(doc);
+            player.fullheal();
 
+            socket.emit('update:player', player);
             socket.emit('update:skills', SkillManager.getSkills(doc));
-            socket.emit('update:player', fullheal(calculate(doc)));
 
             respond(null, {msg: MESSAGES.PROF_CHANGE_SUCCESS});
         });

@@ -1,12 +1,18 @@
 
-export default class Monster {
+import Character from './Character';
+
+export default class Monster extends Character {
     constructor({ seed, verifyToken, name, profession, location, rating, professionLevels }) {
+
+        super({
+            name,
+            profession: profession || 'Monster',
+            professionLevels: professionLevels || { Monster: 1 }
+        });
+
         this.seed = seed;
         this.verifyToken = verifyToken;
-        this.name = name;
-        this.profession = profession || 'Monster';
         this.location = location;
         this.rating = rating;
-        this.professionLevels = professionLevels || { Monster: 1 };
     }
 }

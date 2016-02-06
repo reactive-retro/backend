@@ -25,5 +25,10 @@ export default {
 
     BAD_SLOT: 'Invalid slot specified for skill.',
     NO_SKILL: 'Invalid skill name specified.',
-    SKILL_CHANGE_SUCCESS: 'Successfully changed skill.'
+    SKILL_CHANGE_SUCCESS: 'Successfully changed skill.',
+
+    BAD_MONSTER: 'That monster is not valid.',
+    ALREADY_IN_COMBAT: 'You are already in combat!',
+    BAD_COMBAT: 'Combat could not start for some reason.',
+    BATTLE_ENTERED: 'Combat will commence!'
 };
