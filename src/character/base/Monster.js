@@ -1,4 +1,6 @@
 
+import uuid from 'node-uuid';
+
 import Character from './Character';
 
 export default class Monster extends Character {
@@ -10,6 +12,7 @@ export default class Monster extends Character {
             professionLevels: professionLevels || { Monster: 1 }
         });
 
+        this.id = uuid.v4();
         this.seed = seed;
         this.verifyToken = verifyToken;
         this.location = location;
