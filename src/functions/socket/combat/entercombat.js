@@ -41,8 +41,7 @@ export default (socket) => {
                 monsters
             }).then(battle => {
 
-                console.log(battle);
-
+                battle.playerData = party;
                 // assign the battle id to them
                 _.each(party, player => {
                     player.battleId = battle._id;
