@@ -33,6 +33,10 @@ export default class SkillManager {
                     .keys()
                     .any(profession => {
 
+                        if(profession === 'All' && player.professionLevels[player.profession] >= skill.spellClasses.All) {
+                            return true;
+                        }
+
                         // you need to be level x*2 to use a skill outside of a profession.
                         // some skills will not translate, as a result
                         let multiplier = 2;
