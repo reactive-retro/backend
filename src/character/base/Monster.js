@@ -14,5 +14,6 @@ export default class Monster extends Character {
         this.verifyToken = verifyToken;
         this.location = location;
         this.rating = rating;
+        this.fullheal();
     }
 }
