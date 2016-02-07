@@ -22,6 +22,8 @@ export var run = (worker) => {
 
             // disconnect = lose battle
             clearBattle(heroname);
+
+            // TODO also remove the battle from the DB if all players have disconnected
         });
 
         const normalizedPath = path.join(__dirname, '..', 'src', 'functions', 'socket');
