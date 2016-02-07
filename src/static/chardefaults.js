@@ -98,19 +98,17 @@ export default {
                 }
             }
         }),
-        Cleric: () => ({
+        Monster: () => ({
             weapon: {
                 type: 'weapon',
-                name: 'Mace',
-                itemId: itemId(),
+                name: 'Claw',
                 stats: {
-                    mnt: 1,
                     str: 1
                 }
             },
             armor: {
                 type: 'armor',
-                name: 'Cleric Armor',
+                name: 'Pelt',
                 itemId: itemId(),
                 stats: {
                     dex: 1
