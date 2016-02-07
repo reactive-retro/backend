@@ -14,6 +14,7 @@ export default class Player extends Character {
             name,
             profession,
             professionLevels,
+            unlockedProfessions,
             stats,
             skills,
             inventory,
@@ -22,12 +23,8 @@ export default class Player extends Character {
 
         this.userId = userId;
         this.homepoint = homepoint;
-        this.unlockedProfessions = unlockedProfessions || DEFAULTS.unlockedProfessions;
-
-        _.each(this.unlockedProfessions, (prof) => { this.professionLevels[prof] = this.professionLevels[prof] || 1; });
 
         this.handleDefaults();
-        this.calculate();
         this.save();
     }
 

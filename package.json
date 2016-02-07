@@ -30,6 +30,7 @@
     "node-uuid": "^1.4.3",
     "q": "^1.4.1",
     "require-dir": "^0.3.0",
+    "restricted-number": "0.0.5",
     "seedrandom": "^2.4.2",
     "serve-static": "1.8.0",
     "socketcluster": "^3.0.0"

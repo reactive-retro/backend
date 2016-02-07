@@ -1,10 +1,11 @@
 
 import _ from 'lodash';
+import RestrictedNumber from 'restricted-number';
 
 import DEFAULTS from '../../static/chardefaults';
 
 export default class Character {
-    constructor({ name, profession, professionLevels, stats, skills, inventory, equipment }) {
+    constructor({ name, profession, professionLevels, unlockedProfessions, stats, skills, inventory, equipment }) {
         this.name = name;
         this.profession = profession;
         this.professionLevels = professionLevels || {};
@@ -12,6 +13,10 @@ export default class Character {
         this.skills = skills || [];
         this.inventory = inventory || [];
         this.equipment = equipment || DEFAULTS.equipment[this.profession]();
+        this.unlockedProfessions = unlockedProfessions || DEFAULTS.unlockedProfessions;
+
+        _.each(this.unlockedProfessions, (prof) => { this.professionLevels[prof] = this.professionLevels[prof] || 1; });
+        this.calculate();
     }
 
     calculate() {
@@ -32,13 +37,13 @@ export default class Character {
             this.stats[stat] = Math.floor(profession.getStat(this, stat));
         });
 
-        this.stats.hp.max = profession.hp(this);
-        this.stats.mp.max = profession.mp(this);
+        this.stats.hp = new RestrictedNumber(0, profession.hp(this), this.stats.hp.__current || 0);
+        this.stats.mp = new RestrictedNumber(0, profession.mp(this), this.stats.mp.__current || 0);
     }
 
     fullheal() {
         const profession = require(`../../character/professions/${this.profession}`).default;
-        this.stats.hp.cur = profession.hp(this);
-        this.stats.mp.cur = profession.mp(this);
+        this.stats.hp.toMaximum();
+        this.stats.mp.toMaximum();
     }
 }
