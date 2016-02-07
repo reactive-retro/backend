@@ -9,7 +9,7 @@ export var run = (worker) => {
     const scServer = worker.scServer;
 
     scServer.on('error', e => console.error(e.message));
-    scServer.on('notice', e => console.info(e));
+    scServer.on('notice', e => console.info(e.message));
 
     scServer.on('connection', socket => {
 
