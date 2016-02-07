@@ -14,9 +14,10 @@ export default (baseOpts) => {
     opts.profession = 'Monster';
     opts.professionLevels = { Monster: 1 };
 
-    opts.verifyToken = generate(opts);
+    const monster = new Monster(opts);
+    monster.verifyToken = generate(monster);
 
-    return new Monster(opts);
+    return monster;
 }
 
 export const generate = (monster) => {
@@ -25,7 +26,6 @@ export const generate = (monster) => {
 };
 
 export const verify = (monster) => {
-    console.log(monster);
     const testToken = generate(monster);
     return testToken === monster.verifyToken;
 };
