@@ -10,7 +10,7 @@ export default class Character {
         this.profession = profession;
         this.professionLevels = professionLevels || {};
         this.stats = stats || DEFAULTS.stats;
-        this.skills = skills || [];
+        this.skills = skills || DEFAULTS.skills;
         this.inventory = inventory || [];
         this.equipment = equipment || DEFAULTS.equipment[this.profession]();
         this.unlockedProfessions = unlockedProfessions || DEFAULTS.unlockedProfessions;

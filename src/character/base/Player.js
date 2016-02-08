@@ -40,7 +40,7 @@ export default class Player extends Character {
             this.inventory.push(DEFAULTS.defaultEquipment.armor());
         }
 
-        const nonExistentSkills = SkillManager.getSkillsThatDontExist(this);
+        const nonExistentSkills = _.compact(SkillManager.getSkillsThatDontExist(this));
         if(nonExistentSkills.length > 0) {
             this.skills = _.without(this.skills, ...nonExistentSkills);
         }

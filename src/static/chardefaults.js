@@ -23,6 +23,7 @@ export default {
         mnt: 0,
         luk: 0
     },
+    skills: [null, null, null, null, null, null],
     defaultEquipment: {
         armor: () => {
             return {
