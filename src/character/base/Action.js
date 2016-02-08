@@ -11,14 +11,6 @@ export default class Action {
         if(_.isUndefined(this.spellDescription))console.error('No spell desc set.', this);
     }
 
-    clientInfo() {
-        return {
-            name: this.spellName,
-            cooldown: this.spellCooldown,
-            cost: this.spellCost
-        };
-    }
-
 }
 
 export const ActionTargets = {
