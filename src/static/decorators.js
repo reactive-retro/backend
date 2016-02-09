@@ -5,6 +5,7 @@ export const cooldown   = (cooldown) => (target) => { return target.prototype.sp
 export const classes    = (classes)  => (target) => { return target.prototype.spellClasses = classes, target; };
 export const targets    = (targets)  => (target) => { return target.prototype.spellTargets = targets, target; };
 export const description= (desc)     => (target) => { return target.prototype.spellDescription = desc, target; };
+export const useString  = (useStr)   => (target) => { return target.prototype.spellUseString = useStr, target; };
 
 export const effect     = (effect, effVal) => (target) => {
     if(!target.prototype.spellEffects) {

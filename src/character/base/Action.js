@@ -9,6 +9,7 @@ export default class Action {
         if(_.isUndefined(this.spellCooldown))   console.error('No spell cooldown set.', this);
         if(_.isUndefined(this.spellClasses))    console.error('No spell classes set.', this);
         if(_.isUndefined(this.spellDescription))console.error('No spell desc set.', this);
+        if(_.isUndefined(this.spellUseString))  console.error('No spell use string set.', this);
     }
 
 }
