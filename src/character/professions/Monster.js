@@ -2,7 +2,7 @@
 import Profession from '../base/Profession';
 import { hp, mp, str, dex, vit, mnt, luk } from '../../static/decorators';
 
-@hp(2)
+@hp(5)
 @mp(3)
 @str(1)
 @dex(1)
