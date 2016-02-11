@@ -80,7 +80,11 @@ export default class Battle {
                 target.stats.hp.sub(damage);
 
                 messages.push(damageMessage);
-                messages.push(...tryEffects(skill, target));
+                if(target.stats.hp.atMin()) {
+                    messages.push(`${target.name} was slain by ${caster.name}!`);
+                } else {
+                    messages.push(...tryEffects(skill, target));
+                }
 
             });
         }
