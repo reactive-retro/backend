@@ -3,7 +3,7 @@ import _ from 'lodash';
 import path from 'path';
 import fs from 'fs';
 
-import clearBattle from '../src/functions/player/clearbattle';
+import clearBattle from '../src/character/functions/clearbattle';
 
 export var run = (worker) => {
     const scServer = worker.scServer;
@@ -31,7 +31,7 @@ export var run = (worker) => {
         const requireRecursive = (obj) => {
             _.each(obj, (val) => {
                 if(!val.default) return requireRecursive(val);
-                val.default(socket);
+                val.default(socket, worker);
             });
         };
 

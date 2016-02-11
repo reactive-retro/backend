@@ -28,7 +28,11 @@ export default {
     SKILL_CHANGE_SUCCESS: 'Successfully changed skill.',
 
     BAD_MONSTER: 'That monster is not valid.',
+    NOT_IN_COMBAT: 'You are not in combat!',
     ALREADY_IN_COMBAT: 'You are already in combat!',
     BAD_COMBAT: 'Combat could not start for some reason.',
-    BATTLE_ENTERED: 'Combat will commence!'
+    BATTLE_ENTERED: 'Combat will commence!',
+    NO_COMBAT_TARGET: 'No target selected.',
+    NO_COMBAT_SKILL: 'No skill selected.',
+    CONFIRMED_SKILL: 'Confirmed skill usage.'
 };

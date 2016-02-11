@@ -1,9 +1,8 @@
 
 import _ from 'lodash';
 
-import getPlayer from '../../player/getbyname';
+import getPlayer from '../../../character/functions/getbyname';
 import MESSAGES from '../../../static/messages';
-import Player from '../../../character/base/Player';
 
 import SkillManager from '../../../objects/skillmanager';
 
@@ -31,11 +30,11 @@ export default (socket) => {
             return respond({msg: MESSAGES.BAD_SLOT})
         }
 
-        getPlayer(name, respond).then(doc => {
+        getPlayer(name, respond).then(player => {
 
-            doc.skills[skillSlot] = skillName || undefined;
+            player.skills[skillSlot] = skillName || undefined;
+            player.save();
 
-            const player = new Player(doc);
             socket.emit('update:player', player);
 
             respond(null, {msg: MESSAGES.SKILL_CHANGE_SUCCESS});

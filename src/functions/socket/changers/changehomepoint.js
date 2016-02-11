@@ -1,9 +1,8 @@
 
 import _ from 'lodash';
 
-import getPlayer from '../../player/getbyname';
+import getPlayer from '../../../character/functions/getbyname';
 import MESSAGES from '../../../static/messages';
-import Player from '../../../character/base/Player';
 
 export default (socket) => {
 
@@ -21,11 +20,11 @@ export default (socket) => {
             return respond({msg: MESSAGES.NO_HOMEPOINT});
         }
 
-        getPlayer(name, respond).then(doc => {
+        getPlayer(name, respond).then(player => {
 
-            doc.homepoint = homepoint;
+            player.homepoint = homepoint;
+            player.save();
 
-            const player = new Player(doc);
             socket.emit('update:player', player);
 
             respond(null, {msg: MESSAGES.HOMEPOINT_CHANGE_SUCCESS});

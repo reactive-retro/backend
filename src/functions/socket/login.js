@@ -47,6 +47,7 @@ const respondWithPlayer = (socket, respond, msg, token, player) => {
 
     const playerInst = buildPlayerObject(player);
     playerInst.fullheal();
+    playerInst.save();
 
     socket.emit('update:player', playerInst);
     socket.emit('update:skills', SkillManager.getSkills(playerInst));

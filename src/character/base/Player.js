@@ -5,16 +5,17 @@ import Character from './Character';
 import DEFAULTS from '../../static/chardefaults';
 import SkillManager from '../../objects/skillmanager';
 import dbPromise from '../../objects/db';
-import save from '../../functions/player/save';
+import save from '../functions/save';
 
 export default class Player extends Character {
-    constructor({ name, profession, skills, inventory, equipment, stats, unlockedProfessions, professionLevels, userId, homepoint }) {
+    constructor({ name, profession, skills, inventory, equipment, stats, unlockedProfessions, professionLevels, userId, homepoint, statusEffects, battleId }) {
 
         super({
             name,
             profession,
             professionLevels,
             unlockedProfessions,
+            statusEffects,
             stats,
             skills,
             inventory,
@@ -22,10 +23,10 @@ export default class Player extends Character {
         });
 
         this.userId = userId;
+        this.battleId = battleId;
         this.homepoint = homepoint;
 
         this.handleDefaults();
-        this.save();
     }
 
     handleDefaults() {

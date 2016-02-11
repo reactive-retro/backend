@@ -1,9 +1,8 @@
 
 import _ from 'lodash';
 
-import getPlayer from '../../player/getbyname';
+import getPlayer from '../../../character/functions/getbyname';
 import MESSAGES from '../../../static/messages';
-import Player from '../../../character/base/Player';
 
 import SkillManager from '../../../objects/skillmanager';
 
@@ -23,20 +22,20 @@ export default (socket) => {
             return respond({msg: MESSAGES.NO_CLASS});
         }
 
-        getPlayer(name, respond).then(doc => {
+        getPlayer(name, respond).then(player => {
 
-            if(!_.contains(doc.unlockedProfessions, newProfession)) {
+            if(!_.contains(player.unlockedProfessions, newProfession)) {
                 return respond({msg: MESSAGES.INVALID_PROF});
             }
 
-            if(!doc.professionLevels[newProfession]) {
-                doc.professionLevels[newProfession] = 1;
+            if(!player.professionLevels[newProfession]) {
+                player.professionLevels[newProfession] = 1;
             }
 
-            doc.profession = newProfession;
-            doc.skills = [];
+            player.profession = newProfession;
+            player.skills = [];
+            player.save();
 
-            const player = new Player(doc);
             player.fullheal();
 
             socket.emit('update:player', player);

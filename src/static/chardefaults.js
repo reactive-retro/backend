@@ -1,21 +1,24 @@
 
-import { itemId } from '../functions/player/helpers';
+import { itemId } from '../character/functions/helpers';
 
 export default {
     unlockedProfessions: ['Thief', 'Fighter', 'Mage'],
     stats: {
         gold: 0,
         xp: {
-            cur: 0,
-            max: 100
+            minimum: 0,
+            __current: 0,
+            maximum: 100
         },
         hp: {
-            cur: 10,
-            max: 10
+            minimum: 0,
+            __current: 10,
+            maximum: 10
         },
         mp: {
-            cur: 0,
-            max: 0
+            minimum: 0,
+            __current: 0,
+            maximum: 0
         },
         str: 0,
         vit: 0,

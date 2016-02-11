@@ -4,7 +4,9 @@ import q from 'q';
 import dbPromise from '../../objects/db';
 import MESSAGES from '../../static/messages';
 
-export default (name, respond) => {
+import Player from '../base/Player';
+
+export default (name, respond = () => {}) => {
 
     const defer = q.defer();
 
@@ -13,16 +15,16 @@ export default (name, respond) => {
         players.findOne({name: name}, (err, doc) => {
 
             if (err) {
-                defer.reject();
+                defer.reject(err);
                 return respond({msg: MESSAGES.GENERIC});
             }
 
             if (!doc) {
-                defer.reject();
+                defer.reject(err);
                 return respond({msg: MESSAGES.NO_PLAYER});
             }
 
-            defer.resolve(doc);
+            defer.resolve(new Player(doc));
         })
     });
 

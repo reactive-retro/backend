@@ -5,17 +5,20 @@ import RestrictedNumber from 'restricted-number';
 import DEFAULTS from '../../static/chardefaults';
 
 export default class Character {
-    constructor({ name, profession, professionLevels, unlockedProfessions, stats, skills, inventory, equipment }) {
+    constructor({ name, profession, professionLevels, unlockedProfessions, stats, skills, inventory, equipment, statusEffects }) {
         this.name = name;
         this.profession = profession;
         this.professionLevels = professionLevels || {};
-        this.stats = stats || DEFAULTS.stats;
-        this.skills = skills || DEFAULTS.skills;
+        this.statusEffects = statusEffects || {};
+        this.stats = stats || _.cloneDeep(DEFAULTS.stats);
+        this.skills = skills || _.cloneDeep(DEFAULTS.skills);
         this.inventory = inventory || [];
         this.equipment = equipment || DEFAULTS.equipment[this.profession]();
-        this.unlockedProfessions = unlockedProfessions || DEFAULTS.unlockedProfessions;
+        this.unlockedProfessions = unlockedProfessions || _.cloneDeep(DEFAULTS.unlockedProfessions);
 
         _.each(this.unlockedProfessions, (prof) => { this.professionLevels[prof] = this.professionLevels[prof] || 1; });
+
+        this.slug = `${this.profession.substring(0, 3).toUpperCase()}-${this.professionLevels[this.profession]}`;
         this.calculate();
     }
 
@@ -37,13 +40,12 @@ export default class Character {
             this.stats[stat] = Math.floor(profession.getStat(this, stat));
         });
 
-        this.stats.hp = new RestrictedNumber(0, profession.hp(this), this.stats.hp.__current || 0);
-        this.stats.mp = new RestrictedNumber(0, profession.mp(this), this.stats.mp.__current || 0);
+        this.stats.hp = new RestrictedNumber(0, profession.hp(this), this.stats.hp.__current || profession.hp(this));
+        this.stats.mp = new RestrictedNumber(0, profession.mp(this), this.stats.mp.__current || profession.mp(this));
         this.stats.xp = new RestrictedNumber(0, this.stats.xp.maximum || 100, this.stats.xp.__current || 0);
     }
 
     fullheal() {
-        const profession = require(`../../character/professions/${this.profession}`).default;
         this.stats.hp.toMaximum();
         this.stats.mp.toMaximum();
     }

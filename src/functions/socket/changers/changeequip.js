@@ -1,9 +1,8 @@
 
 import _ from 'lodash';
 
-import getPlayer from '../../player/getbyname';
+import getPlayer from '../../../character/functions/getbyname';
 import MESSAGES from '../../../static/messages';
-import Player from '../../../character/base/Player';
 
 export default (socket) => {
 
@@ -21,9 +20,9 @@ export default (socket) => {
             return respond({msg: MESSAGES.NO_ITEM});
         }
 
-        getPlayer(name, respond).then(doc => {
+        getPlayer(name, respond).then(player => {
 
-            var item = _.findWhere(doc.inventory, {itemId: itemId});
+            var item = _.findWhere(player.inventory, {itemId: itemId});
 
             if (!item) {
                 return respond({msg: MESSAGES.BAD_ITEM});
@@ -31,11 +30,11 @@ export default (socket) => {
 
             // level requirements, maybe.
 
-            doc.inventory.push(doc.equipment[item.type]);
-            doc.inventory = _.without(doc.inventory, item);
-            doc.equipment[item.type] = item;
+            player.inventory.push(player.equipment[item.type]);
+            player.inventory = _.without(player.inventory, item);
+            player.equipment[item.type] = item;
+            player.save();
 
-            const player = new Player(doc);
             socket.emit('update:player', player);
 
             respond(null, {msg: MESSAGES.EQUIP_SUCCESS});
