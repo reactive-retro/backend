@@ -5,6 +5,7 @@ import Dice from 'dice.js';
 
 import { ActionTargets } from '../../character/base/Action';
 import SkillManager from '../../objects/skillmanager';
+import SpellEffectManager from '../../objects/spelleffectmanager';
 import Monster from '../../character/base/Monster';
 import getPlayer from '../../character/functions/getbyname';
 import save from './../functions/save';
@@ -23,14 +24,18 @@ export default class Battle {
 
     getTargets(me, skill, fallback) {
         const isMonster = !!me.id;
+
+        const allyArray = isMonster ? this.monsters : this.playerData;
+        const enemyArray = isMonster ? this.playerData : this.monsters;
+
         switch(skill.spellTargets) {
             case ActionTargets.ALL: return this.playerData.concat(this.monsters);
-            case ActionTargets.ALL_ALLY: return isMonster ? this.monsters : this.playerData;
-            case ActionTargets.ALL_ENEMY: return isMonster ? this.playerData : this.monsters;
+            case ActionTargets.ALL_ALLY: return allyArray;
+            case ActionTargets.ALL_ENEMY: return enemyArray;
             case ActionTargets.SELF: return [me];
 
-            case ActionTargets.SINGLE_ALLY: return [fallback];
-            case ActionTargets.SINGLE_ENEMY: return [fallback];
+            case ActionTargets.SINGLE_ALLY: return fallback ? [fallback] : [_.sample(allyArray)];
+            case ActionTargets.SINGLE_ENEMY: return fallback ? [fallback] : [_.sample(enemyArray)];
             default:
                 console.error('Invalid enemy targetting', skill, skill.spellTargets);
                 return [];
@@ -39,6 +44,15 @@ export default class Battle {
 
     canAct(target) {
         if(target.stats.hp.atMin()) return '';
+
+        const reasons = _(target.statusEffects)
+            .map(eff => eff.blocksTurn(target))
+            .compact()
+            .value();
+
+        if(_.any(reasons)) {
+            return reasons[0];
+        }
 
         return true;
     }
@@ -52,7 +66,7 @@ export default class Battle {
          *  - duration
          *  - mp cost
          */
-        let multiplier = _.filter(caster.skills, check => check === skill.spellName).length;
+        let multiplier = caster.calculateMultiplier(skill);
         if(skill.spellName === 'Attack') {
             multiplier += 1;
         }
@@ -60,15 +74,46 @@ export default class Battle {
         const messages = [];
 
         const tryEffects = (skill, target) => {
-            return _.compact(_.reduce(skill.spellEffects, (effData, effect) => {
-                if(effect === 'Damage') return '';
-            }));
+            return _(skill.spellEffects)
+                .pairs()
+                .map(pair => {
+                    const [effect, effData] = pair;
+                    if(effect === 'Damage') return '';
+
+                    if(Dice.roll('1d100') > effData.chance) return '';
+                    const Proto = SpellEffectManager.getEffectByName(effect);
+                    if(!Proto) {
+                        console.error(`ERROR: No valid proto: ${Proto}`);
+                        return;
+                    }
+
+                    const appliedEffect = new Proto({
+                        duration: +Dice.roll(effData.roll),
+                        multiplier,
+                        statBuff: effData.statBuff,
+                        casterName: caster.name,
+                        skillName: skill.spellName
+                    });
+
+                    const applyMessage = appliedEffect.apply(target, caster);
+
+                    return applyMessage;
+                })
+                .compact()
+                .value();
         };
 
+        // if you can do damage, you have to do damage for auxillary effects to occur
         if(skill.spellEffects.Damage) {
             _.each(targets, target => {
                 const { chance, roll } = skill.spellEffects.Damage;
-                if(+Dice.roll('1d100') > chance) return [`${caster} missed ${target.name}!`];
+                const accuracyBonus = caster.stats.acc;
+
+                // TODO factor in dex for blocking, maybe roll(-opponent.dex, my.dex) and if positive, you aren't blocked
+                if(+Dice.roll('1d100') > chance + accuracyBonus) {
+                    messages.push(`${caster.name} missed ${target.name}!`);
+                    return;
+                }
                 const damage = +Dice.roll(roll, caster.stats) * multiplier;
                 const damageMessage = this.stringFormat(skill.spellUseString, {
                     target: target.name,
@@ -83,11 +128,35 @@ export default class Battle {
                 if(target.stats.hp.atMin()) {
                     messages.push(`${target.name} was slain by ${caster.name}!`);
                 } else {
-                    messages.push(...tryEffects(skill, target));
+                    const applyMessages = tryEffects(skill, target);
+                    messages.push(...applyMessages);
                 }
 
             });
+
+        // if you don't do damage, you apply yourself immediately
+        } else {
+            _.each(targets, target => {
+                messages.push(...tryEffects(skill, target));
+            });
         }
+
+        return messages;
+    }
+
+    checkPreTurnEffects(player) {
+        const messages = [];
+
+        _.each(player.statusEffects, (effect) => {
+            const preTurn = effect.preTurn(player);
+            if(preTurn) {
+                messages.push(preTurn);
+            }
+            effect.decrementTurns(player);
+            if(effect.turnsLeft <= 0) {
+                messages.push(`${effect.effectName} on ${player.name} (Origin: ${effect.casterName} | ${effect.skillName}) has expired.`);
+            }
+        });
 
         return messages;
     }
@@ -95,8 +164,10 @@ export default class Battle {
     takeTurn(id) {
         const me = this.getById(id);
 
+        const preTurnMessages = this.checkPreTurnEffects(me);
+
         const canAct = this.canAct(me);
-        if(!canAct) {
+        if(_.isString(canAct)) {
             return _.compact([canAct]);
         }
 
@@ -111,16 +182,19 @@ export default class Battle {
             let { skill, target } = this.actions[me.name];
 
             // no cheating
+            // TODO cooldowns (display with clock next to skill name)
+            // TODO mp cost (display with droplet next to skill name)
             if(!_.contains(me.skills, skill)) { skill = 'Attack'; }
             skillRef = _.find(validSkills, { spellName: skill });
             targets = this.getTargets(me, skillRef, this.getById(target));
         } else {
             skillRef = _.sample(validSkills);
-            const target = _.sample(this.playerData);
-            targets = this.getTargets(me, skillRef, target);
+            targets = this.getTargets(me, skillRef);
         }
 
-        return this.applySkill(me, skillRef, targets);
+        const applyMessages = this.applySkill(me, skillRef, targets);
+
+        return preTurnMessages.concat(applyMessages);
     }
 
     processActions() {
@@ -149,13 +223,6 @@ export default class Battle {
         return results;
     }
 
-    /*
-     * TODO
-     * - apply effects (burn, etc) - semaphore - { Burn: { turnsLeft: 1, damagePerTurn: 3 } }
-     *      -> probably make separate classes for all of these effects and have a general "effect" class
-     *      -> make it have an "apply" function that applies it to a target
-     */
-
     checkCombatEnd() {
         const isDead = (target) => target.stats.hp.atMin();
         if(_.all(this.playerData, isDead)) return this.playerLose();
@@ -182,7 +249,7 @@ export default class Battle {
     battleOver() {
         this.isDone = true;
         _.each(this.playerData, player => {
-            player.statusEffects = {};
+            _.each(player.statusEffects, effect => effect.unapply(player));
             player.battleId = null;
             player.save();
         });

@@ -1,7 +1,7 @@
 
 import _ from 'lodash';
 
-import { hp, mp, str, dex, vit, mnt, luk } from '../../static/decorators';
+import { hp, mp, str, dex, vit, mnt, luk, acc } from '../../static/decorators';
 
 @hp(10)
 @mp(0)
@@ -10,6 +10,7 @@ import { hp, mp, str, dex, vit, mnt, luk } from '../../static/decorators';
 @vit(1)
 @mnt(1)
 @luk(1)
+@acc(0)
 export default class Profession {
     static getLevel(player) { return player.professionLevels[player.profession]; }
     static getStat(player, stat) { return _.reduce(player.equipment, (prev, item) => prev + (item.stats[stat] || 0), 0); }

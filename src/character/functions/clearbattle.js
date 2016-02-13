@@ -7,7 +7,7 @@ export default (name) => {
         const players = db.collection('players');
         const battles = db.collection('battles');
 
-        players.updateOne({ name: name }, { $set: { battleId: null } }, _.noop);
+        players.updateOne({ name: name }, { $set: { battleId: null, statusEffects: [], 'equipment.buffs.stats': {} } }, _.noop);
 
         // clear EVERY battle that ONLY has this player present
         // there will need to be more done for party battles

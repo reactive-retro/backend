@@ -4,7 +4,7 @@ import { name, cost, cooldown, classes, targets, description, effect, useString 
 
 @name('Meditate')
 @cost(0)
-@cooldown(1)
+@cooldown(10)
 @classes({ Mage: 1 })
 @targets(ActionTargets.SELF)
 @description('Sit down in the middle of combat and begin meditating, restoring your MP.')

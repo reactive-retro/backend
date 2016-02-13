@@ -4,7 +4,7 @@ import { name, cost, cooldown, classes, targets, description, effect, useString 
 
 @name('Throw Sand')
 @cost(0)
-@cooldown(1)
+@cooldown(3)
 @classes({ Thief: 1 })
 @targets(ActionTargets.SINGLE_ENEMY)
 @description('Throw some of your pocket sand at an enemy, blinding them momentarily.')

@@ -2,6 +2,8 @@
 import _ from 'lodash';
 import RestrictedNumber from 'restricted-number';
 
+import SpellEffectManager from '../../objects/spelleffectmanager';
+
 import DEFAULTS from '../../static/chardefaults';
 
 export default class Character {
@@ -9,7 +11,7 @@ export default class Character {
         this.name = name;
         this.profession = profession;
         this.professionLevels = professionLevels || {};
-        this.statusEffects = statusEffects || {};
+        this.statusEffects = statusEffects || [];
         this.stats = stats || _.cloneDeep(DEFAULTS.stats);
         this.skills = skills || _.cloneDeep(DEFAULTS.skills);
         this.inventory = inventory || [];
@@ -19,6 +21,30 @@ export default class Character {
         _.each(this.unlockedProfessions, (prof) => { this.professionLevels[prof] = this.professionLevels[prof] || 1; });
 
         this.slug = `${this.profession.substring(0, 3).toUpperCase()}-${this.professionLevels[this.profession]}`;
+        this.loadStatusEffects();
+        this.calculate();
+    }
+
+    calculateMultiplier(skill) {
+        return _.filter(this.skills, check => check === skill.spellName).length;
+    }
+
+    loadStatusEffects() {
+        _.each(this.statusEffects, effect => {
+            effect.__proto__ = SpellEffectManager.getEffectByName(effect.effectName).prototype;
+        });
+    }
+
+    addBuff(stat, val) {
+        if(!this.equipment.buffs) this.equipment.buffs = { stats: {} };
+        if(!this.equipment.buffs.stats[stat]) this.equipment.buffs.stats[stat] = 0;
+
+        this.equipment.buffs.stats[stat] += val;
+        this.calculate();
+    }
+
+    subBuff(stat, val) {
+        this.equipment.buffs.stats[stat] -= val;
         this.calculate();
     }
 
@@ -32,11 +58,14 @@ export default class Character {
                 mnt: profession.mnt(this),
                 dex: profession.dex(this),
                 vit: profession.vit(this),
-                luk: profession.luk(this)
+                luk: profession.luk(this),
+                acc: profession.acc(this)
             }
         };
 
-        _.each(['str', 'mnt', 'dex', 'vit', 'luk'], stat => {
+        this.equipment.buffs = this.equipment.buffs || { stats: {} };
+
+        _.each(['str', 'mnt', 'dex', 'vit', 'luk', 'acc'], stat => {
             this.stats[stat] = Math.floor(profession.getStat(this, stat));
         });
 

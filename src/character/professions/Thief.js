@@ -1,6 +1,6 @@
 
 import Profession from '../base/Profession';
-import { hp, mp, str, dex, vit, mnt, luk } from '../../static/decorators';
+import { hp, mp, str, dex, vit, mnt, luk, acc } from '../../static/decorators';
 
 @hp(7, (prof, player) => prof.getStat(player, 'vit'))
 @mp(3)
@@ -9,5 +9,6 @@ import { hp, mp, str, dex, vit, mnt, luk } from '../../static/decorators';
 @vit(1)
 @mnt(1)
 @luk(0.75)
+@acc(0.5)
 export default class Thief extends Profession {
 }

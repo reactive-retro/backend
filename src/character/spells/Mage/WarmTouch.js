@@ -2,7 +2,7 @@
 import Action, { ActionTargets } from '../../base/Action';
 import { name, cost, cooldown, classes, targets, description, effect, useString } from '../../../static/decorators';
 
-@name('Fire Touch')
+@name('Warm Touch')
 @cost(5)
 @cooldown(0)
 @classes({ Mage: 1 })
@@ -11,6 +11,6 @@ import { name, cost, cooldown, classes, targets, description, effect, useString 
 @useString('%o used %n on %t and dealt %d damage!')
 @effect('Damage', { roll: '1df([mnt] / 2) + 1' })
 @effect('Burn', { chance: 25, roll: '1d4 + 1', string: 'round' })
-export default class FireTouch extends Action {
+export default class WarmTouch extends Action {
 
 }

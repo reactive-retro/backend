@@ -46,6 +46,10 @@ const respondWithPlayer = (socket, respond, msg, token, player) => {
     socket.emit('update:monsters', monsters);
 
     const playerInst = buildPlayerObject(player);
+
+    playerInst.battleId = null;
+    playerInst.statusEffects = [];
+    playerInst.equipment.buffs.stats = {};
     playerInst.fullheal();
     playerInst.save();
 

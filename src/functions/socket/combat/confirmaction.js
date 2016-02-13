@@ -34,8 +34,12 @@ export default (socket, scWorker) => {
 
                 if(!battle.isReadyToProcess) return;
 
-                const actions = battle.processActions();
-                scWorker.exchange.publish(`battle:${battle._id}:results`, { battle, actions, isDone: battle.isDone });
+                try {
+                    const actions = battle.processActions();
+                    scWorker.exchange.publish(`battle:${battle._id}:results`, { battle, actions, isDone: battle.isDone });
+                } catch(e) {
+                    console.error(e);
+                }
             });
         });
 

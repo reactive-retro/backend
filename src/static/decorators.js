@@ -32,3 +32,4 @@ export const dex = statPerLevel.bind(null, 'dex');
 export const vit = statPerLevel.bind(null, 'vit');
 export const mnt = statPerLevel.bind(null, 'mnt');
 export const luk = statPerLevel.bind(null, 'luk');
+export const acc = statPerLevel.bind(null, 'acc');

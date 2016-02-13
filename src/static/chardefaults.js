@@ -5,21 +5,9 @@ export default {
     unlockedProfessions: ['Thief', 'Fighter', 'Mage'],
     stats: {
         gold: 0,
-        xp: {
-            minimum: 0,
-            __current: 0,
-            maximum: 100
-        },
-        hp: {
-            minimum: 0,
-            __current: 10,
-            maximum: 10
-        },
-        mp: {
-            minimum: 0,
-            __current: 0,
-            maximum: 0
-        },
+        xp: {},
+        hp: {},
+        mp: {},
         str: 0,
         vit: 0,
         dex: 0,
