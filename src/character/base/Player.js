@@ -8,7 +8,7 @@ import dbPromise from '../../objects/db';
 import save from '../functions/save';
 
 export default class Player extends Character {
-    constructor({ name, profession, skills, inventory, equipment, stats, unlockedProfessions, professionLevels, userId, homepoint, statusEffects, battleId }) {
+    constructor({ name, profession, skills, inventory, equipment, stats, unlockedProfessions, professionLevels, userId, homepoint, statusEffects, cooldowns, battleId }) {
 
         super({
             name,
@@ -19,6 +19,7 @@ export default class Player extends Character {
             stats,
             skills,
             inventory,
+            cooldowns,
             equipment
         });
 

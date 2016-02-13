@@ -48,6 +48,7 @@ const respondWithPlayer = (socket, respond, msg, token, player) => {
     const playerInst = buildPlayerObject(player);
 
     playerInst.battleId = null;
+    playerInst.cooldowns = {};
     playerInst.statusEffects = [];
     playerInst.equipment.buffs.stats = {};
     playerInst.fullheal();

@@ -72,6 +72,7 @@ export default class Battle {
         }
 
         caster.stats.mp.sub(skill.spellCost * multiplier);
+        caster.addCooldown(skill.spellName, skill.spellCooldown * multiplier);
 
         const messages = [];
 
@@ -139,6 +140,11 @@ export default class Battle {
         // if you don't do damage, you apply yourself immediately
         } else {
             _.each(targets, target => {
+                messages.push(this.stringFormat(skill.spellUseString, {
+                    target: target.name,
+                    origin: caster.name,
+                    skillName: skill.spellName
+                }));
                 messages.push(...tryEffects(skill, target));
             });
         }
@@ -186,13 +192,13 @@ export default class Battle {
             skillRef = _.find(validSkills, { spellName: skill });
 
             // no cheating
-            // TODO cooldowns (display with clock next to skill name)
             // TODO regenerate, stealth, disable steal
             const multiplier = me.calculateMultiplier(skillRef);
             const isInvalidSkill = !skillRef
                                 || !_.contains(me.skills, skill)
-                                || me.stats.mp.lessThan(skillRef.spellCost * multiplier);
-
+                                || me.stats.mp.lessThan(skillRef.spellCost * multiplier)
+                                || me.isCoolingDown(skill);
+            
             if(isInvalidSkill) {
                 skillRef = _.find(validSkills, { spellName: 'Attack' });
             }
@@ -202,6 +208,8 @@ export default class Battle {
             skillRef = _.sample(validSkills);
             targets = this.getTargets(me, skillRef);
         }
+
+        me.lowerAllCooldowns();
 
         const applyMessages = this.applySkill(me, skillRef, targets);
 
@@ -213,7 +221,7 @@ export default class Battle {
 
         let results = [];
 
-        const sortedTurnOrder = _.sortBy(this.playerData.concat(this.monsters), 'stats.dex');
+        const sortedTurnOrder = _.sortBy(this.playerData.concat(this.monsters), 'stats.dex').reverse();
         const turnsByName = _.map(sortedTurnOrder, (character) => character.id ? character.id : character.name);
 
         _.each(turnsByName, (character) => results.push(...this.takeTurn(character)));
@@ -261,6 +269,7 @@ export default class Battle {
         this.isDone = true;
         _.each(this.playerData, player => {
             _.each(player.statusEffects, effect => effect.unapply(player));
+            player.cooldowns = {};
             player.battleId = null;
             player.save();
         });

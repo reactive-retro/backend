@@ -7,7 +7,7 @@ import SpellEffectManager from '../../objects/spelleffectmanager';
 import DEFAULTS from '../../static/chardefaults';
 
 export default class Character {
-    constructor({ name, profession, professionLevels, unlockedProfessions, stats, skills, inventory, equipment, statusEffects }) {
+    constructor({ name, profession, professionLevels, unlockedProfessions, stats, skills, inventory, equipment, statusEffects, cooldowns }) {
         this.name = name;
         this.profession = profession;
         this.professionLevels = professionLevels || {};
@@ -17,6 +17,7 @@ export default class Character {
         this.inventory = inventory || [];
         this.equipment = equipment || DEFAULTS.equipment[this.profession]();
         this.unlockedProfessions = unlockedProfessions || _.cloneDeep(DEFAULTS.unlockedProfessions);
+        this.cooldowns = cooldowns || {};
 
         _.each(this.unlockedProfessions, (prof) => { this.professionLevels[prof] = this.professionLevels[prof] || 1; });
 
@@ -32,6 +33,23 @@ export default class Character {
     loadStatusEffects() {
         _.each(this.statusEffects, effect => {
             effect.__proto__ = SpellEffectManager.getEffectByName(effect.effectName).prototype;
+        });
+    }
+
+    addCooldown(skill, cd) {
+        if(!this.cooldowns) this.cooldowns = {};
+        if(!this.cooldowns[skill]) this.cooldowns[skill] = 0;
+
+        this.cooldowns[skill] += cd;
+    }
+
+    isCoolingDown(skill) {
+        return this.cooldowns[skill] > 0;
+    }
+
+    lowerAllCooldowns() {
+        _.each(this.cooldowns, (val, key) => {
+            this.cooldowns[key]--;
         });
     }
 
