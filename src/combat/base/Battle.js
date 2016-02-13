@@ -71,6 +71,8 @@ export default class Battle {
             multiplier += 1;
         }
 
+        caster.stats.mp.sub(skill.spellCost * multiplier);
+
         const messages = [];
 
         const tryEffects = (skill, target) => {
@@ -181,11 +183,20 @@ export default class Battle {
         if(!isMonster) {
             let { skill, target } = this.actions[me.name];
 
+            skillRef = _.find(validSkills, { spellName: skill });
+
             // no cheating
             // TODO cooldowns (display with clock next to skill name)
-            // TODO mp cost (display with droplet next to skill name)
-            if(!_.contains(me.skills, skill)) { skill = 'Attack'; }
-            skillRef = _.find(validSkills, { spellName: skill });
+            // TODO regenerate, stealth, disable steal
+            const multiplier = me.calculateMultiplier(skillRef);
+            const isInvalidSkill = !skillRef
+                                || !_.contains(me.skills, skill)
+                                || me.stats.mp.lessThan(skillRef.spellCost * multiplier);
+
+            if(isInvalidSkill) {
+                skillRef = _.find(validSkills, { spellName: 'Attack' });
+            }
+
             targets = this.getTargets(me, skillRef, this.getById(target));
         } else {
             skillRef = _.sample(validSkills);
