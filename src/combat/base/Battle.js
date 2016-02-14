@@ -10,6 +10,8 @@ import Monster from '../../character/base/Monster';
 import getPlayer from '../../character/functions/getbyname';
 import save from './../functions/save';
 
+const randomBetween = (min, max) => Math.random() * (max - min) + min;
+
 export default class Battle {
     constructor({players, monsters, _id, actions}) {
         this._id = _id;
@@ -112,11 +114,19 @@ export default class Battle {
                 const { chance, roll } = skill.spellEffects.Damage;
                 const accuracyBonus = caster.stats.acc;
 
-                // TODO factor in dex for blocking, maybe roll(-opponent.dex, my.dex) and if positive, you aren't blocked
                 if(+Dice.roll('1d100') > chance + accuracyBonus) {
                     messages.push(`${caster.name} missed ${target.name}!`);
                     return;
                 }
+
+                const offenseRoll = +Dice.roll('1d20') + accuracyBonus + caster.stats.dex + caster.stats.str;
+                const defenseRoll = target.stats.dex;
+                
+                if(!skill.spellUnblockable && randomBetween(-defenseRoll, offenseRoll) < 0) {
+                    messages.push(`${target.name} blocked ${skill.spellName}!`);
+                    return;
+                }
+
                 const damage = +Dice.roll(roll, caster.stats) * multiplier;
                 const damageMessage = this.stringFormat(skill.spellUseString, {
                     target: target.name,
@@ -192,13 +202,13 @@ export default class Battle {
             skillRef = _.find(validSkills, { spellName: skill });
 
             // no cheating
-            // TODO regenerate, stealth, disable steal
+            // TODO regenerate, stealth (only works if party available), disable steal
             const multiplier = me.calculateMultiplier(skillRef);
             const isInvalidSkill = !skillRef
                                 || !_.contains(me.skills, skill)
                                 || me.stats.mp.lessThan(skillRef.spellCost * multiplier)
                                 || me.isCoolingDown(skill);
-            
+
             if(isInvalidSkill) {
                 skillRef = _.find(validSkills, { spellName: 'Attack' });
             }
