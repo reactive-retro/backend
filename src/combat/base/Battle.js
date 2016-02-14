@@ -119,9 +119,12 @@ export default class Battle {
                     return;
                 }
 
-                const offenseRoll = +Dice.roll('1d20') + accuracyBonus + caster.stats.dex + caster.stats.str;
-                const defenseRoll = target.stats.dex;
+                let offenseRoll = +Dice.roll('1d20') + accuracyBonus + caster.stats.dex + caster.stats.str;
+                let defenseRoll = target.stats.dex;
                 
+                if(offenseRoll <= 0) offenseRoll = 1;
+                if(defenseRoll <= 0) defenseRoll = 1;
+
                 if(!skill.spellUnblockable && randomBetween(-defenseRoll, offenseRoll) < 0) {
                     messages.push(`${target.name} blocked ${skill.spellName}!`);
                     return;
