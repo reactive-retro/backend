@@ -26,6 +26,10 @@ export default (socket) => {
             return respond({msg: MESSAGES.NO_SKILL});
         }
 
+        if(SkillManager.isSkillDisabled(skillName)) {
+            return respond({msg: MESSAGES.SKILL_DISABLED});
+        }
+
         if(!_.isNumber(skillSlot) || skillSlot < MIN_SLOT || skillSlot > MAX_SLOT || skillSlot % 1 !== 0) {
             return respond({msg: MESSAGES.BAD_SLOT})
         }

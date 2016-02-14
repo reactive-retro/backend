@@ -26,6 +26,7 @@ export default {
     BAD_SLOT: 'Invalid slot specified for skill.',
     NO_SKILL: 'Invalid skill name specified.',
     SKILL_CHANGE_SUCCESS: 'Successfully changed skill.',
+    SKILL_DISABLED: 'That skill is currently disabled.',
 
     BAD_MONSTER: 'That monster is not valid.',
     NOT_IN_COMBAT: 'You are not in combat!',

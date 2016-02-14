@@ -8,26 +8,31 @@ const skills = _(skillsHash)
         return _(skills)
             .values()
             .pluck('default')
+            .map(x => x.prototype)
             .value();
     })
     .flatten()
     .value();
 
-const skillNames = _.pluck(skills, 'prototype.spellName');
+const skillNames = _.pluck(skills, 'spellName');
 
 export default class SkillManager {
+
+    static isSkillDisabled(skill) {
+        return _.find(skills, { spellName: skill, spellDisabled: true });
+    }
 
     static doesSkillExist(skill) {
         return _.contains(skillNames, skill);
     }
 
     static getSkillsThatDontExist(player) {
-        return _.difference(player.skills, skillNames);
+        const disabledSkills = _.filter(player.skills, this.isSkillDisabled);
+        return _.difference(player.skills, skillNames).concat(disabledSkills);
     }
 
     static getSkills(player) {
         return _(skills)
-            .map(skill => skill.prototype)
             .filter(skill => {
                 return _(skill.spellClasses)
                     .keys()

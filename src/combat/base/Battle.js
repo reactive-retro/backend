@@ -121,7 +121,7 @@ export default class Battle {
 
                 let offenseRoll = +Dice.roll('1d20') + accuracyBonus + caster.stats.dex + caster.stats.str;
                 let defenseRoll = target.stats.dex;
-                
+
                 if(offenseRoll <= 0) offenseRoll = 1;
                 if(defenseRoll <= 0) defenseRoll = 1;
 
@@ -205,7 +205,7 @@ export default class Battle {
             skillRef = _.find(validSkills, { spellName: skill });
 
             // no cheating
-            // TODO regenerate, stealth (only works if party available), disable steal
+            // TODO regenerate, stealth (only works if party available)
             const multiplier = me.calculateMultiplier(skillRef);
             const isInvalidSkill = !skillRef
                                 || !_.contains(me.skills, skill)
@@ -218,6 +218,7 @@ export default class Battle {
 
             targets = this.getTargets(me, skillRef, this.getById(target));
         } else {
+            // TODO ignore: cooldown spells, disabled spells, mp lacking spells
             skillRef = _.sample(validSkills);
             targets = this.getTargets(me, skillRef);
         }
