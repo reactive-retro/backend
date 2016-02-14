@@ -27,7 +27,11 @@ export default class Character {
     }
 
     calculateMultiplier(skill) {
-        return _.filter(this.skills, check => check === skill.spellName).length;
+        let baseMultiplier = _.filter(this.skills, check => check === skill.spellName).length;
+        if(skill.spellName === 'Attack') {
+            baseMultiplier += 1;
+        }
+        return baseMultiplier;
     }
 
     loadStatusEffects() {

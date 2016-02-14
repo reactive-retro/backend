@@ -68,10 +68,7 @@ export default class Battle {
          *  - duration
          *  - mp cost
          */
-        let multiplier = caster.calculateMultiplier(skill);
-        if(skill.spellName === 'Attack') {
-            multiplier += 1;
-        }
+        let multiplier = Math.max(1, caster.calculateMultiplier(skill)); // monsters get a default multiplier of 1 for all skills
 
         caster.stats.mp.sub(skill.spellCost * multiplier);
         caster.addCooldown(skill.spellName, skill.spellCooldown * multiplier);
@@ -126,11 +123,12 @@ export default class Battle {
                 if(defenseRoll <= 0) defenseRoll = 1;
 
                 if(!skill.spellUnblockable && randomBetween(-defenseRoll, offenseRoll) < 0) {
-                    messages.push(`${target.name} blocked ${skill.spellName}!`);
+                    messages.push(`${target.name} blocked ${caster.name}'s ${skill.spellName}!`);
                     return;
                 }
 
-                const damage = +Dice.roll(roll, caster.stats) * multiplier;
+                // do at least 1 damage
+                const damage = Math.max(1, +Dice.roll(roll, caster.stats) * multiplier);
                 const damageMessage = this.stringFormat(skill.spellUseString, {
                     target: target.name,
                     origin: caster.name,
@@ -175,7 +173,7 @@ export default class Battle {
             }
             effect.decrementTurns(player);
             if(effect.turnsLeft <= 0) {
-                messages.push(`${effect.effectName} on ${player.name} (Origin: ${effect.casterName} | ${effect.skillName}) has expired.`);
+                messages.push(`${effect.effectName} on ${player.name} (Origin: ${effect.casterName}'s ${effect.skillName}) has expired.`);
             }
         });
 
@@ -218,8 +216,7 @@ export default class Battle {
 
             targets = this.getTargets(me, skillRef, this.getById(target));
         } else {
-            // TODO ignore: cooldown spells, disabled spells, mp lacking spells
-            skillRef = _.sample(validSkills);
+            skillRef = _.sample(SkillManager.getCombatSkills(me));
             targets = this.getTargets(me, skillRef);
         }
 
