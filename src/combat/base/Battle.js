@@ -68,7 +68,7 @@ export default class Battle {
          *  - duration
          *  - mp cost
          */
-        let multiplier = Math.max(1, caster.calculateMultiplier(skill)); // monsters get a default multiplier of 1 for all skills
+        let multiplier = Math.max(1, caster.calculateMultiplier(skill.spellName)); // monsters get a default multiplier of 1 for all skills
 
         caster.stats.mp.sub(skill.spellCost * multiplier);
         caster.addCooldown(skill.spellName, skill.spellCooldown * multiplier);
@@ -94,14 +94,14 @@ export default class Battle {
                     if(effData.instant) {
                         appliedEffect = new Proto({
                             multiplier,
-                            statBuff: +Dice.roll(effData.roll, caster.stats),
+                            statBuff: caster.rollDice(skill.spellName, effData.roll),
                             casterName: caster.name,
                             skillName: skill.spellName
                         });
 
                     } else {
                         appliedEffect = new Proto({
-                            duration: +Dice.roll(effData.roll, caster.stats),
+                            duration: caster.rollDice(skill.spellName, effData.roll),
                             multiplier,
                             statBuff: effData.statBuff,
                             casterName: caster.name,
@@ -140,7 +140,7 @@ export default class Battle {
                 }
 
                 // do at least 1 damage
-                const damage = Math.max(1, +Dice.roll(roll, caster.stats) * multiplier);
+                const damage = Math.max(1, caster.rollDice(skill.spellName, roll));
                 const damageMessage = this.stringFormat(skill.spellUseString, {
                     target: target.name,
                     origin: caster.name,

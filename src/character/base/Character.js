@@ -1,6 +1,7 @@
 
 import _ from 'lodash';
 import RestrictedNumber from 'restricted-number';
+import Dice from 'dice.js';
 
 import SpellEffectManager from '../../objects/spelleffectmanager';
 
@@ -26,9 +27,18 @@ export default class Character {
         this.calculate();
     }
 
+    rollDice(skill, roll) {
+        const multiplier = this.calculateMultiplier(skill);
+        let result = 0;
+        for(let i = 0; i < multiplier; i++) {
+            result += +Dice.roll(roll, this.stats);
+        }
+        return result;
+    }
+
     calculateMultiplier(skill) {
-        let baseMultiplier = _.filter(this.skills, check => check === skill.spellName).length;
-        if(skill.spellName === 'Attack') {
+        let baseMultiplier = _.filter(this.skills, check => check === skill).length;
+        if(skill === 'Attack') {
             baseMultiplier += 1;
         }
         return baseMultiplier;
