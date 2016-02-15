@@ -12,7 +12,6 @@ export default class SpellEffect {
         this.skillName = skillName;
     }
 
-
     decrementTurns(target) {
         this.turnsLeft--;
         if(this.turnsLeft <= 0) {

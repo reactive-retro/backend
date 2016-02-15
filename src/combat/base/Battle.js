@@ -89,13 +89,25 @@ export default class Battle {
                         return;
                     }
 
-                    const appliedEffect = new Proto({
-                        duration: +Dice.roll(effData.roll),
-                        multiplier,
-                        statBuff: effData.statBuff,
-                        casterName: caster.name,
-                        skillName: skill.spellName
-                    });
+                    let appliedEffect = null;
+
+                    if(effData.instant) {
+                        appliedEffect = new Proto({
+                            multiplier,
+                            statBuff: +Dice.roll(effData.roll, caster.stats),
+                            casterName: caster.name,
+                            skillName: skill.spellName
+                        });
+
+                    } else {
+                        appliedEffect = new Proto({
+                            duration: +Dice.roll(effData.roll, caster.stats),
+                            multiplier,
+                            statBuff: effData.statBuff,
+                            casterName: caster.name,
+                            skillName: skill.spellName
+                        });
+                    }
 
                     const applyMessage = appliedEffect.apply(target, caster);
 
@@ -203,7 +215,6 @@ export default class Battle {
             skillRef = _.find(validSkills, { spellName: skill });
 
             // no cheating
-            // TODO regenerate, stealth (only works if party available)
             const multiplier = me.calculateMultiplier(skillRef);
             const isInvalidSkill = !skillRef
                                 || !_.contains(me.skills, skill)
