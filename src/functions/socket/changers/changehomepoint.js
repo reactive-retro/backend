@@ -22,6 +22,10 @@ export default (socket) => {
 
         getPlayer(name, respond).then(player => {
 
+            if(player.battleId) {
+                return respond({msg: MESSAGES.CURRENTLY_IN_COMBAT});
+            }
+
             player.homepoint = homepoint;
             player.save();
 

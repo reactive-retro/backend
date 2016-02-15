@@ -30,6 +30,7 @@ export default {
 
     BAD_MONSTER: 'That monster is not valid.',
     NOT_IN_COMBAT: 'You are not in combat!',
+    CURRENTLY_IN_COMBAT: 'You are currently in combat!',
     ALREADY_IN_COMBAT: 'You are already in combat!',
     BAD_COMBAT: 'Combat could not start for some reason.',
     BATTLE_ENTERED: 'Combat will commence!',
