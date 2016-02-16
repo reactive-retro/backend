@@ -23,7 +23,7 @@ export default (socket) => {
         }
 
         getPlayer(name, respond).then(player => {
-
+            
             if(player.battleId) {
                 return respond({msg: MESSAGES.CURRENTLY_IN_COMBAT});
             }
@@ -38,12 +38,11 @@ export default (socket) => {
 
             player.profession = newProfession;
             player.skills = [];
+            player.fullheal();
             player.save();
 
-            player.fullheal();
-
             socket.emit('update:player', player);
-            socket.emit('update:skills', SkillManager.getSkills(doc));
+            socket.emit('update:skills', SkillManager.getSkills(player));
 
             respond(null, {msg: MESSAGES.PROF_CHANGE_SUCCESS});
         });
