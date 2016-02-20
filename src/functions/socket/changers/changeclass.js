@@ -22,31 +22,30 @@ export default (socket) => {
             return respond({msg: MESSAGES.NO_CLASS});
         }
 
-        getPlayer(name, respond).then(player => {
+        const player = await getPlayer(name, respond);
 
-            if(player.battleId) {
-                return respond({msg: MESSAGES.CURRENTLY_IN_COMBAT});
-            }
+        if(player.battleId) {
+            return respond({msg: MESSAGES.CURRENTLY_IN_COMBAT});
+        }
 
-            if(!_.contains(player.unlockedProfessions, newProfession)) {
-                return respond({msg: MESSAGES.INVALID_PROF});
-            }
+        if(!_.contains(player.unlockedProfessions, newProfession)) {
+            return respond({msg: MESSAGES.INVALID_PROF});
+        }
 
-            if(!player.professionLevels[newProfession]) {
-                player.professionLevels[newProfession] = 1;
-            }
+        if(!player.professionLevels[newProfession]) {
+            player.professionLevels[newProfession] = 1;
+        }
 
-            player.profession = newProfession;
-            player.calculate();
-            player.skills = [];
-            player.fullheal();
-            player.save();
+        player.profession = newProfession;
+        player.calculate();
+        player.skills = [];
+        player.fullheal();
+        player.save();
 
-            socket.emit('update:player', player);
-            socket.emit('update:skills', SkillManager.getSkills(player));
+        socket.emit('update:player', player);
+        socket.emit('update:skills', SkillManager.getSkills(player));
 
-            respond(null, {msg: MESSAGES.PROF_CHANGE_SUCCESS});
-        });
+        respond(null, {msg: MESSAGES.PROF_CHANGE_SUCCESS});
 
     };
 

@@ -16,7 +16,10 @@
   },
   "dependencies": {
     "atob": "^2.0.0",
+    "babel-plugin-transform-async-to-generator": "^6.5.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-plugin-transform-regenerator": "^6.5.2",
+    "babel-polyfill": "^6.5.0",
     "babel-preset-es2015": "^6.3.13",
     "babel-register": "^6.3.13",
     "dice.js": "git+https://github.com/lordnull/dice.js.git#21124f7bf18224b774d0cb6e82ef3872a534a98e",
