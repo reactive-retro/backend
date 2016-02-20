@@ -37,6 +37,7 @@ export default (socket) => {
             }
 
             player.profession = newProfession;
+            player.calculate();
             player.skills = [];
             player.fullheal();
             player.save();
