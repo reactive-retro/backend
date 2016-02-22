@@ -12,7 +12,7 @@ const MAX_SLOT = 5;
 
 export default (socket) => {
 
-    const skillChange = ({ name, skillName, skillSlot }, respond) => {
+    const skillChange = async ({ name, skillName, skillSlot }, respond) => {
 
         if(!socket.getAuthToken()) {
             return respond({msg: MESSAGES.INVALID_TOKEN});
@@ -34,20 +34,24 @@ export default (socket) => {
             return respond({msg: MESSAGES.BAD_SLOT})
         }
 
-        getPlayer(name, respond).then(player => {
+        let player = null;
 
-            if(player.battleId) {
-                return respond({msg: MESSAGES.CURRENTLY_IN_COMBAT});
-            }
+        try {
+            player = await getPlayer(name);
+        } catch(e) {
+            return respond({msg: e.msg});
+        }
 
-            player.skills[skillSlot] = skillName || undefined;
-            player.save();
+        if(player.battleId) {
+            return respond({msg: MESSAGES.CURRENTLY_IN_COMBAT});
+        }
 
-            socket.emit('update:player', player);
+        player.skills[skillSlot] = skillName || undefined;
+        player.save();
 
-            respond(null, {msg: MESSAGES.SKILL_CHANGE_SUCCESS});
+        socket.emit('update:player', player);
 
-        });
+        respond(null, {msg: MESSAGES.SKILL_CHANGE_SUCCESS});
 
     };
 

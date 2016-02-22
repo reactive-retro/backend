@@ -6,7 +6,7 @@ import MESSAGES from '../../../static/messages';
 
 export default (socket) => {
 
-    const setHomepoint = ({ name, homepoint }, respond) => {
+    const setHomepoint = async ({ name, homepoint }, respond) => {
 
         if(!socket.getAuthToken()) {
             return respond({msg: MESSAGES.INVALID_TOKEN});
@@ -20,20 +20,24 @@ export default (socket) => {
             return respond({msg: MESSAGES.NO_HOMEPOINT});
         }
 
-        getPlayer(name, respond).then(player => {
+        let player = null;
 
-            if(player.battleId) {
-                return respond({msg: MESSAGES.CURRENTLY_IN_COMBAT});
-            }
+        try {
+            player = await getPlayer(name);
+        } catch(e) {
+            return respond({msg: e.msg});
+        }
 
-            player.homepoint = homepoint;
-            player.save();
+        if(player.battleId) {
+            return respond({msg: MESSAGES.CURRENTLY_IN_COMBAT});
+        }
 
-            socket.emit('update:player', player);
+        player.homepoint = homepoint;
+        player.save();
 
-            respond(null, {msg: MESSAGES.HOMEPOINT_CHANGE_SUCCESS});
+        socket.emit('update:player', player);
 
-        });
+        respond(null, {msg: MESSAGES.HOMEPOINT_CHANGE_SUCCESS});
 
     };
 

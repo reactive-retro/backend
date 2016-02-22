@@ -1,7 +1,6 @@
 
 import places from 'googleplaces';
 import seedrandom from 'seedrandom';
-import q from 'q';
 import _ from 'lodash';
 
 import MESSAGES from '../../static/messages';

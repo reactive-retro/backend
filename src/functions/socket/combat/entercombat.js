@@ -5,11 +5,10 @@ import getPlayer from '../../../character/functions/getbyname';
 import { verify as monsterVerify } from '../../../objects/monstergenerator';
 import MESSAGES from '../../../static/messages';
 import createBattle from '../../../combat/functions/createbattle';
-import save from '../../../character/functions/save';
 
 export default (socket) => {
 
-    const enterCombat = ({ name, monsters }, respond) => {
+    const enterCombat = async ({ name, monsters }, respond) => {
 
         const verified = _.map(monsters, monsterVerify);
         if(_.any(verified, bool => !bool)) {
@@ -20,33 +19,31 @@ export default (socket) => {
             return respond({msg: MESSAGES.NO_NAME});
         }
 
-        getPlayer(name, respond)
-            .then(doc => {
-                if(doc.battleId) {
-                    return respond({msg: MESSAGES.ALREADY_IN_COMBAT});
-                }
+        let player = null;
 
-                const party = [doc];
+        try {
+            player = await getPlayer(name);
+        } catch(e) {
+            return respond({msg: e.msg});
+        }
 
-                createBattle({
-                    players: _.pluck(party, 'name'),
-                    monsters
-                }).then(battle => {
+        if(player.battleId) {
+            return respond({msg: MESSAGES.ALREADY_IN_COMBAT});
+        }
 
-                    // assign the battle id to them
-                    _.each(party, player => {
-                        player.battleId = battle._id;
-                        save(player);
-                    });
+        const party = [player];
 
-                    socket.emit('combat:entered', battle);
+        let battle = null;
 
-                    return respond({msg: MESSAGES.BATTLE_ENTERED});
-                }, () => {
-                    return respond({msg: MESSAGES.BAD_COMBAT});
-                })
-                .catch(console.error);
-        });
+        try {
+            battle = await createBattle({ players: party, monsters});
+        } catch(e) {
+            return respond({msg: MESSAGES.BAD_COMBAT});
+        }
+
+        socket.emit('combat:entered', battle.transmitObject());
+
+        respond({msg: MESSAGES.BATTLE_ENTERED});
     };
 
     socket.on('combat:enter', enterCombat);

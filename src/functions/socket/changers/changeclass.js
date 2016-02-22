@@ -8,7 +8,7 @@ import SkillManager from '../../../objects/skillmanager';
 
 export default (socket) => {
 
-    const changeClass = ({ name, newProfession }, respond) => {
+    const changeClass = async ({ name, newProfession }, respond) => {
 
         if(!socket.getAuthToken()) {
             return respond({msg: MESSAGES.INVALID_TOKEN});
@@ -22,7 +22,13 @@ export default (socket) => {
             return respond({msg: MESSAGES.NO_CLASS});
         }
 
-        const player = await getPlayer(name, respond);
+        let player = null;
+
+        try {
+            player = await getPlayer(name);
+        } catch(e) {
+            return respond({msg: e.msg});
+        }
 
         if(player.battleId) {
             return respond({msg: MESSAGES.CURRENTLY_IN_COMBAT});

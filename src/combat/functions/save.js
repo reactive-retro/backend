@@ -2,19 +2,16 @@
 import _ from 'lodash';
 import dbPromise from '../../objects/db';
 
-export default (battle) => {
+export default async (battle) => {
     const saveObject = battle.saveObject();
+    const db = await dbPromise();
 
     if(saveObject.isDone) {
-        dbPromise().then(db => {
-            const battles = db.collection('battles');
-            battles.deleteOne({ _id: saveObject._id }, _.noop);
-        });
+        const battles = db.collection('battles');
+        battles.deleteOne({ _id: saveObject._id }, _.noop);
 
     } else {
-        dbPromise().then(db => {
-            const battles = db.collection('battles');
-            battles.update({_id: saveObject._id}, saveObject, _.noop);
-        });
+        const battles = db.collection('battles');
+        battles.updateOne({_id: saveObject._id}, saveObject, _.noop);
     }
 };

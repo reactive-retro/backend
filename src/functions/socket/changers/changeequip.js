@@ -6,7 +6,7 @@ import MESSAGES from '../../../static/messages';
 
 export default (socket) => {
 
-    const equip = ({ name, itemId }, respond) => {
+    const equip = async ({ name, itemId }, respond) => {
 
         if(!socket.getAuthToken()) {
             return respond({msg: MESSAGES.INVALID_TOKEN});
@@ -20,30 +20,34 @@ export default (socket) => {
             return respond({msg: MESSAGES.NO_ITEM});
         }
 
-        getPlayer(name, respond).then(player => {
+        let player = null;
 
-            if(player.battleId) {
-                return respond({msg: MESSAGES.CURRENTLY_IN_COMBAT});
-            }
+        try {
+            player = await getPlayer(name);
+        } catch(e) {
+            return respond({msg: e.msg});
+        }
 
-            var item = _.findWhere(player.inventory, {itemId: itemId});
+        if(player.battleId) {
+            return respond({msg: MESSAGES.CURRENTLY_IN_COMBAT});
+        }
 
-            if (!item) {
-                return respond({msg: MESSAGES.BAD_ITEM});
-            }
+        var item = _.findWhere(player.inventory, {itemId: itemId});
 
-            // level requirements, maybe.
+        if (!item) {
+            return respond({msg: MESSAGES.BAD_ITEM});
+        }
 
-            player.inventory.push(player.equipment[item.type]);
-            player.inventory = _.without(player.inventory, item);
-            player.equipment[item.type] = item;
-            player.save();
+        // level requirements, maybe.
 
-            socket.emit('update:player', player);
+        player.inventory.push(player.equipment[item.type]);
+        player.inventory = _.without(player.inventory, item);
+        player.equipment[item.type] = item;
+        player.save();
 
-            respond(null, {msg: MESSAGES.EQUIP_SUCCESS});
+        socket.emit('update:player', player);
 
-        });
+        respond(null, {msg: MESSAGES.EQUIP_SUCCESS});
 
     };
 

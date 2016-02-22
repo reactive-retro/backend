@@ -1,34 +1,30 @@
 
-import q from 'q';
 import _ from 'lodash';
 
 import Battle from './../base/Battle';
 import dbPromise from '../../objects/db';
 
-export default (battleId, action) => {
-    return dbPromise().then(db => {
+export default async (battleId, action) => {
+    const db = await dbPromise();
+    const battles = db.collection('battles');
 
-        const battles = db.collection('battles');
-        const defer = q.defer();
+    return new Promise((resolve, reject) => {
 
         const setter = { $set: {} };
         setter.$set[`actions.${action.name}`] = action;
 
-        battles.updateOne({ _id: battleId }, setter, () => {
+        battles.updateOne({ _id: battleId }, setter, (err) => {
+            if(err) return reject(err);
 
-            battles.findOne({ _id: battleId }, (err, doc) => {
-                if (err) {
-                    return defer.reject(err);
-                }
+            battles.findOne({ _id: battleId }, async (err, doc) => {
+                if (err) return reject(err);
 
                 const battle = new Battle(doc);
-                battle.isReady.then(() => {
-                    battle.isReadyToProcess = _.all(battle.players, player => battle.actions[player]);
-                    defer.resolve(battle);
-                });
+
+                await battle.isReady;
+                battle.isReadyToProcess = _.all(battle.players, player => battle.actions[player]);
+                resolve(battle);
             });
         });
-
-        return defer.promise;
     });
 };

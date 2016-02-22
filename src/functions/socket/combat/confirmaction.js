@@ -10,7 +10,7 @@ export default (socket, scWorker) => {
      * If this confirmaction is the last one needed, roundresults will run.
      */
 
-    const confirmAction = ({ name, target, skill }, respond) => {
+    const confirmAction = async ({ name, target, skill }, respond) => {
 
         if(!name) {
             return respond({msg: MESSAGES.NO_NAME});
@@ -24,25 +24,30 @@ export default (socket, scWorker) => {
             return respond({msg: MESSAGES.NO_COMBAT_SKILL});
         }
 
-        getPlayer(name, respond).then(player => {
-            if(!player.battleId) {
-                return respond({msg: MESSAGES.NOT_IN_COMBAT});
-            }
+        let player = null;
 
-            addBattleAction(player.battleId, { name, target, skill }).then(battle => {
-                respond({msg: MESSAGES.CONFIRMED_SKILL});
+        try {
+            player = await getPlayer(name);
+        } catch(e) {
+            return respond({msg: e.msg});
+        }
 
-                if(!battle.isReadyToProcess) return;
+        if(!player.battleId) {
+            return respond({msg: MESSAGES.NOT_IN_COMBAT});
+        }
 
-                try {
-                    const actions = battle.processActions();
-                    scWorker.exchange.publish(`battle:${battle._id}:results`, { battle, actions, isDone: battle.isDone });
-                } catch(e) {
-                    console.error(e);
-                }
-            });
-        });
+        const battle = await addBattleAction(player.battleId, { name, target, skill });
 
+        respond(null, {msg: MESSAGES.CONFIRMED_SKILL});
+
+        if(!battle.isReadyToProcess) return;
+
+        try {
+            const actions = battle.processActions();
+            scWorker.exchange.publish(`battle:${battle._id}:results`, { battle: battle.transmitObject(), actions, isDone: battle.isDone });
+        } catch(e) {
+            console.error(e);
+        }
     };
 
     socket.on('combat:confirmaction', confirmAction);

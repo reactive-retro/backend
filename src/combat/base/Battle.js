@@ -1,5 +1,4 @@
 
-import q from 'q';
 import _ from 'lodash';
 import Dice from 'dice.js';
 
@@ -19,7 +18,7 @@ export default class Battle {
         this.monsters = _.map(monsters, m => new Monster(m));
         this.actions = actions || {};
 
-        this.isReady = q.all(_.map(this.players, getPlayer)).then(playerData => {
+        this.isReady = Promise.all(_.map(this.players, getPlayer)).then(playerData => {
             this.playerData = playerData;
         });
     }
@@ -318,6 +317,10 @@ export default class Battle {
     // guids are >20 chars, char names are capped at 19 chars
     isMonsterId(testId) {
         return testId.length > 20;
+    }
+
+    transmitObject() {
+        return _.omit(this, ['isReady']);
     }
 
     saveObject() {

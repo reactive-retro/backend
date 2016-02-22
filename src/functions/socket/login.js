@@ -28,16 +28,10 @@ const validateNewPlayer = (credentials) => {
 };
 
 const buildPlayerObject = (object) => {
-    const player = new Player(object);
-    player._id = undefined;
-    return player;
+    return new Player(object);
 };
 
-const respondWithPlayer = (socket, respond, msg, token, player) => {
-
-    nearbyplaces(player.homepoint).then(places => {
-        socket.emit('update:places', places);
-    });
+const respondWithPlayer = async (socket, respond, msg, token, player) => {
 
     const monsters = nearbymonsters(player.homepoint);
 
@@ -47,29 +41,27 @@ const respondWithPlayer = (socket, respond, msg, token, player) => {
 
     const playerInst = buildPlayerObject(player);
 
-    playerInst.battleId = null;
-    playerInst.cooldowns = {};
-    playerInst.statusEffects = [];
-    playerInst.equipment.buffs.stats = {};
-    playerInst.fullheal();
-    playerInst.save();
+    playerInst.clearDataOnLogin();
 
     socket.emit('update:player', playerInst);
-    socket.emit('update:skills', SkillManager.getSkills(playerInst));
 
     respond(null, { msg, settings: SETTINGS });
+
+    socket.emit('update:skills', SkillManager.getSkills(playerInst));
+
+    const places = await nearbyplaces(player.homepoint);
+    socket.emit('update:places', places);
 };
 
 export default (socket) => {
 
     // expect {name, profession, homepoint, userId, token}
-    socket.on('login', (credentials, respond) => {
+    socket.on('login', async (credentials, respond) => {
 
-        const { name, profession, homepoint, userId, token } = credentials;
+        const { userId, token } = credentials;
 
         if(!userId || !token) {
-            respond({msg: MESSAGES.NO_IDENT});
-            return;
+            return respond({msg: MESSAGES.NO_IDENT});
         }
 
         if(AUTH0_SECRET) {
@@ -81,47 +73,44 @@ export default (socket) => {
             }
         }
 
-        dbPromise().then(db => {
+        const db = await dbPromise();
 
-            var players = db.collection('players');
+        const players = db.collection('players');
 
-            players.findOne({userId: userId}, (err, doc) => {
+        players.findOne({userId: userId}, (err, doc) => {
 
-                if(err) {
-                    console.error(err);
-                    return respond({msg: MESSAGES.GENERIC});
+            if(err) {
+                console.error(err);
+                return respond({msg: MESSAGES.GENERIC});
+            }
+
+            //login
+            if (doc) {
+                respondWithPlayer(socket, respond, MESSAGES.LOGIN_SUCCESS, token, doc);
+
+            } else {
+                //validate the player before creating it
+                var message = validateNewPlayer(credentials);
+                if (message) {
+                    return respond({msg: message});
                 }
 
-                //login
-                if (doc) {
-                    respondWithPlayer(socket, respond, MESSAGES.LOGIN_SUCCESS, token, doc);
+                //token doesn't need to be on the object
+                const credentialClone = _.clone(credentials);
+                credentialClone.token = null;
 
-                } else {
-                    //validate the player before creating it
-                    var message = validateNewPlayer(credentials);
-                    if (message) {
-                        respond({msg: message});
-                        return;
+                //try to create the player
+                players.insertOne(credentialClone, (err) => {
+
+                    //the only failure will probably be a duplicate name
+                    if (err) {
+                        return respond({msg: MESSAGES.NAME_TAKEN});
                     }
 
-                    //token doesn't need to be on the object
-                    const credentialClone = _.clone(credentials);
-                    credentialClone.token = null;
-
-                    //try to create the player
-                    players.insert(credentialClone, {w:1}, (err) => {
-
-                        //the only failure will probably be a duplicate name
-                        if (err) {
-                            respond({msg: MESSAGES.NAME_TAKEN});
-
-                            //created successfully
-                        } else {
-                            respondWithPlayer(socket, respond, MESSAGES.CREATE_SUCCESS, credentials.token, credentialClone);
-                        }
-                    });
-                }
-            });
+                    //created successfully
+                    respondWithPlayer(socket, respond, MESSAGES.CREATE_SUCCESS, credentials.token, credentialClone);
+                });
+            }
         });
     });
 };

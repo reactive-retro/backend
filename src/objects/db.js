@@ -1,24 +1,24 @@
 
 import _ from 'lodash';
-import q from 'q';
 import { MongoClient } from 'mongodb';
 
 const connectionString = process.env.MONGOLAB_URI;
-const dbLoaded = q.defer();
 
-MongoClient.connect(connectionString, (err, db) => {
+const connectionPromise = new Promise((resolve, reject) => {
 
-    if(err) {
-        console.error(err);
-        dbLoaded.reject(err);
-        return;
-    }
+    MongoClient.connect(connectionString, (err, db) => {
 
-    db.collection('players').createIndex({name: 1}, {unique: true}, _.noop);
-    db.collection('players').updateMany({}, {$set: {battleId: null}}, _.noop);
-    db.collection('battles').deleteMany({}, _.noop);
+        if(err) {
+            console.error(err);
+            return reject(err);
+        }
 
-    dbLoaded.resolve(db);
+        db.collection('players').createIndex({name: 1}, {unique: true}, _.noop);
+        db.collection('players').updateMany({}, {$set: {battleId: null}}, _.noop);
+        db.collection('battles').deleteMany({}, _.noop);
+
+        resolve(db);
+    });
 });
 
-export default () => dbLoaded.promise;
+export default () => connectionPromise;

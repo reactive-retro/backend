@@ -4,25 +4,22 @@ import MESSAGES from '../../static/messages';
 
 import Player from '../base/Player';
 
-export default async (name, respond = () => {}) => {
+export default async (name) => {
+    const db = await dbPromise();
+    const players = db.collection('players');
 
     return new Promise((resolve, reject) => {
-        dbPromise().then(db => {
-            var players = db.collection('players');
-            players.findOne({name: name}, (err, doc) => {
+        players.findOne({name: name}, (err, doc) => {
 
-                if (err) {
-                    reject(err);
-                    return respond({msg: MESSAGES.GENERIC});
-                }
+            if (err) {
+                return reject({ err, msg: MESSAGES.GENERIC });
+            }
 
-                if (!doc) {
-                    reject(err);
-                    return respond({msg: MESSAGES.NO_PLAYER});
-                }
+            if (!doc) {
+                return reject({ err, msg: MESSAGES.NO_PLAYER });
+            }
 
-                resolve(new Player(doc));
-            })
+            resolve(new Player(doc));
         });
     });
 };

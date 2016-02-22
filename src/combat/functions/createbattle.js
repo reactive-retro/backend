@@ -1,28 +1,34 @@
 
-import q from 'q';
 import _ from 'lodash';
 
 import dbPromise from '../../objects/db';
 import Battle from './../base/Battle';
 
-export default ({ players, monsters }) => {
-    return dbPromise().then(db => {
+export default async ({ players, monsters }) => {
+    const db = await dbPromise();
+
+    return new Promise((resolve, reject) => {
 
         const battles = db.collection('battles');
-        const newBattle = new Battle({players, monsters});
-        const defer = q.defer();
+        const newBattle = new Battle({players: _.pluck(players, 'name'), monsters});
 
         const insertBattle = newBattle.saveObject();
 
-        battles.insert(insertBattle, {w:1}, (err) => {
+        battles.insertOne(insertBattle, async (err, res) => {
             if (err) {
-                return defer.reject(err);
+                return reject(err);
             }
 
-            newBattle._id = insertBattle._id;
-            newBattle.isReady.then(() => defer.resolve(newBattle));
-        });
+            newBattle._id = res.insertedId;
 
-        return defer.promise;
-    }).catch(console.error);
+            const playerSaves = _.map(players, player => {
+                player.battleId = res.insertedId;
+                return player.save();
+            });
+
+            await Promise.all(playerSaves);
+            await newBattle.isReady;
+            resolve(newBattle);
+        });
+    });
 };

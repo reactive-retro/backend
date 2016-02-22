@@ -48,7 +48,16 @@ export default class Player extends Character {
         }
     }
 
+    clearDataOnLogin() {
+        this.battleId = null;
+        this.cooldowns = {};
+        this.statusEffects = [];
+        this.equipment.buffs.stats = {};
+        this.fullheal();
+        this.save();
+    }
+
     save() {
-        save(this);
+        return save(this);
     }
 }
