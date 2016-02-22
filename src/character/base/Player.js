@@ -6,9 +6,10 @@ import DEFAULTS from '../../static/chardefaults';
 import SkillManager from '../../objects/skillmanager';
 import dbPromise from '../../objects/db';
 import save from '../functions/save';
+import { monstertoken as generateMonsterToken } from '../../functions/world/nearbymonsters';
 
 export default class Player extends Character {
-    constructor({ name, profession, skills, inventory, equipment, stats, unlockedProfessions, professionLevels, userId, homepoint, statusEffects, cooldowns, battleId }) {
+    constructor({ name, profession, monsterToken, skills, inventory, equipment, stats, unlockedProfessions, professionLevels, userId, homepoint, statusEffects, cooldowns, battleId }) {
 
         super({
             name,
@@ -23,11 +24,22 @@ export default class Player extends Character {
             equipment
         });
 
+        this.monsterToken = monsterToken;
         this.userId = userId;
         this.battleId = battleId;
         this.homepoint = homepoint;
 
         this.handleDefaults();
+        this.checkForNewMonsters();
+    }
+
+    checkForNewMonsters() {
+        const checkToken = generateMonsterToken(this);
+
+        if(this.monsterToken !== checkToken) {
+            this.needsMonsterRefresh = true;
+        }
+        this.monsterToken = checkToken;
     }
 
     handleDefaults() {
@@ -49,6 +61,7 @@ export default class Player extends Character {
     }
 
     clearDataOnLogin() {
+        this.needsMonsterRefresh = true;
         this.battleId = null;
         this.cooldowns = {};
         this.statusEffects = [];

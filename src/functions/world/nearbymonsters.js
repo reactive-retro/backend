@@ -18,16 +18,24 @@ const OFFSETS = {
 
 const randomBetween = (rng = Math.random, min, max) => rng() * (max - min) + min;
 
-export default (homepoint = {}) => {
-    const { lat, lon } = homepoint;
-
-    // seed monsters based on the hour
+// seed monsters based on the hour
+const getSeed = () => {
     const now = new Date();
     now.setMilliseconds(0);
     now.setSeconds(0);
     now.setMinutes(0);
 
-    const seed = now.getTime();
+    return now.getTime();
+};
+
+export const monstertoken = () => {
+    return getSeed();
+};
+
+export default (homepoint = {}) => {
+    const { lat, lon } = homepoint;
+
+    const seed = getSeed();
 
     const rng = seedrandom(seed);
     const numMonsters = randomBetween(rng, 250, 500);

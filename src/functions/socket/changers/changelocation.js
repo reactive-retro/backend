@@ -3,11 +3,13 @@ import _ from 'lodash';
 
 import getPlayer from '../../../character/functions/getbyname';
 import MESSAGES from '../../../static/messages';
+
+import SkillManager from '../../../objects/skillmanager';
 import updatePlayer from '../../updaters/player';
 
 export default (socket) => {
 
-    const setHomepoint = async ({ name, homepoint }, respond) => {
+    const changeLocation = async ({ name, coords }, respond) => {
 
         if(!socket.getAuthToken()) {
             return respond({msg: MESSAGES.INVALID_TOKEN});
@@ -17,8 +19,8 @@ export default (socket) => {
             return respond({msg: MESSAGES.NO_NAME});
         }
 
-        if(!homepoint || !homepoint.lat || !homepoint.lon) {
-            return respond({msg: MESSAGES.NO_HOMEPOINT});
+        if(!coords) {
+            return respond({msg: MESSAGES.NO_COORDS});
         }
 
         let player = null;
@@ -29,18 +31,11 @@ export default (socket) => {
             return respond({msg: e.msg});
         }
 
-        if(player.battleId) {
-            return respond({msg: MESSAGES.CURRENTLY_IN_COMBAT});
-        }
+        updatePlayer(socket, player, false);
 
-        player.homepoint = homepoint;
-        player.save();
-
-        updatePlayer(socket, player);
-
-        respond(null, {msg: MESSAGES.HOMEPOINT_CHANGE_SUCCESS});
+        respond(null);
 
     };
 
-    socket.on('player:change:homepoint', setHomepoint);
+    socket.on('player:change:location', changeLocation);
 };

@@ -14,6 +14,8 @@ import nearbymonsters from '../world/nearbymonsters';
 
 import SETTINGS from '../../static/settings';
 
+import updatePlayer from '../updaters/player';
+
 const AUTH0_SECRET = process.env.AUTH0_SECRET;
 
 const validateNewPlayer = (credentials) => {
@@ -33,17 +35,13 @@ const buildPlayerObject = (object) => {
 
 const respondWithPlayer = async (socket, respond, msg, token, player) => {
 
-    const monsters = nearbymonsters(player.homepoint);
-
     socket.setAuthToken({heroname: player.name, token: token});
-
-    socket.emit('update:monsters', monsters);
 
     const playerInst = buildPlayerObject(player);
 
     playerInst.clearDataOnLogin();
 
-    socket.emit('update:player', playerInst);
+    updatePlayer(socket, playerInst);
 
     respond(null, { msg, settings: SETTINGS });
 

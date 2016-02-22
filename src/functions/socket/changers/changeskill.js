@@ -5,6 +5,7 @@ import getPlayer from '../../../character/functions/getbyname';
 import MESSAGES from '../../../static/messages';
 
 import SkillManager from '../../../objects/skillmanager';
+import updatePlayer from '../../updaters/player';
 
 // 6 skill slots
 const MIN_SLOT = 0;
@@ -49,7 +50,7 @@ export default (socket) => {
         player.skills[skillSlot] = skillName || undefined;
         player.save();
 
-        socket.emit('update:player', player);
+        updatePlayer(socket, player);
 
         respond(null, {msg: MESSAGES.SKILL_CHANGE_SUCCESS});
 

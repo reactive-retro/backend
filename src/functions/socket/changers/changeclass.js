@@ -5,6 +5,7 @@ import getPlayer from '../../../character/functions/getbyname';
 import MESSAGES from '../../../static/messages';
 
 import SkillManager from '../../../objects/skillmanager';
+import updatePlayer from '../../updaters/player';
 
 export default (socket) => {
 
@@ -48,7 +49,7 @@ export default (socket) => {
         player.fullheal();
         player.save();
 
-        socket.emit('update:player', player);
+        updatePlayer(socket, player);
         socket.emit('update:skills', SkillManager.getSkills(player));
 
         respond(null, {msg: MESSAGES.PROF_CHANGE_SUCCESS});

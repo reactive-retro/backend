@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 import getPlayer from '../../../character/functions/getbyname';
 import MESSAGES from '../../../static/messages';
+import updatePlayer from '../../updaters/player';
 
 export default (socket) => {
 
@@ -45,7 +46,7 @@ export default (socket) => {
         player.equipment[item.type] = item;
         player.save();
 
-        socket.emit('update:player', player);
+        updatePlayer(socket, player);
 
         respond(null, {msg: MESSAGES.EQUIP_SUCCESS});
 

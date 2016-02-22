@@ -23,6 +23,8 @@ export default {
     NO_HOMEPOINT: 'Invalid homepoint specified.',
     HOMEPOINT_CHANGE_SUCCESS: 'Successfully changed homepoint.',
 
+    NO_COORDS: 'No location sent.',
+
     BAD_SLOT: 'Invalid slot specified for skill.',
     NO_SKILL: 'Invalid skill name specified.',
     SKILL_CHANGE_SUCCESS: 'Successfully changed skill.',
