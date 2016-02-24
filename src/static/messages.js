@@ -38,5 +38,8 @@ export default {
     BATTLE_ENTERED: 'Combat will commence!',
     NO_COMBAT_TARGET: 'No target selected.',
     NO_COMBAT_SKILL: 'No skill selected.',
-    CONFIRMED_SKILL: 'Confirmed skill usage.'
+    CONFIRMED_SKILL: 'Confirmed skill usage.',
+
+    NO_SETTINGS: 'No setting changes specified.',
+    SETTING_SUCCESS: 'Settings changed successfully!'
 };

@@ -9,7 +9,7 @@ import save from '../functions/save';
 import { monstertoken as generateMonsterToken } from '../../functions/world/nearbymonsters';
 
 export default class Player extends Character {
-    constructor({ name, profession, monsterToken, skills, inventory, equipment, stats, unlockedProfessions, professionLevels, userId, homepoint, statusEffects, cooldowns, battleId }) {
+    constructor({ name, profession, settings, monsterToken, skills, inventory, equipment, stats, unlockedProfessions, professionLevels, userId, homepoint, statusEffects, cooldowns, battleId }) {
 
         super({
             name,
@@ -24,6 +24,7 @@ export default class Player extends Character {
             equipment
         });
 
+        this.settings = settings || {};
         this.monsterToken = monsterToken;
         this.userId = userId;
         this.battleId = battleId;
