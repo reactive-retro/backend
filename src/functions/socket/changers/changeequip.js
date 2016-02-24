@@ -44,6 +44,7 @@ export default (socket) => {
         player.inventory.push(player.equipment[item.type]);
         player.inventory = _.without(player.inventory, item);
         player.equipment[item.type] = item;
+        player.calculate();
         player.save();
 
         updatePlayer(socket, player);
