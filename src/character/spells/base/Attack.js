@@ -9,7 +9,7 @@ import { name, cost, cooldown, classes, targets, description, effect, useString 
 @targets(ActionTargets.SINGLE_ENEMY)
 @description('Attack your foe with your weapon.')
 @useString('%o attacked %t and dealt %d damage!')
-@effect('Damage', { roll: '1df([str] / 2)' })
+@effect('Damage', { roll: '1df([str] / 2) + f([str] / 6)' })
 export default class Attack extends Action {
 
 }
