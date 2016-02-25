@@ -45,7 +45,7 @@ const respondWithPlayer = async (socket, respond, msg, token, player) => {
 
     respond(null, { msg, settings: SETTINGS });
 
-    socket.emit('update:settings', playerInst.settings);
+    socket.emit('update:options', playerInst.options);
     socket.emit('update:skills', SkillManager.getSkills(playerInst));
 
     const places = await nearbyplaces(player.homepoint);

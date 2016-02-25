@@ -8,7 +8,7 @@ import updatePlayer from '../../updaters/player';
 
 export default (socket) => {
 
-    const settingsChange = async ({ name, settingHash }, respond) => {
+    const optionsChange = async ({ name, optionsHash }, respond) => {
 
         if(!socket.getAuthToken()) {
             return respond({msg: MESSAGES.INVALID_TOKEN});
@@ -18,7 +18,7 @@ export default (socket) => {
             return respond({msg: MESSAGES.NO_NAME});
         }
 
-        if(_.isEmpty(settingHash)) {
+        if(_.isEmpty(optionsHash)) {
             return respond({msg: MESSAGES.NO_SETTINGS});
         }
 
@@ -34,14 +34,14 @@ export default (socket) => {
             return respond({msg: MESSAGES.CURRENTLY_IN_COMBAT});
         }
 
-        _.extend(player.settings, settingHash);
+        _.extend(player.options, optionsHash);
         player.save();
 
-        socket.emit('update:settings', player.settings);
+        socket.emit('update:options', player.options);
 
         respond(null, {msg: MESSAGES.SETTING_SUCCESS});
 
     };
 
-    socket.on('player:change:setting', settingsChange);
+    socket.on('player:change:options', optionsChange);
 };

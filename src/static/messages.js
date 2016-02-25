@@ -40,6 +40,6 @@ export default {
     NO_COMBAT_SKILL: 'No skill selected.',
     CONFIRMED_SKILL: 'Confirmed skill usage.',
 
-    NO_SETTINGS: 'No setting changes specified.',
-    SETTING_SUCCESS: 'Settings changed successfully!'
+    NO_SETTINGS: 'No option changes specified.',
+    SETTING_SUCCESS: 'Options changed successfully!'
 };
