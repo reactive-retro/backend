@@ -4,6 +4,7 @@ import _ from 'lodash';
 import getPlayer from '../../../character/functions/getbyname';
 import MESSAGES from '../../../static/messages';
 import updatePlayer from '../../updaters/player';
+import clearHomepointData from '../../../character/functions/clearhomepointdata';
 
 export default (socket) => {
 
@@ -32,6 +33,8 @@ export default (socket) => {
         if(player.battleId) {
             return respond({msg: MESSAGES.CURRENTLY_IN_COMBAT});
         }
+
+        clearHomepointData(player.homepoint);
 
         player.homepoint = homepoint;
         player.save();

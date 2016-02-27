@@ -2,25 +2,40 @@
 import places from 'googleplaces';
 import _ from 'lodash';
 
+import dbPromise from '../../objects/db';
+
 import MESSAGES from '../../static/messages';
 import SETTINGS from '../../static/settings';
 
 const RADIUS = SETTINGS.RADIUS;
 const placesFactory = places(process.env.GOOGLE_PLACES_API_KEY, 'json');
 
-export default (homepoint = {}) => {
+export default async (homepoint) => {
+
+    const db = await dbPromise();
+    const cached = db.collection('homepointPlaces');
 
     return new Promise((resolve, reject) => {
 
-        placesFactory.placeSearch({location: [homepoint.lat, homepoint.lon], radius: RADIUS}, (err, res) => {
+        cached.findOne({ location: homepoint }, (err, doc) => {
 
-            if(err) {
-                return reject(err);
+            if(!doc || !doc.places) {
+                placesFactory.placeSearch({location: [homepoint.lat, homepoint.lon], radius: RADIUS}, (err, res) => {
+
+                    if(err) {
+                        return reject(err);
+                    }
+
+                    var places = _.map(res.results, _.partialRight(_.pick, ['geometry', 'id', 'name', 'types']));
+
+                    cached.insertOne({ location: homepoint, places }, _.noop);
+
+                    resolve(places);
+
+                });
+            } else {
+                resolve(doc.places);
             }
-
-            var places = _.map(res.results, _.partialRight(_.pick, ['geometry', 'id', 'name', 'types']));
-
-            resolve(places);
 
         });
     });
