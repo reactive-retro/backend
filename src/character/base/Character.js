@@ -27,6 +27,10 @@ export default class Character {
         this.calculate();
     }
 
+    get currentLevel() {
+        return this.professionLevels[this.profession];
+    }
+
     rollDice(skill, roll) {
         const multiplier = this.calculateMultiplier(skill);
         let result = 0;

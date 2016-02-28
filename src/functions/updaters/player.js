@@ -7,7 +7,7 @@ export default (socket, player, emitPlayer = true) => {
     }
 
     if(player.needsMonsterRefresh) {
-        const monsters = nearbymonsters(player.homepoint);
+        const monsters = nearbymonsters(player.homepoint, player);
         socket.emit('update:monsters', monsters);
     }
 }

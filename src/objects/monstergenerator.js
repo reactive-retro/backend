@@ -10,9 +10,8 @@ export default (baseOpts) => {
     const opts = _.clone(baseOpts);
 
     opts.name = 'Goblin';
-    opts.rating = 1;
     opts.profession = 'Monster';
-    opts.professionLevels = { Monster: 1 };
+    opts.professionLevels = { [opts.profession]: opts.baseLevel };
 
     const monster = new Monster(opts);
     monster.verifyToken = generate(monster);
