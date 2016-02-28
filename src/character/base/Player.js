@@ -5,7 +5,7 @@ import Character from './Character';
 import DEFAULTS from '../../static/chardefaults';
 import SkillManager from '../../objects/skillmanager';
 import dbPromise from '../../objects/db';
-import save from '../functions/save';
+import save, { selectiveSave } from '../functions/save';
 import { monstertoken as generateMonsterToken } from '../../functions/world/nearbymonsters';
 
 export default class Player extends Character {
@@ -41,6 +41,7 @@ export default class Player extends Character {
             this.needsMonsterRefresh = true;
         }
         this.monsterToken = checkToken;
+        selectiveSave(this, ['monsterToken']);
     }
 
     handleDefaults() {
