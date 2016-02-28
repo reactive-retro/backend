@@ -70,7 +70,7 @@ export default (homepoint = {}, playerReference) => {
                 lat: monLat,
                 lon: monLon
             },
-            baseLevel: playerReference.currentLevel + rating,
+            baseLevel: Math.max(1, playerReference.currentLevel + rating),
             rating,
             seed
         });
