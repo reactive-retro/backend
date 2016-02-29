@@ -66,7 +66,6 @@ export default (socket) => {
             try {
                 jwt.verify(token, atob(AUTH0_SECRET), { algorithms: ['HS256'] });
             } catch(e) {
-                console.error(credentials, e, e.stack);
                 return respond({ msg: MESSAGES.INVALID_TOKEN });
             }
         }
@@ -78,7 +77,6 @@ export default (socket) => {
         players.findOne({ userId: userId }, (err, doc) => {
 
             if(err) {
-                console.error(err);
                 return respond({ msg: MESSAGES.GENERIC });
             }
 

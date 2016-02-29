@@ -2,6 +2,7 @@
 import _ from 'lodash';
 import Dice from 'dice.js';
 
+import Logger from '../../objects/logger';
 import { ActionTargets } from '../../character/base/Action';
 import SkillManager from '../../objects/skillmanager';
 import SpellEffectManager from '../../objects/spelleffectmanager';
@@ -38,7 +39,7 @@ export default class Battle {
             case ActionTargets.SINGLE_ALLY: return fallback ? [fallback] : [_.sample(allyArray)];
             case ActionTargets.SINGLE_ENEMY: return fallback ? [fallback] : [_.sample(enemyArray)];
             default:
-                console.error('Invalid enemy targetting', skill, skill.spellTargets);
+                Logger.error('Invalid enemy targetting', skill, skill.spellTargets);
                 return [];
         }
     }
@@ -84,7 +85,7 @@ export default class Battle {
                     if(Dice.roll('1d100') > effData.chance) return '';
                     const Proto = SpellEffectManager.getEffectByName(effect);
                     if(!Proto) {
-                        console.error(`ERROR: No valid proto: ${Proto}`);
+                        Logger.error(`ERROR: No valid proto: ${Proto}`);
                         return;
                     }
 

@@ -5,6 +5,8 @@ import path from 'path';
 import { readFileSync } from 'fs';
 import { MongoClient } from 'mongodb';
 
+import Logger from '../objects/logger';
+
 const connectionString = process.env.MONGOLAB_URI;
 
 const monsterHjson = hjson.parse(readFileSync(path.join(__dirname, '..', '..', 'data', 'monsters.hjson'), 'utf8'));
@@ -14,7 +16,7 @@ const connectionPromise = new Promise((resolve, reject) => {
     MongoClient.connect(connectionString, (err, db) => {
 
         if(err) {
-            console.error(err);
+            Logger.error(err);
             return reject(err);
         }
 

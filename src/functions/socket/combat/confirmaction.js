@@ -1,4 +1,5 @@
 
+import Logger from '../../../objects/logger';
 import addBattleAction from '../../../combat/functions/addbattleaction';
 import getPlayer from '../../../character/functions/getbyname';
 import MESSAGES from '../../../static/messages';
@@ -46,7 +47,7 @@ export default (socket, scWorker) => {
             const actions = battle.processActions();
             scWorker.exchange.publish(`battle:${battle._id}:results`, { battle: battle.transmitObject(), actions, isDone: battle.isDone });
         } catch(e) {
-            console.error(e.stack);
+            Logger.error(e.stack);
         }
     };
 
