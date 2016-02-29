@@ -1,5 +1,5 @@
 
-import { itemId } from '../character/functions/helpers';
+import { itemId } from '../functions/helpers';
 
 export default {
     unlockedProfessions: ['Thief', 'Fighter', 'Mage'],

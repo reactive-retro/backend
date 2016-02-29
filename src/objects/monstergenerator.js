@@ -4,13 +4,17 @@ import crypto from 'crypto';
 
 import Monster from '../character/base/Monster';
 
+import { weightedChoice } from '../functions/helpers';
+
 const serverSalt = crypto.createHash('md5').update(''+Math.random()).digest('hex');
 
-export default (baseOpts) => {
+export default (baseOpts, availableMonsters = []) => {
     const opts = _.clone(baseOpts);
 
-    opts.name = 'Goblin';
-    opts.profession = 'Monster';
+    const chosenMonster = weightedChoice(availableMonsters, opts.seed);
+
+    opts.name = chosenMonster.name;
+    opts.profession = chosenMonster.profession;
     opts.professionLevels = { [opts.profession]: opts.baseLevel };
 
     const monster = new Monster(opts);

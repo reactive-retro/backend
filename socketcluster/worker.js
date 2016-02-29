@@ -35,6 +35,10 @@ export var run = (worker) => {
             });
         };
 
-        requireRecursive(allSocketFunctions);
+        try {
+            requireRecursive(allSocketFunctions);
+        } catch(e) {
+            console.error(e);
+        }
     });
 };

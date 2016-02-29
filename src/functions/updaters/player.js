@@ -1,13 +1,13 @@
 
-import nearbymonsters from '../world/nearbymonsters';
+import nearbyMonsters from '../world/nearbymonsters';
 
-export default (socket, player, emitPlayer = true) => {
+export default async (socket, player, emitPlayer = true) => {
     if(emitPlayer) {
         socket.emit('update:player', player);
     }
 
     if(player.needsMonsterRefresh) {
-        const monsters = nearbymonsters(player.homepoint, player);
+        const monsters = await nearbyMonsters(player.homepoint, player.currentLevel);
         socket.emit('update:monsters', monsters);
     }
 }

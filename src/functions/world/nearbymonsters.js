@@ -7,7 +7,8 @@ import MESSAGES from '../../static/messages';
 import SETTINGS from '../../static/settings';
 
 import monstergenerate, { verify as monsterverify } from '../../objects/monstergenerator';
-import { calcDistanceBetween } from '../../character/functions/helpers';
+import { calcDistanceBetween } from '../helpers';
+import availableMonsters from './availablemonsters';
 
 // the offsets and directions to generate the bounds at which monsters spawn
 const OFFSETS = {
@@ -48,8 +49,9 @@ export const monstertoken = () => {
     return getSeed();
 };
 
-export default (homepoint = {}, playerReference) => {
-    const { lat, lon } = homepoint;
+export default async ({ lat, lon }, playerLevel) => {
+
+    const possibleMonsters = await availableMonsters(playerLevel);
 
     const seed = getSeed();
 
@@ -70,14 +72,16 @@ export default (homepoint = {}, playerReference) => {
                 lat: monLat,
                 lon: monLon
             },
-            baseLevel: Math.max(1, playerReference.currentLevel + rating),
+            baseLevel: Math.max(1, playerLevel + rating),
             rating,
-            seed
-        });
+            seed: seed+i
+        }, possibleMonsters);
 
         monsters.push(monster);
     }
 
-    return monsters;
+    return new Promise((resolve) => {
+        resolve(monsters);
+    });
 
 };

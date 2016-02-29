@@ -1,0 +1,8 @@
+[
+
+{ name: "Goblin",               profession: "Monster",  weight: 4,  minLevel: 1,    maxLevel: 5 }
+{ name: "Goblin Thief",         profession: "Thief",    weight: 1,  minLevel: 1,    maxLevel: 6 }
+{ name: "Goblin Fighter",       profession: "Fighter",  weight: 1,  minLevel: 1,    maxLevel: 7 }
+{ name: "Goblin Mage",          profession: "Mage",     weight: 1,  minLevel: 1,    maxLevel: 7 }
+
+]
