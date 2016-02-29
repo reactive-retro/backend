@@ -32,6 +32,7 @@ const getSeed = () => {
     return now.getTime();
 };
 
+// arbitrary but simple rating calculation which favors median and far-away monsters
 const rateMonster = (distance) => {
     switch(Math.floor(distance)) {
         case 0:
@@ -41,7 +42,7 @@ const rateMonster = (distance) => {
         case 1: return distance < 1.3 ? 1 : 2;
         case 2: return 3;
         case 3: return 4;
-        case 4: return 5;
+        default: return 5;
     }
 };
 
@@ -72,8 +73,12 @@ export default async ({ lat, lon }, playerLevel) => {
                 lat: monLat,
                 lon: monLon
             },
+
+            // no negative level monsters
             baseLevel: Math.max(1, playerLevel + rating),
             rating,
+
+            // if they are all the same seed, they will all be the same monster, which is bad
             seed: seed+i
         }, possibleMonsters);
 

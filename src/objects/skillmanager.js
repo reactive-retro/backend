@@ -54,11 +54,11 @@ export default class SkillManager {
             .value();
     }
 
-    static getCombatSkills(player) {
-        return _(this.getSkills(player))
+    static getCombatSkills(player, skills = this.getSkills(player)) {
+        return _(skills)
             .reject(skill => skill.spellDisabled)
-            .reject(skill => player.stats.mp.lessThan(skill.spellCost))
-            .reject(skill => player.cooldowns[skill] > 0)
+            .reject(skill => player.stats.mp.lessThan(skill.spellCost * player.calculateMultiplier(skill.spellName)))
+            .reject(skill => player.isCoolingDown(skill.spellName))
             .value()
     }
 }

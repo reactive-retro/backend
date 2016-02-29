@@ -24,6 +24,12 @@ export const calcDistanceBetween = (lat1, lon1, lat2, lon2) => {
     return R * c;
 };
 
+export const singleChoice = (array, seed) => {
+    const rng = seedrandom(seed);
+    const chosen = Math.floor(array.length * rng());
+    return array[chosen];
+};
+
 export const weightedChoice = (array, seed) => {
     const rng = seedrandom(seed);
     const maxWeight = _.reduce(array, (prev, cur) => prev + cur.weight, 0);

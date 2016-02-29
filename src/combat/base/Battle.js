@@ -226,7 +226,9 @@ export default class Battle {
 
             targets = this.getTargets(me, skillRef, this.getById(target));
         } else {
-            skillRef = _.sample(SkillManager.getCombatSkills(me));
+            const allSkills = SkillManager.getSkills(me);
+            const mySkillObjects = _.map(me.skills.concat('Attack'), skillName => _.find(allSkills, { spellName: skillName }));
+            skillRef = _.sample(SkillManager.getCombatSkills(me, mySkillObjects));
             targets = this.getTargets(me, skillRef);
         }
 
