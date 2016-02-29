@@ -1,4 +1,4 @@
-# Reactive Retro Backend [![Build Status](https://travis-ci.org/seiyria/bootstrap-slider.svg?branch=master)](https://travis-ci.org/seiyria/bootstrap-slider)
+# Reactive Retro Backend [![Build Status](https://travis-ci.org/seiyria/bootstrap-slider.svg?branch=master)](https://travis-ci.org/seiyria/bootstrap-slider) [![bitHound Overall Score](https://www.bithound.io/github/reactive-retro/backend/badges/score.svg)](https://www.bithound.io/github/reactive-retro/backend)
 
 This is the backend service for Reactive Retro.
 
