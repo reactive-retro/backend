@@ -6,8 +6,8 @@ import { hp, mp, str, dex, vit, mnt, luk } from '../../static/decorators';
 @mp(10, (prof, player) => prof.getStat(player, 'mnt') * 2)
 @str(1)
 @dex(1)
-@vit(1)
-@mnt(2)
+@vit(2)
+@mnt(3)
 @luk(0.5)
 export default class Mage extends Profession {
 }
