@@ -16,6 +16,8 @@ const skills = _(skillsHash)
 
 const skillNames = _.pluck(skills, 'spellName');
 
+export const allSkills = skills;
+
 export default class SkillManager {
 
     static isSkillDisabled(skill) {
