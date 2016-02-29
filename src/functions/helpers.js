@@ -32,6 +32,10 @@ export const singleChoice = (array, seed) => {
 
 export const weightedChoice = (array, seed) => {
     const rng = seedrandom(seed);
+
+    // anything with a weight <= 0 can't be in here because it breaks the logic
+    array = _.reject(array, item => item.weight <= 0);
+
     const maxWeight = _.reduce(array, (prev, cur) => prev + cur.weight, 0);
 
     const chosenValue = maxWeight * rng();

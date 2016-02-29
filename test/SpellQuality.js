@@ -24,5 +24,5 @@ allSkills.forEach(skill => {
         });
 
         t.pass();
-    })
+    });
 });
