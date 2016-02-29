@@ -10,7 +10,7 @@ export default async ({ players, monsters }) => {
     return new Promise((resolve, reject) => {
 
         const battles = db.collection('battles');
-        const newBattle = new Battle({players: _.pluck(players, 'name'), monsters});
+        const newBattle = new Battle({ players: _.pluck(players, 'name'), monsters });
 
         const insertBattle = newBattle.saveObject();
 

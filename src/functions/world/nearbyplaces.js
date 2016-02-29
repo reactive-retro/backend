@@ -4,7 +4,6 @@ import _ from 'lodash';
 
 import dbPromise from '../../objects/db';
 
-import MESSAGES from '../../static/messages';
 import SETTINGS from '../../static/settings';
 
 const RADIUS = SETTINGS.RADIUS;
@@ -20,13 +19,13 @@ export default async (homepoint) => {
         cached.findOne({ location: homepoint }, (err, doc) => {
 
             if(!doc || !doc.places) {
-                placesFactory.placeSearch({location: [homepoint.lat, homepoint.lon], radius: RADIUS}, (err, res) => {
+                placesFactory.placeSearch({ location: [homepoint.lat, homepoint.lon], radius: RADIUS }, (err, res) => {
 
                     if(err) {
                         return reject(err);
                     }
 
-                    var places = _.map(res.results, _.partialRight(_.pick, ['geometry', 'id', 'name', 'types']));
+                    const places = _.map(res.results, _.partialRight(_.pick, ['geometry', 'id', 'name', 'types']));
 
                     cached.insertOne({ location: homepoint, places }, _.noop);
 

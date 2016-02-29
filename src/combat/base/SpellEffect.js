@@ -19,7 +19,7 @@ export default class SpellEffect {
         }
     }
 
-    apply(target, caster) {
+    apply(target/* , caster */) {
         const priorEffect = _.find(target.statusEffects, { effectName: this.effectName });
         if(priorEffect) {
             priorEffect.unapply(target);

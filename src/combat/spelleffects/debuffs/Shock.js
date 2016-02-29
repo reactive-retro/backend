@@ -6,6 +6,6 @@ export default class Shock extends SpellEffect {
     apply(target, caster) {
         super.apply(target, caster);
 
-        return `${target.name} got a shock sent through them by ${caster.name}!`
+        return `${target.name} got a shock sent through them by ${caster.name}!`;
     }
 }

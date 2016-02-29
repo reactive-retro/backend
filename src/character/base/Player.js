@@ -4,7 +4,6 @@ import _ from 'lodash';
 import Character from './Character';
 import DEFAULTS from '../../static/chardefaults';
 import SkillManager from '../../objects/skillmanager';
-import dbPromise from '../../objects/db';
 import save, { selectiveSave } from '../functions/save';
 import { monstertoken as generateMonsterToken } from '../../functions/world/nearbymonsters';
 
@@ -46,12 +45,12 @@ export default class Player extends Character {
 
     handleDefaults() {
 
-        var defaultWeapon = _.findWhere(this.inventory, {type: 'weapon', isDefault: true});
+        const defaultWeapon = _.findWhere(this.inventory, { type: 'weapon', isDefault: true });
         if(!this.equipment.weapon.isDefault && !defaultWeapon) {
             this.inventory.push(DEFAULTS.defaultEquipment.weapon());
         }
 
-        var defaultArmor = _.findWhere(this.inventory, {type: 'armor', isDefault: true});
+        const defaultArmor = _.findWhere(this.inventory, { type: 'armor', isDefault: true });
         if(!this.equipment.armor.isDefault && !defaultArmor) {
             this.inventory.push(DEFAULTS.defaultEquipment.armor());
         }

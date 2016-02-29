@@ -1,12 +1,7 @@
 
-import places from 'googleplaces';
 import seedrandom from 'seedrandom';
-import _ from 'lodash';
 
-import MESSAGES from '../../static/messages';
-import SETTINGS from '../../static/settings';
-
-import monstergenerate, { verify as monsterverify } from '../../objects/monstergenerator';
+import monstergenerate from '../../objects/monstergenerator';
 import { calcDistanceBetween } from '../helpers';
 import availableMonsters from './availablemonsters';
 

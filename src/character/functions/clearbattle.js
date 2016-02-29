@@ -16,5 +16,5 @@ export default async (name) => {
 
     // clear EVERY battle that ONLY has this player present
     // there will need to be more done for party battles
-    battles.deleteMany({ players: { $size: 1, $in: [ name ]}}, _.noop);
+    battles.deleteMany({ players: { $size: 1, $in: [name] } }, _.noop);
 };

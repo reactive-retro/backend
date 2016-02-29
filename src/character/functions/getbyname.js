@@ -9,7 +9,7 @@ export default async (name) => {
     const players = db.collection('players');
 
     return new Promise((resolve, reject) => {
-        players.findOne({name: name}, (err, doc) => {
+        players.findOne({ name: name }, (err, doc) => {
 
             if (err) {
                 return reject({ err, msg: MESSAGES.GENERIC });

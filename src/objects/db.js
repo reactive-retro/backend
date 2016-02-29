@@ -18,10 +18,10 @@ const connectionPromise = new Promise((resolve, reject) => {
             return reject(err);
         }
 
-        db.collection('players').createIndex({name: 1}, {unique: true}, _.noop);
-        db.collection('players').updateMany({}, {$set: {battleId: null}}, _.noop);
+        db.collection('players').createIndex({ name: 1 }, { unique: true }, _.noop);
+        db.collection('players').updateMany({}, { $set: { battleId: null } }, _.noop);
         db.collection('battles').deleteMany({}, _.noop);
-        db.collection('homepointPlaces').createIndex({location: 1}, _.noop);
+        db.collection('homepointPlaces').createIndex({ location: 1 }, _.noop);
         db.collection('monsters').deleteMany({}, () => {
             db.collection('monsters').insertMany(monsterHjson, _.noop);
         });

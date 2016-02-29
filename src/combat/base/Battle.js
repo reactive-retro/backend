@@ -12,7 +12,7 @@ import save from './../functions/save';
 const randomBetween = (min, max) => Math.random() * (max - min) + min;
 
 export default class Battle {
-    constructor({players, monsters, _id, actions}) {
+    constructor({ players, monsters, _id, actions }) {
         this._id = _id;
         this.players = players;
         this.monsters = _.map(monsters, m => new Monster(m));
@@ -67,7 +67,7 @@ export default class Battle {
          *  - duration
          *  - mp cost
          */
-        let multiplier = Math.max(1, caster.calculateMultiplier(skill.spellName)); // monsters get a default multiplier of 1 for all skills
+        const multiplier = Math.max(1, caster.calculateMultiplier(skill.spellName)); // monsters get a default multiplier of 1 for all skills
 
         caster.stats.mp.sub(skill.spellCost * multiplier);
         caster.addCooldown(skill.spellName, skill.spellCooldown * multiplier);
@@ -209,7 +209,7 @@ export default class Battle {
         let skillRef = null;
 
         if(!isMonster) {
-            let { skill, target } = this.actions[me.name];
+            const { skill, target } = this.actions[me.name];
 
             skillRef = _.find(validSkills, { spellName: skill });
 
@@ -251,7 +251,7 @@ export default class Battle {
 
         this.actions = {};
         _.each(this.playerData, player => {
-            player.save()
+            player.save();
         });
         this.save();
 
@@ -313,7 +313,7 @@ export default class Battle {
         if(this.isMonsterId(id)) {
             return _.find(this.monsters, { id });
         }
-        return _.find(this.playerData, { name: id })
+        return _.find(this.playerData, { name: id });
     }
 
     // guids are >20 chars, char names are capped at 19 chars

@@ -10,4 +10,4 @@ export default async (socket, player, emitPlayer = true) => {
         const monsters = await nearbyMonsters(player.homepoint, player.currentLevel);
         socket.emit('update:monsters', monsters);
     }
-}
+};

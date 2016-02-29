@@ -16,23 +16,23 @@ export default (socket) => {
     const skillChange = async ({ name, skillName, skillSlot }, respond) => {
 
         if(!socket.getAuthToken()) {
-            return respond({msg: MESSAGES.INVALID_TOKEN});
+            return respond({ msg: MESSAGES.INVALID_TOKEN });
         }
 
         if(!name) {
-            return respond({msg: MESSAGES.NO_NAME});
+            return respond({ msg: MESSAGES.NO_NAME });
         }
 
         if(skillName !== null && !SkillManager.doesSkillExist(skillName)) {
-            return respond({msg: MESSAGES.NO_SKILL});
+            return respond({ msg: MESSAGES.NO_SKILL });
         }
 
         if(SkillManager.isSkillDisabled(skillName)) {
-            return respond({msg: MESSAGES.SKILL_DISABLED});
+            return respond({ msg: MESSAGES.SKILL_DISABLED });
         }
 
         if(!_.isNumber(skillSlot) || skillSlot < MIN_SLOT || skillSlot > MAX_SLOT || skillSlot % 1 !== 0) {
-            return respond({msg: MESSAGES.BAD_SLOT})
+            return respond({ msg: MESSAGES.BAD_SLOT });
         }
 
         let player = null;
@@ -40,11 +40,11 @@ export default (socket) => {
         try {
             player = await getPlayer(name);
         } catch(e) {
-            return respond({msg: e.msg});
+            return respond({ msg: e.msg });
         }
 
         if(player.battleId) {
-            return respond({msg: MESSAGES.CURRENTLY_IN_COMBAT});
+            return respond({ msg: MESSAGES.CURRENTLY_IN_COMBAT });
         }
 
         player.skills[skillSlot] = skillName || undefined;
@@ -52,7 +52,7 @@ export default (socket) => {
 
         updatePlayer(socket, player);
 
-        respond(null, {msg: MESSAGES.SKILL_CHANGE_SUCCESS});
+        respond(null, { msg: MESSAGES.SKILL_CHANGE_SUCCESS });
 
     };
 

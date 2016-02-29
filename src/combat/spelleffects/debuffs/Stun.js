@@ -6,6 +6,6 @@ export default class Stun extends SpellEffect {
     apply(target, caster) {
         super.apply(target, caster);
 
-        return `${target.name} was stunned by ${caster.name}!`
+        return `${target.name} was stunned by ${caster.name}!`;
     }
 }

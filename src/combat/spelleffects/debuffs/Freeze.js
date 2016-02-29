@@ -6,6 +6,6 @@ export default class Freeze extends SpellEffect {
     apply(target, caster) {
         super.apply(target, caster);
 
-        return `${target.name} was turned into a block of ice by ${caster.name}!`
+        return `${target.name} was turned into a block of ice by ${caster.name}!`;
     }
 }

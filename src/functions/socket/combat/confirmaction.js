@@ -13,15 +13,15 @@ export default (socket, scWorker) => {
     const confirmAction = async ({ name, target, skill }, respond) => {
 
         if(!name) {
-            return respond({msg: MESSAGES.NO_NAME});
+            return respond({ msg: MESSAGES.NO_NAME });
         }
 
         if(!target) {
-            return respond({msg: MESSAGES.NO_COMBAT_TARGET});
+            return respond({ msg: MESSAGES.NO_COMBAT_TARGET });
         }
 
         if(!skill) {
-            return respond({msg: MESSAGES.NO_COMBAT_SKILL});
+            return respond({ msg: MESSAGES.NO_COMBAT_SKILL });
         }
 
         let player = null;
@@ -29,16 +29,16 @@ export default (socket, scWorker) => {
         try {
             player = await getPlayer(name);
         } catch(e) {
-            return respond({msg: e.msg});
+            return respond({ msg: e.msg });
         }
 
         if(!player.battleId) {
-            return respond({msg: MESSAGES.NOT_IN_COMBAT});
+            return respond({ msg: MESSAGES.NOT_IN_COMBAT });
         }
 
         const battle = await addBattleAction(player.battleId, { name, target, skill });
 
-        respond(null, {msg: MESSAGES.CONFIRMED_SKILL});
+        respond(null, { msg: MESSAGES.CONFIRMED_SKILL });
 
         if(!battle.isReadyToProcess) return;
 

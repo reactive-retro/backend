@@ -7,5 +7,5 @@ export default async (homepoint) => {
     const db = await dbPromise();
     const homepointPlaces = db.collection('homepointPlaces');
 
-    db.deleteMany({ location: homepoint }, _.noop);
+    homepointPlaces.deleteMany({ location: homepoint }, _.noop);
 };

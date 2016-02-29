@@ -61,6 +61,6 @@ export default class SkillManager {
             .reject(skill => skill.spellDisabled)
             .reject(skill => player.stats.mp.lessThan(skill.spellCost * player.calculateMultiplier(skill.spellName)))
             .reject(skill => player.isCoolingDown(skill.spellName))
-            .value()
+            .value();
     }
 }

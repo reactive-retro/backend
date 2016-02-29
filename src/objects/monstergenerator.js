@@ -45,7 +45,7 @@ export default (baseOpts, availableMonsters = []) => {
     monster.verifyToken = generate(monster);
 
     return _.pick(monster, ['name', 'profession', 'professionLevels', 'skills', 'location', 'rating', 'seed', 'verifyToken']);
-}
+};
 
 export const generate = (monster) => {
     const props = _.pick(monster, ['name', 'profession', 'professionLevels', 'skills', 'location', 'rating', 'seed']);

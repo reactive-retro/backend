@@ -1,10 +1,7 @@
 
-import _ from 'lodash';
-
 import getPlayer from '../../../character/functions/getbyname';
 import MESSAGES from '../../../static/messages';
 
-import SkillManager from '../../../objects/skillmanager';
 import updatePlayer from '../../updaters/player';
 
 export default (socket) => {
@@ -12,15 +9,15 @@ export default (socket) => {
     const changeLocation = async ({ name, coords }, respond) => {
 
         if(!socket.getAuthToken()) {
-            return respond({msg: MESSAGES.INVALID_TOKEN});
+            return respond({ msg: MESSAGES.INVALID_TOKEN });
         }
 
         if(!name) {
-            return respond({msg: MESSAGES.NO_NAME});
+            return respond({ msg: MESSAGES.NO_NAME });
         }
 
         if(!coords) {
-            return respond({msg: MESSAGES.NO_COORDS});
+            return respond({ msg: MESSAGES.NO_COORDS });
         }
 
         let player = null;
@@ -28,7 +25,7 @@ export default (socket) => {
         try {
             player = await getPlayer(name);
         } catch(e) {
-            return respond({msg: e.msg});
+            return respond({ msg: e.msg });
         }
 
         updatePlayer(socket, player, false);

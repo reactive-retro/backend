@@ -16,7 +16,7 @@ export default (socket) => {
         }
 
         if(!name) {
-            return respond({msg: MESSAGES.NO_NAME});
+            return respond({ msg: MESSAGES.NO_NAME });
         }
 
         let player = null;
@@ -24,11 +24,11 @@ export default (socket) => {
         try {
             player = await getPlayer(name);
         } catch(e) {
-            return respond({msg: e.msg});
+            return respond({ msg: e.msg });
         }
 
         if(player.battleId) {
-            return respond({msg: MESSAGES.ALREADY_IN_COMBAT});
+            return respond({ msg: MESSAGES.ALREADY_IN_COMBAT });
         }
 
         const party = [player];
@@ -36,14 +36,14 @@ export default (socket) => {
         let battle = null;
 
         try {
-            battle = await createBattle({ players: party, monsters});
+            battle = await createBattle({ players: party, monsters });
         } catch(e) {
-            return respond({msg: MESSAGES.BAD_COMBAT});
+            return respond({ msg: MESSAGES.BAD_COMBAT });
         }
 
         socket.emit('combat:entered', battle.transmitObject());
 
-        respond({msg: MESSAGES.BATTLE_ENTERED});
+        respond({ msg: MESSAGES.BATTLE_ENTERED });
     };
 
     socket.on('combat:enter', enterCombat);

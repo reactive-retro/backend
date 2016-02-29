@@ -10,15 +10,15 @@ export default (socket) => {
     const equip = async ({ name, itemId }, respond) => {
 
         if(!socket.getAuthToken()) {
-            return respond({msg: MESSAGES.INVALID_TOKEN});
+            return respond({ msg: MESSAGES.INVALID_TOKEN });
         }
 
         if(!name) {
-            return respond({msg: MESSAGES.NO_NAME});
+            return respond({ msg: MESSAGES.NO_NAME });
         }
 
         if(!itemId) {
-            return respond({msg: MESSAGES.NO_ITEM});
+            return respond({ msg: MESSAGES.NO_ITEM });
         }
 
         let player = null;
@@ -26,17 +26,17 @@ export default (socket) => {
         try {
             player = await getPlayer(name);
         } catch(e) {
-            return respond({msg: e.msg});
+            return respond({ msg: e.msg });
         }
 
         if(player.battleId) {
-            return respond({msg: MESSAGES.CURRENTLY_IN_COMBAT});
+            return respond({ msg: MESSAGES.CURRENTLY_IN_COMBAT });
         }
 
-        var item = _.findWhere(player.inventory, {itemId: itemId});
+        const item = _.findWhere(player.inventory, { itemId: itemId });
 
         if (!item) {
-            return respond({msg: MESSAGES.BAD_ITEM});
+            return respond({ msg: MESSAGES.BAD_ITEM });
         }
 
         // level requirements, maybe.
@@ -49,7 +49,7 @@ export default (socket) => {
 
         updatePlayer(socket, player);
 
-        respond(null, {msg: MESSAGES.EQUIP_SUCCESS});
+        respond(null, { msg: MESSAGES.EQUIP_SUCCESS });
 
     };
 

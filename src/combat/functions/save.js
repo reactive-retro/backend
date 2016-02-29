@@ -12,6 +12,6 @@ export default async (battle) => {
 
     } else {
         const battles = db.collection('battles');
-        battles.updateOne({_id: saveObject._id}, saveObject, _.noop);
+        battles.updateOne({ _id: saveObject._id }, saveObject, _.noop);
     }
 };
