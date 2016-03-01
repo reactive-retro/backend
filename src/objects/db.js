@@ -22,7 +22,7 @@ const connectionPromise = new Promise((resolve, reject) => {
     MongoClient.connect(connectionString, async (err, db) => {
 
         if(err) {
-            Logger.error(err);
+            Logger.error('DB:Init', err);
             return reject(err);
         }
 
