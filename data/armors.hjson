@@ -1,0 +1,12 @@
+[
+
+{ name: "Breastplate",  baseQuality: 0, dropRate: 25, minLevel: 1, stats: { vit: 5 } }
+{ name: "Chainmail",    baseQuality: 0, dropRate: 25, minLevel: 1, stats: { vit: 3, dex: 1, str: 1 } }
+{ name: "Coat",         baseQuality: 0, dropRate: 25, minLevel: 1, stats: { mnt: 2, vit: 2, dex: 1 } }
+{ name: "Fullplate",    baseQuality: 0, dropRate: 25, minLevel: 1, stats: { vit: 8, dex: -2, acc: -1 } }
+{ name: "Garb",         baseQuality: 0, dropRate: 25, minLevel: 1, stats: { mnt: 3, vit: 2 } }
+{ name: "Robe",         baseQuality: 0, dropRate: 25, minLevel: 1, stats: { mnt: 5 } }
+{ name: "Scalemail",    baseQuality: 0, dropRate: 25, minLevel: 1, stats: { vit: 1, dex: 1, mnt: 1, acc: 1, str: 1 } }
+{ name: "Vest",         baseQuality: 0, dropRate: 25, minLevel: 1, stats: { vit: 2, dex: 2, acc: 1 } }
+
+]

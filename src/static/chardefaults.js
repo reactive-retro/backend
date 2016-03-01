@@ -39,7 +39,7 @@ export default {
         Fighter: () => ({
             weapon: {
                 type: 'weapon',
-                name: 'Knife',
+                name: 'Frying Pan',
                 itemId: itemId(),
                 stats: {
                     str: 2
@@ -57,10 +57,10 @@ export default {
         Mage: () => ({
             weapon: {
                 type: 'weapon',
-                name: 'Wand',
+                name: 'Twig',
                 itemId: itemId(),
                 stats: {
-                    int: 2
+                    mnt: 2
                 }
             },
             armor: {
@@ -75,7 +75,7 @@ export default {
         Thief: () => ({
             weapon: {
                 type: 'weapon',
-                name: 'Dagger',
+                name: 'Kitchen Knife',
                 itemId: itemId(),
                 stats: {
                     dex: 2

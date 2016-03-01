@@ -1,0 +1,10 @@
+[
+
+{ name: "Reinforced",     minLevel: 1, stats: { vit: 2 } }
+{ name: "Strong",         minLevel: 1, stats: { str: 2 } }
+{ name: "Nimble",         minLevel: 1, stats: { dex: 2 } }
+{ name: "Lucky",          minLevel: 1, stats: { luk: 2 } }
+{ name: "Wise",           minLevel: 1, stats: { mnt: 2 } }
+{ name: "Accurate",       minLevel: 1, stats: { acc: 2 } }
+
+]
