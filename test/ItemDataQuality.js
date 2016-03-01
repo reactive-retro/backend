@@ -10,27 +10,27 @@ let suffixData = null;
 let attributeData = null;
 
 test.serial('Armor data is valid hjson', t => {
-    armorData = loadDataFile('armors');
+    armorData = loadDataFile('armor');
     t.pass();
 });
 
 test.serial('Weapon data is valid hjson', t => {
-    weaponData = loadDataFile('weapons');
+    weaponData = loadDataFile('weapon');
     t.pass();
 });
 
 test.serial('Attribute data is valid hjson', t => {
-    attributeData = loadDataFile('attributes');
+    attributeData = loadDataFile('attribute');
     t.pass();
 });
 
 test.serial('Prefix data is valid hjson', t => {
-    prefixData = loadDataFile('prefixes');
+    prefixData = loadDataFile('prefix');
     t.pass();
 });
 
 test.serial('Suffix data is valid hjson', t => {
-    suffixData = loadDataFile('suffixes');
+    suffixData = loadDataFile('suffix');
     t.pass();
 });
 

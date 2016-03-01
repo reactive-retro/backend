@@ -9,7 +9,7 @@ const validProfessions = require('require-dir')('../src/character/professions');
 const isValidProfession = (profession) => validProfessions[profession];
 
 test.serial('Monster data is valid hjson', t => {
-    monsterData = loadDataFile('monsters');
+    monsterData = loadDataFile('monster');
     t.pass();
 });
 

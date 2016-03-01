@@ -1,0 +1,17 @@
+[
+
+{ name: "Fragile",        minLevel: 1, weight: 1, levelMod: -1, stats: { vit: -1 } }
+{ name: "Weak",           minLevel: 1, weight: 1, levelMod: -1, stats: { str: -1 } }
+{ name: "Sluggish",       minLevel: 1, weight: 1, levelMod: -1, stats: { dex: -1 } }
+{ name: "Unlucky",        minLevel: 1, weight: 1, levelMod: -1, stats: { luk: -1 } }
+{ name: "Unwise",         minLevel: 1, weight: 1, levelMod: -1, stats: { mnt: -1 } }
+{ name: "Inaccurate",     minLevel: 1, weight: 1, levelMod: -1, stats: { acc: -1 } }
+
+{ name: "Reinforced",     minLevel: 1, weight: 1, levelMod: 1,  stats: { vit: 2 } }
+{ name: "Strong",         minLevel: 1, weight: 1, levelMod: 1,  stats: { str: 2 } }
+{ name: "Nimble",         minLevel: 1, weight: 1, levelMod: 1,  stats: { dex: 2 } }
+{ name: "Lucky",          minLevel: 1, weight: 1, levelMod: 1,  stats: { luk: 2 } }
+{ name: "Wise",           minLevel: 1, weight: 1, levelMod: 1,  stats: { mnt: 2 } }
+{ name: "Accurate",       minLevel: 1, weight: 1, levelMod: 1,  stats: { acc: 2 } }
+
+]
