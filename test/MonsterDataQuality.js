@@ -25,6 +25,11 @@ test('Monsters have valid attribute values', t => {
         t.true(monster.maxLevel <= 100);
         t.true(monster.minLevel <= monster.maxLevel);
 
+        if(monster.equipment) {
+            if(monster.equipment.armor)  t.true(monster.equipment.armor > 0  && monster.equipment.armor <= 100);
+            if(monster.equipment.weapon) t.true(monster.equipment.weapon > 0 && monster.equipment.weapon <= 100);
+        }
+
         if(monster.skills) {
             t.true(Array.isArray(monster.skills));
             t.true(monster.skills.length > 0);

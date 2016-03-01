@@ -52,7 +52,7 @@ export default async ({ lat, lon }, playerLevel) => {
     const seed = getSeed();
 
     const rng = seedrandom(seed);
-    const numMonsters = randomBetween(rng, 650, 850);
+    const numMonsters = randomBetween(rng, 500, 650);
 
     const monsters = [];
 
@@ -80,8 +80,9 @@ export default async ({ lat, lon }, playerLevel) => {
         monsters.push(monster);
     }
 
-    return new Promise((resolve) => {
-        resolve(monsters);
+    return new Promise(async (resolve) => {
+        const allMonsters = await Promise.all(monsters);
+        resolve(allMonsters);
     });
 
 };

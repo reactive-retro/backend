@@ -18,7 +18,7 @@ export default class Battle {
         this.players = players;
         this.monsters = _.map(monsters, m => new Monster(m));
         this.actions = actions || {};
-
+        
         this.isReady = Promise.all(_.map(this.players, getPlayer)).then(playerData => {
             this.playerData = playerData;
         });

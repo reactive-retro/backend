@@ -7,7 +7,7 @@ export default class Item {
         this.name = name;
         this.isDefault = isDefault;
         this.stats = stats;
-        this.levelRequirement = Math.max(1, levelRequirement);
+        this.levelRequirement = levelRequirement ? Math.max(1, levelRequirement) : 1;
         this.quality = quality || 0;
         this.value = this.calcValue();
     }

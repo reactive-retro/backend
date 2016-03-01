@@ -31,6 +31,12 @@ export default class Character {
         return this.professionLevels[this.profession];
     }
 
+    equip(item) {
+        this.inventory.push(this.equipment[item.type]);
+        _.remove(this.inventory, item);
+        this.equipment[item.type] = item;
+    }
+
     rollDice(skill, roll) {
         const multiplier = this.calculateMultiplier(skill);
         let result = 0;

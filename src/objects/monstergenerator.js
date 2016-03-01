@@ -1,9 +1,11 @@
 
 import _ from 'lodash';
 import crypto from 'crypto';
+import Dice from 'dice.js';
 
 import Monster from '../character/base/Monster';
 import SkillManager from '../objects/skillmanager';
+import ItemGenerator from '../objects/itemgenerator';
 
 import { weightedChoice, singleChoice } from '../functions/helpers';
 
@@ -25,7 +27,7 @@ const chooseSkills = (possibleSkills, rating, seed, currentSkills = []) => {
     return skills;
 };
 
-export default (baseOpts, availableMonsters = []) => {
+export default async (baseOpts, availableMonsters) => {
     const opts = _.clone(baseOpts);
 
     const chosenMonster = weightedChoice(availableMonsters, opts.seed);
@@ -43,13 +45,22 @@ export default (baseOpts, availableMonsters = []) => {
     opts.skills = chooseSkills(SkillManager.getSkills(opts), opts.rating, opts.seed, chosenMonster.skills);
 
     const monster = new Monster(opts);
+
+    if(chosenMonster.equipment) {
+        const { weapon, armor } = chosenMonster.equipment;
+        if(weapon && +Dice.roll('1d100') <= weapon) monster.equip(await ItemGenerator.generate(monster, 'weapon', opts.seed+'weapon'));
+        if(armor  && +Dice.roll('1d100') <= armor)  monster.equip(await ItemGenerator.generate(monster, 'armor',  opts.seed+'armor'));
+    }
+
     monster.verifyToken = generate(monster);
 
-    return _.pick(monster, ['name', 'profession', 'goldDrop', 'professionLevels', 'skills', 'location', 'rating', 'seed', 'verifyToken']);
+    return new Promise(resolve => {
+        resolve(_.pick(monster, ['name', 'profession', 'goldDrop', 'equipment', 'professionLevels', 'skills', 'location', 'rating', 'seed', 'verifyToken']));
+    });
 };
 
 export const generate = (monster) => {
-    const props = _.pick(monster, ['name', 'profession', 'goldDrop', 'professionLevels', 'skills', 'location', 'rating', 'seed']);
+    const props = _.pick(monster, ['name', 'profession', 'goldDrop', 'equipment', 'professionLevels', 'skills', 'location', 'rating', 'seed']);
     return crypto.createHash('md5').update(serverSalt + JSON.stringify(props)).digest('hex');
 };
 

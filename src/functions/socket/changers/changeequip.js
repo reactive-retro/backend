@@ -41,9 +41,7 @@ export default (socket) => {
 
         // level requirements, maybe.
 
-        player.inventory.push(player.equipment[item.type]);
-        player.inventory = _.without(player.inventory, item);
-        player.equipment[item.type] = item;
+        player.equip(item);
         player.calculate();
         player.save();
 
