@@ -40,7 +40,6 @@ export default (baseOpts, availableMonsters = []) => {
     }
 
     opts.skills = chooseSkills(SkillManager.getSkills(opts), opts.rating, opts.seed, chosenMonster.skills);
-    console.log(opts.name, opts.skills, opts.rating);
 
     const monster = new Monster(opts);
     monster.verifyToken = generate(monster);
