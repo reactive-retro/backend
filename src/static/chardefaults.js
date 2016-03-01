@@ -1,5 +1,6 @@
 
-import { itemId } from '../functions/helpers';
+import Armor from '../items/Armor';
+import Weapon from '../items/Weapon';
 
 export default {
     unlockedProfessions: ['Thief', 'Fighter', 'Mage'],
@@ -16,96 +17,25 @@ export default {
     },
     skills: [null, null, null, null, null, null],
     defaultEquipment: {
-        armor: () => {
-            return {
-                type: 'armor',
-                name: 'Town Clothes',
-                isDefault: true,
-                itemId: itemId(),
-                stats: {}
-            };
-        },
-        weapon: () => {
-            return {
-                type: 'weapon',
-                name: 'Fist',
-                isDefault: true,
-                itemId: itemId(),
-                stats: {}
-            };
-        }
+        armor: () => new Armor({ name: 'Town Clothes', isDefault: true }),
+        weapon: () => new Weapon({ name: 'Fist', isDefault: true })
     },
     equipment: {
         Fighter: () => ({
-            weapon: {
-                type: 'weapon',
-                name: 'Frying Pan',
-                itemId: itemId(),
-                stats: {
-                    str: 2
-                }
-            },
-            armor: {
-                type: 'armor',
-                name: 'Fighter Armor',
-                itemId: itemId(),
-                stats: {
-                    dex: 1
-                }
-            }
+            weapon: new Weapon({ name: 'Frying Pan', stats: { str: 2 } }),
+            armor: new Armor({ name: 'Fighter Armor', stats: { dex: 1, vit: 1 } })
         }),
         Mage: () => ({
-            weapon: {
-                type: 'weapon',
-                name: 'Twig',
-                itemId: itemId(),
-                stats: {
-                    mnt: 2
-                }
-            },
-            armor: {
-                type: 'armor',
-                name: 'Robe',
-                itemId: itemId(),
-                stats: {
-                    dex: 1
-                }
-            }
+            weapon: new Weapon({ name: 'Twig', stats: { mnt: 2 } }),
+            armor: new Armor({ name: 'Robe', stats: { mnt: 1, vit: 1 } })
         }),
         Thief: () => ({
-            weapon: {
-                type: 'weapon',
-                name: 'Kitchen Knife',
-                itemId: itemId(),
-                stats: {
-                    dex: 2
-                }
-            },
-            armor: {
-                type: 'armor',
-                name: 'Leather Armor',
-                itemId: itemId(),
-                stats: {
-                    vit: 1
-                }
-            }
+            weapon: new Weapon({ name: 'Kitchen Knife', stats: { dex: 2 } }),
+            armor: new Armor({ name: 'Leather Armor', stats: { vit: 1, dex: 1 } })
         }),
         Monster: () => ({
-            weapon: {
-                type: 'weapon',
-                name: 'Claw',
-                stats: {
-                    str: 1
-                }
-            },
-            armor: {
-                type: 'armor',
-                name: 'Pelt',
-                itemId: itemId(),
-                stats: {
-                    dex: 1
-                }
-            }
+            weapon: new Weapon({ name: 'Claw' }),
+            armor: new Armor({ name: 'Pelt' })
         })
     }
 };
