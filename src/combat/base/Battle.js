@@ -18,7 +18,9 @@ export default class Battle {
         this.players = players;
         this.monsters = _.map(monsters, m => new Monster(m));
         this.actions = actions || {};
-        
+
+        console.log(this.monsters[0].equipment, this.monsters[0].inventory);
+
         this.isReady = Promise.all(_.map(this.players, getPlayer)).then(playerData => {
             this.playerData = playerData;
         });
@@ -276,6 +278,14 @@ export default class Battle {
         const goldGained = _.reduce(this.monsters, (prev, monster) => prev + +Dice.roll(monster.goldDrop), 0);
         const goldPerPerson = Math.floor(goldGained/this.players.length);
 
+        const droppedItems = _(this.monsters).map(monster => {
+            const { armor, weapon } = monster.equipment;
+            return [
+                armor.dropRate  && +Dice.roll('1d100') <= armor.dropRate  ? armor : null,
+                weapon.dropRate && +Dice.roll('1d100') <= weapon.dropRate ? weapon : null
+            ];
+        }).flatten().compact().value();
+
         const messages = [
             'Heroes win!'
         ];
@@ -284,6 +294,16 @@ export default class Battle {
             player.addGold(goldPerPerson);
             messages.push(`${player.name} earned 0 XP and got ${goldPerPerson} Gold.`);
         });
+
+        const playersWithAvailableSpace = _.filter(this.playerData, player => player.canAddToInventory());
+
+        if(playersWithAvailableSpace.length > 0) {
+            _.each(droppedItems, item => {
+                const chosenPlayer = _.sample(playersWithAvailableSpace);
+                chosenPlayer.addToInventory(item);
+                messages.push(`${chosenPlayer.name} found ${item.name}!`);
+            });
+        }
 
         return messages;
     }

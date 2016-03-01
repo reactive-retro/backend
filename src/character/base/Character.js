@@ -6,6 +6,7 @@ import Dice from 'dice.js';
 import SpellEffectManager from '../../objects/spelleffectmanager';
 
 import DEFAULTS from '../../static/chardefaults';
+import SETTINGS from '../../static/settings';
 
 export default class Character {
     constructor({ name, profession, professionLevels, unlockedProfessions, stats, skills, inventory, equipment, statusEffects, cooldowns }) {
@@ -31,9 +32,21 @@ export default class Character {
         return this.professionLevels[this.profession];
     }
 
-    equip(item) {
-        this.inventory.push(this.equipment[item.type]);
+    canAddToInventory() {
+        return this.inventory.length <= SETTINGS.INVENTORY_SIZE;
+    }
+
+    addToInventory(item) {
+        this.inventory.push(item);
+    }
+
+    removeFromInventory(item) {
         _.remove(this.inventory, item);
+    }
+
+    equip(item) {
+        this.addToInventory(this.equipment[item.type]);
+        this.removeFromInventory(item);
         this.equipment[item.type] = item;
     }
 
