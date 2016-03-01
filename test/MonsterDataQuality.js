@@ -1,9 +1,7 @@
 
 import test from 'ava';
 
-import { readFileSync } from 'fs';
-import path from 'path';
-import hjson from 'hjson';
+import { loadDataFile } from './helpers';
 
 let monsterData = null;
 
@@ -11,7 +9,7 @@ const validProfessions = require('require-dir')('../src/character/professions');
 const isValidProfession = (profession) => validProfessions[profession];
 
 test.serial('Monster data is valid hjson', t => {
-    monsterData = hjson.parse(readFileSync(path.join(__dirname, '..', 'data', 'monsters.hjson'), 'utf8'));
+    monsterData = loadDataFile('monsters');
     t.pass();
 });
 

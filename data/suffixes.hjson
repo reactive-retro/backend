@@ -1,9 +1,9 @@
 [
 
-{ name: "of the Eagle",     minLevel: 1, levelMod: 1, stats: { dex: 5 } }
-{ name: "of the Bear",      minLevel: 1, levelMod: 1, stats: { vit: 5 } }
-{ name: "of the Lion",      minLevel: 1, levelMod: 1, stats: { str: 5 } }
-{ name: "of the Crow",      minLevel: 1, levelMod: 1, stats: { mnt: 5 } }
-{ name: "of the Dodo",      minLevel: 1, levelMod: 1, stats: { luk: 5 } }
+{ name: "of the Eagle",     minLevel: 1, levelMod: 2, weight: 1, stats: { dex: 5 } }
+{ name: "of the Bear",      minLevel: 1, levelMod: 2, weight: 1, stats: { vit: 5 } }
+{ name: "of the Lion",      minLevel: 1, levelMod: 2, weight: 1, stats: { str: 5 } }
+{ name: "of the Crow",      minLevel: 1, levelMod: 2, weight: 1, stats: { mnt: 5 } }
+{ name: "of the Dodo",      minLevel: 1, levelMod: 2, weight: 1, stats: { luk: 5 } }
 
 ]

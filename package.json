@@ -45,7 +45,7 @@
   },
   "ava": {
     "files": [
-      "./test/**/*"
+      "./test/**/*Quality.js"
     ],
     "require": [
       "babel-register"
