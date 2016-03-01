@@ -273,11 +273,19 @@ export default class Battle {
     }
 
     playerWin() {
-        return [
-            'You win!',
-            'You earned 0 XP and got 0 Gold.',
-            'You found a Knife!'
+        const goldGained = _.reduce(this.monsters, (prev, monster) => prev + +Dice.roll(monster.goldDrop), 0);
+        const goldPerPerson = Math.floor(goldGained/this.players.length);
+
+        const messages = [
+            'Heroes win!'
         ];
+
+        _.each(this.playerData, player => {
+            player.addGold(goldPerPerson);
+            messages.push(`${player.name} earned 0 XP and got ${goldPerPerson} Gold.`);
+        });
+
+        return messages;
     }
 
     playerLose() {
@@ -285,7 +293,7 @@ export default class Battle {
             player.fullheal();
         });
         return [
-            'You lost!'
+            'Heroes lost!'
         ];
     }
 

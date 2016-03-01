@@ -13,7 +13,8 @@ export default {
         vit: 0,
         dex: 0,
         mnt: 0,
-        luk: 0
+        luk: 0,
+        acc: 0
     },
     skills: [null, null, null, null, null, null],
     defaultEquipment: {

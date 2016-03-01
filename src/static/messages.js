@@ -41,5 +41,7 @@ export default {
     CONFIRMED_SKILL: 'Confirmed skill usage.',
 
     NO_SETTINGS: 'No option changes specified.',
-    SETTING_SUCCESS: 'Options changed successfully!'
+    SETTING_SUCCESS: 'Options changed successfully!',
+
+    SELL_SUCCESS: 'Item sold successfully!'
 };

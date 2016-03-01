@@ -32,6 +32,7 @@ export default (baseOpts, availableMonsters = []) => {
 
     opts.name = chosenMonster.name;
     opts.profession = chosenMonster.profession;
+    opts.goldDrop = chosenMonster.goldDrop;
     opts.professionLevels = { [opts.profession]: opts.baseLevel };
 
     // some monsters can have auxiliary classes
@@ -44,11 +45,11 @@ export default (baseOpts, availableMonsters = []) => {
     const monster = new Monster(opts);
     monster.verifyToken = generate(monster);
 
-    return _.pick(monster, ['name', 'profession', 'professionLevels', 'skills', 'location', 'rating', 'seed', 'verifyToken']);
+    return _.pick(monster, ['name', 'profession', 'goldDrop', 'professionLevels', 'skills', 'location', 'rating', 'seed', 'verifyToken']);
 };
 
 export const generate = (monster) => {
-    const props = _.pick(monster, ['name', 'profession', 'professionLevels', 'skills', 'location', 'rating', 'seed']);
+    const props = _.pick(monster, ['name', 'profession', 'goldDrop', 'professionLevels', 'skills', 'location', 'rating', 'seed']);
     return crypto.createHash('md5').update(serverSalt + JSON.stringify(props)).digest('hex');
 };
 

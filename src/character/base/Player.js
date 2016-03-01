@@ -61,6 +61,11 @@ export default class Player extends Character {
         }
     }
 
+    addGold(gold) {
+        if(!this.stats.gold || this.stats.gold < 0 || _.isNaN(this.stats.gold)) this.stats.gold = 0;
+        this.stats.gold += gold;
+    }
+
     clearDataOnLogin() {
         this.needsMonsterRefresh = true;
         this.battleId = null;
