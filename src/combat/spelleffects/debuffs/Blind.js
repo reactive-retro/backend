@@ -10,6 +10,6 @@ export default class Blind extends SpellEffect {
 
     unapply(target) {
         super.unapply(target);
-        target.addBuff('acc', 75);
+        target.subBuff('acc', -75);
     }
 }
