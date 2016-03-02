@@ -28,6 +28,7 @@ export default class Player extends Character {
         this.userId = userId;
         this.battleId = battleId;
         this.homepoint = homepoint;
+        this.sellModifier = 4;
 
         this.handleDefaults();
         this.checkForNewMonsters();

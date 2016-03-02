@@ -40,7 +40,7 @@ export default (socket) => {
         }
 
         _.remove(player.inventory, item);
-        player.addGold(Math.floor(item.value / 4));
+        player.addGold(Math.floor(item.value / player.sellModifier));
 
         player.save();
 
