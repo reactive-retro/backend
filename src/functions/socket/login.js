@@ -9,8 +9,6 @@ import MESSAGES from '../../static/messages';
 import Player from '../../character/base/Player';
 import SkillManager from '../../objects/skillmanager';
 
-import nearbyplaces from '../world/nearbyplaces';
-
 import SETTINGS from '../../static/settings';
 
 import updatePlayer from '../updaters/player';
@@ -39,6 +37,7 @@ const respondWithPlayer = async (socket, respond, msg, token, player) => {
     const playerInst = buildPlayerObject(player);
 
     playerInst.clearDataOnLogin();
+    playerInst.sendPlaces = true;
 
     updatePlayer(socket, playerInst);
 
@@ -46,9 +45,6 @@ const respondWithPlayer = async (socket, respond, msg, token, player) => {
 
     socket.emit('update:options', playerInst.options);
     socket.emit('update:skills', SkillManager.getSkills(playerInst));
-
-    const places = await nearbyplaces(player.homepoint);
-    socket.emit('update:places', places);
 };
 
 export default (socket) => {

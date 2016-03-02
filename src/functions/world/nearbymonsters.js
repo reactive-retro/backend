@@ -41,8 +41,8 @@ const rateMonster = (distance) => {
     }
 };
 
-export const monstertoken = () => {
-    return getSeed();
+export const monstertoken = (extraData = '') => {
+    return getSeed() + extraData;
 };
 
 export default async ({ lat, lon }, playerLevel) => {

@@ -34,8 +34,14 @@ export default class Player extends Character {
         this.checkForNewMonsters();
     }
 
+    changeHomepoint(newHomepoint) {
+        this.homepoint = newHomepoint;
+        this.sendPlaces = true;
+        this.checkForNewMonsters();
+    }
+
     checkForNewMonsters() {
-        const checkToken = generateMonsterToken(this);
+        const checkToken = generateMonsterToken(JSON.stringify(this.homepoint));
 
         if(this.monsterToken !== checkToken) {
             this.needsMonsterRefresh = true;

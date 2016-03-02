@@ -34,7 +34,6 @@ export default (socket) => {
 
         clearHomepointData(player.homepoint);
 
-        player.homepoint = homepoint;
         player.save();
 
         updatePlayer(socket, player);
