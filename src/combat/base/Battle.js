@@ -39,7 +39,7 @@ export default class Battle {
             case ActionTargets.SINGLE_ALLY: return fallback ? [fallback] : [_.sample(allyArray)];
             case ActionTargets.SINGLE_ENEMY: return fallback ? [fallback] : [_.sample(enemyArray)];
             default:
-                Logger.error('Combat:Target', 'Invalid enemy targetting', skill, skill.spellTargets);
+                Logger.error('Combat:Target', new Error('Invalid enemy targetting'), skill);
                 return [];
         }
     }
@@ -85,7 +85,7 @@ export default class Battle {
                     if(Dice.roll('1d100') > effData.chance) return '';
                     const Proto = SpellEffectManager.getEffectByName(effect);
                     if(!Proto) {
-                        Logger.error('Combat:Effects', `ERROR: No valid proto: ${Proto}`);
+                        Logger.error('Combat:Effects', new Error(`ERROR: No valid proto: ${Proto}`));
                         return;
                     }
 

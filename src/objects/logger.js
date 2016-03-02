@@ -1,11 +1,10 @@
 
 import rollbar from 'rollbar';
 
-let usingRollbar = false;
+const rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN;
 
-if(process.env.ROLLBAR_ACCESS_TOKEN) {
-    usingRollbar = true;
-    rollbar.init(process.env.ROLLBAR_ACCESS_TOKEN);
+if(rollbarToken) {
+    rollbar.init(rollbarToken);
 }
 
 export default class Logger {
@@ -14,10 +13,18 @@ export default class Logger {
         return `[${new Date()}] {${tag}} ${message}`;
     }
 
-    static error(tag, error) {
+    static error(tag, error, payload) {
         console.error(this._formatMessage(tag, error.message));
-        if(usingRollbar) {
+        if(error.stack) {
+            console.error(error.stack);
+        }
+        if(payload) {
+            console.error('PAYLOAD', payload);
+        }
 
+        if(rollbarToken) {
+            if(payload) rollbar.handleErrorWithPayloadData(error, payload);
+            else        rollbar.handleError(error);
         }
     }
 }

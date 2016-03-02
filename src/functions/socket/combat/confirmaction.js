@@ -47,7 +47,7 @@ export default (socket, scWorker) => {
             const actions = battle.processActions();
             scWorker.exchange.publish(`battle:${battle._id}:results`, { battle: battle.transmitObject(), actions, isDone: battle.isDone });
         } catch(e) {
-            Logger.error('Combat:PreStart', e.stack);
+            Logger.error('Combat:PreStart', e);
         }
     };
 

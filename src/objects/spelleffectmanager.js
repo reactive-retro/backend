@@ -15,7 +15,7 @@ const allSpellEffectsHash = _(spellEffectHierarchy)
 export default class SpellEffectManager {
     static getEffectByName(name) {
         if(!allSpellEffectsHash[name]) {
-            Logger.error('Spell:Init', `ERROR: ${name} is not a valid spell effect.`);
+            Logger.error('Spell:Init', new Error(`${name} is not a valid spell effect.`));
         }
         return allSpellEffectsHash[name].default;
     }
