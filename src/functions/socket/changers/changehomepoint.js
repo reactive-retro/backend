@@ -32,7 +32,12 @@ export default (socket) => {
             return respond({ msg: MESSAGES.CURRENTLY_IN_COMBAT });
         }
 
+        if(!player.canChangeHomepoint) {
+            return respond({ msg: MESSAGES.HOMEPOINT_CHANGE_TOOSOON });
+        }
+
         clearHomepointData(player.homepoint);
+        player.changeHomepoint(homepoint);
 
         player.save();
 

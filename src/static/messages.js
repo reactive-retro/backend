@@ -20,8 +20,9 @@ export default {
     BAD_ITEM: 'Item not present in inventory.',
     EQUIP_SUCCESS: 'Successfully changed equipment.',
 
-    NO_HOMEPOINT: 'Invalid homepoint specified.',
-    HOMEPOINT_CHANGE_SUCCESS: 'Successfully changed homepoint.',
+    NO_HOMEPOINT: 'Invalid Beacon of Light location specified.',
+    HOMEPOINT_CHANGE_SUCCESS: 'Successfully changed Beacon of Light location.',
+    HOMEPOINT_CHANGE_TOOSOON: 'You must wait some time before changing Beacon of Light locations!',
 
     NO_COORDS: 'No location sent.',
 

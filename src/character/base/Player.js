@@ -3,12 +3,18 @@ import _ from 'lodash';
 
 import Character from './Character';
 import DEFAULTS from '../../static/chardefaults';
+import SETTINGS from '../../static/settings';
 import SkillManager from '../../objects/skillmanager';
 import save, { selectiveSave } from '../functions/save';
 import { monstertoken as generateMonsterToken } from '../../functions/world/nearbymonsters';
 
 export default class Player extends Character {
-    constructor({ name, profession, options, monsterToken, skills, inventory, equipment, stats, unlockedProfessions, professionLevels, userId, homepoint, statusEffects, cooldowns, battleId }) {
+    constructor({ name, profession, options,
+                  monsterToken, skills, inventory,
+                  equipment, stats, unlockedProfessions,
+                  professionLevels, userId, homepoint,
+                  statusEffects, cooldowns, battleId,
+                  lastHomepointChange }) {
 
         super({
             name,
@@ -29,19 +35,41 @@ export default class Player extends Character {
         this.battleId = battleId;
         this.homepoint = homepoint;
         this.sellModifier = 4;
+        this.lastHomepointChange = lastHomepointChange;
 
         this.handleDefaults();
         this.checkForNewMonsters();
+        this.checkIfCanChangeHomepoint();
     }
 
     changeHomepoint(newHomepoint) {
+        this.lastHomepointChange = Date.now();
         this.homepoint = newHomepoint;
         this.sendPlaces = true;
         this.checkForNewMonsters();
+        selectiveSave(this, ['lastHomepointChange', 'homepoint']);
+    }
+
+    checkIfCanChangeHomepoint() {
+        if(!this.lastHomepointChange) {
+            this.canChangeHomepoint = true;
+            return;
+        }
+
+        const now = Date.now();
+        const prevChange = new Date(this.lastHomepointChange);
+        prevChange.setHours(prevChange.getHours() + SETTINGS.HOMEPOINT_CHANGE_HOURS);
+        const prevTest = prevChange.getTime();
+        this.canChangeHomepoint = prevTest <= now;
     }
 
     checkForNewMonsters() {
-        const checkToken = generateMonsterToken(JSON.stringify(this.homepoint));
+        // specify it out to a certain gps precision so small changes don't affect everything
+        const seedHomepoint = _.cloneDeep(this.homepoint);
+        seedHomepoint.lat = seedHomepoint.lat.toFixed(5);
+        seedHomepoint.lon = seedHomepoint.lon.toFixed(5);
+
+        const checkToken = generateMonsterToken(JSON.stringify(seedHomepoint));
 
         if(this.monsterToken !== checkToken) {
             this.needsMonsterRefresh = true;
