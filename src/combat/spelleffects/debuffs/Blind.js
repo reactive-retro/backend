@@ -4,7 +4,7 @@ import SpellEffect from '../../base/SpellEffect';
 export default class Blind extends SpellEffect {
     apply(target) {
         super.apply(target);
-        target.subBuff('acc', 75);
+        target.addBuff('acc', -75);
         return `${target.name} was blinded!`;
     }
 
