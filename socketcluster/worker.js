@@ -1,19 +1,18 @@
 
 import _ from 'lodash';
 import path from 'path';
-import fs from 'fs';
+import Logger from '../src/objects/logger';
 
 import clearBattle from '../src/character/functions/clearbattle';
 
 export var run = (worker) => {
     const scServer = worker.scServer;
 
-    scServer.on('error', e => console.error(e.stack));
-    scServer.on('notice', e => console.info(e.stack));
+    scServer.on('error', e => Logger.error('SC:Server', e));
 
     scServer.on('connection', socket => {
 
-        socket.on('error', e => console.error(e.stack));
+        socket.on('error', e => Logger.error('SC:Socket', e));
 
         socket.on('disconnect', function() {
             if(!socket.getAuthToken()) return;
@@ -38,7 +37,7 @@ export var run = (worker) => {
         try {
             requireRecursive(allSocketFunctions);
         } catch(e) {
-            console.error(e.stack);
+            Logger.error('SC:Socket:Function', e);
         }
     });
 };
