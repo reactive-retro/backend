@@ -10,6 +10,7 @@ import dbPromise from './db';
 import { weightedChoice } from '../functions/helpers';
 
 const QUALITY = [
+    { tier: -1, name: 'Trash',        weight: -1, minLevel: 0 },
     { tier: 0,  name: 'Basic',        weight: 20, minLevel: 0 },
     { tier: 1,  name: 'Common',       weight: 7,  minLevel: 0 },
     { tier: 2,  name: 'Uncommon',     weight: 5,  minLevel: 10 },
