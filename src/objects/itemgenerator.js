@@ -12,10 +12,10 @@ import { weightedChoice } from '../functions/helpers';
 const QUALITY = [
     { tier: 0,  name: 'Basic',        weight: 20, minLevel: 0 },
     { tier: 1,  name: 'Common',       weight: 7,  minLevel: 0 },
-    { tier: 2,  name: 'Uncommon',     weight: 5,  minLevel: 15 },
-    { tier: 3,  name: 'Rare',         weight: 3,  minLevel: 40 },
-    { tier: 4,  name: 'Epic',         weight: 1,  minLevel: 75 },
-    { tier: 10, name: 'Legendary',    weight: -1, minLevel: 101 }
+    { tier: 2,  name: 'Uncommon',     weight: 5,  minLevel: 10 },
+    { tier: 3,  name: 'Rare',         weight: 3,  minLevel: 25 },
+    { tier: 4,  name: 'Epic',         weight: 1,  minLevel: 40 },
+    { tier: 10, name: 'Legendary',    weight: -1, minLevel: 51 }
 ];
 
 const determineBaseQuality = (playerLevel) => {
