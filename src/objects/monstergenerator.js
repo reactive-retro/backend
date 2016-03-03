@@ -35,6 +35,7 @@ export default async (baseOpts, availableMonsters) => {
     opts.name = chosenMonster.name;
     opts.profession = chosenMonster.profession;
     opts.goldDrop = chosenMonster.goldDrop;
+    opts.bonusXp = chosenMonster.bonusXp;
     opts.professionLevels = { [opts.profession]: opts.baseLevel };
 
     // some monsters can have auxiliary classes

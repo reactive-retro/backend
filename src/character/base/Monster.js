@@ -4,7 +4,7 @@ import uuid from 'node-uuid';
 import Character from './Character';
 
 export default class Monster extends Character {
-    constructor({ seed, verifyToken, name, equipment, skills, goldDrop, profession, location, rating, professionLevels, stats, statusEffects, cooldowns, id }) {
+    constructor({ seed, verifyToken, name, equipment, bonusXp, skills, goldDrop, profession, location, rating, professionLevels, stats, statusEffects, cooldowns, id }) {
 
         super({
             name,
@@ -18,6 +18,7 @@ export default class Monster extends Character {
         });
 
         this.id = id || uuid.v4();
+        this.bonusXp = bonusXp || 0;
         this.seed = seed;
         this.verifyToken = verifyToken;
         this.location = location;

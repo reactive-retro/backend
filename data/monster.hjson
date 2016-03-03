@@ -4,7 +4,7 @@
 { name: "Goblin Thief",         profession: "Thief",    goldDrop: "5d10", weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 1,  maxLevel: 6 }
 { name: "Goblin Fighter",       profession: "Fighter",  goldDrop: "2d4",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 1,  maxLevel: 7 }
 { name: "Goblin Mage",          profession: "Mage",     goldDrop: "4d4",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 1,  maxLevel: 7 }
-{ name: "Goblin Warmage",       profession: "Mage",     goldDrop: "4d5",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 5,  maxLevel: 15, extendProfessions: { Fighter: 5 } }
-{ name: "Goblin Berserker",     profession: "Fighter",  goldDrop: "2d3",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 5,  maxLevel: 15, skills: ["Attack", "Attack"] }
+{ name: "Goblin Warmage",       profession: "Mage",     goldDrop: "4d5",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 5,  maxLevel: 15, bonusXp: 10, extendProfessions: { Fighter: 5 } }
+{ name: "Goblin Berserker",     profession: "Fighter",  goldDrop: "2d3",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 5,  maxLevel: 15, bonusXp: 10, skills: ["Attack", "Attack"] }
 
 ]

@@ -11,6 +11,6 @@ export default class XPCalculator {
     }
 
     static givenXp(monster) {
-        return baseEarnedXp + monster.currentLevel + (monster.rating * earnedXpMultiplier);
+        return baseEarnedXp + monster.currentLevel + monster.bonusXp + (monster.rating * earnedXpMultiplier);
     }
 }
