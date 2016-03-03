@@ -127,7 +127,6 @@ export default class Character {
         const hpMult = this.constructor.name === 'Player' ? 2 : 1;
         this.stats.hp = new RestrictedNumber(0, profession.hp(this) * hpMult, this.stats.hp.__current || profession.hp(this) * hpMult);
         this.stats.mp = new RestrictedNumber(0, profession.mp(this), this.stats.mp.__current || profession.mp(this));
-        this.stats.xp = new RestrictedNumber(0, this.stats.xp.maximum || 100, this.stats.xp.__current || 0);
     }
 
     fullheal() {

@@ -3,6 +3,7 @@ import _ from 'lodash';
 import Dice from 'dice.js';
 
 import Logger from '../../objects/logger';
+import XPCalculator from '../../objects/xpcalculator';
 import { ActionTargets } from '../../character/base/Action';
 import SkillManager from '../../objects/skillmanager';
 import SpellEffectManager from '../../objects/spelleffectmanager';
@@ -276,6 +277,9 @@ export default class Battle {
         const goldGained = _.reduce(this.monsters, (prev, monster) => prev + +Dice.roll(monster.goldDrop), 0);
         const goldPerPerson = Math.floor(goldGained/this.players.length);
 
+        const xpGained = _.reduce(this.monsters, (prev, monster) => prev + XPCalculator.givenXp(monster), 0);
+        const xpPerPerson = Math.floor(xpGained/this.players.length);
+
         const droppedItems = _(this.monsters).map(monster => {
             const { armor, weapon } = monster.equipment;
             return [
@@ -290,7 +294,8 @@ export default class Battle {
 
         _.each(this.playerData, player => {
             player.addGold(goldPerPerson);
-            messages.push(`${player.name} earned 0 XP and got ${goldPerPerson} Gold.`);
+            player.addXP(xpPerPerson);
+            messages.push(`${player.name} earned ${xpPerPerson} XP and got ${goldPerPerson} Gold.`);
         });
 
         const playersWithAvailableSpace = _.filter(this.playerData, player => player.canAddToInventory());

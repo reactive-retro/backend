@@ -39,14 +39,7 @@ export default (socket) => {
             return respond({ msg: MESSAGES.INVALID_PROF });
         }
 
-        if(!player.professionLevels[newProfession]) {
-            player.professionLevels[newProfession] = 1;
-        }
-
-        player.profession = newProfession;
-        player.calculate();
-        player.skills = [];
-        player.fullheal();
+        player.changeClass(newProfession);
         player.save();
 
         updatePlayer(socket, player);
