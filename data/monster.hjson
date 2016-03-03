@@ -1,10 +1,33 @@
 [
 
 { name: "Goblin",               profession: "Monster",  goldDrop: "1d4",  weight: 4, equipment: { armor: 50, weapon: 50 },  minLevel: 1,  maxLevel: 5 }
-{ name: "Goblin Thief",         profession: "Thief",    goldDrop: "5d10", weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 1,  maxLevel: 6 }
+{ name: "Goblin Thief",         profession: "Thief",    goldDrop: "5d10", weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 1,  maxLevel: 7 }
 { name: "Goblin Fighter",       profession: "Fighter",  goldDrop: "2d4",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 1,  maxLevel: 7 }
 { name: "Goblin Mage",          profession: "Mage",     goldDrop: "4d4",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 1,  maxLevel: 7 }
 { name: "Goblin Warmage",       profession: "Mage",     goldDrop: "4d5",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 5,  maxLevel: 15, bonusXp: 10, extendProfessions: { Fighter: 5 } }
 { name: "Goblin Berserker",     profession: "Fighter",  goldDrop: "2d3",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 5,  maxLevel: 15, bonusXp: 10, skills: ["Attack", "Attack"] }
+
+{ name: "Kobold",               profession: "Monster",  goldDrop: "2d4",  weight: 4, equipment: { armor: 50, weapon: 50 },  minLevel: 10,  maxLevel: 15 }
+{ name: "Kobold Thief",         profession: "Thief",    goldDrop: "7d10", weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 10,  maxLevel: 17 }
+{ name: "Kobold Fighter",       profession: "Fighter",  goldDrop: "4d4",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 10,  maxLevel: 17 }
+{ name: "Kobold Mage",          profession: "Mage",     goldDrop: "6d4",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 10,  maxLevel: 17 }
+{ name: "Kobold Warmage",       profession: "Mage",     goldDrop: "6d5",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 16,  maxLevel: 25, bonusXp: 20, extendProfessions: { Fighter: 5 } }
+{ name: "Kobold Berserker",     profession: "Fighter",  goldDrop: "4d3",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 16,  maxLevel: 25, bonusXp: 20, skills: ["Attack", "Attack"] }
+
+{ name: "Hobgoblin",               profession: "Monster",  goldDrop: "6d4",  weight: 4, equipment: { armor: 50, weapon: 50 },  minLevel: 20,  maxLevel: 25 }
+{ name: "Hobgoblin Thief",         profession: "Thief",    goldDrop: "9d10", weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 20,  maxLevel: 27 }
+{ name: "Hobgoblin Fighter",       profession: "Fighter",  goldDrop: "6d4",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 20,  maxLevel: 27 }
+{ name: "Hobgoblin Mage",          profession: "Mage",     goldDrop: "8d4",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 20,  maxLevel: 27 }
+{ name: "Hobgoblin Warmage",       profession: "Mage",     goldDrop: "8d5",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 26,  maxLevel: 35, bonusXp: 30, extendProfessions: { Fighter: 5 } }
+{ name: "Hobgoblin Berserker",     profession: "Fighter",  goldDrop: "6d3",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 26,  maxLevel: 35, bonusXp: 30, skills: ["Attack", "Attack"] }
+
+{ name: "Ogre",               profession: "Monster",  goldDrop: "8d4",   weight: 4, equipment: { armor: 50, weapon: 50 },  minLevel: 30,  maxLevel: 35 }
+{ name: "Ogre Thief",         profession: "Thief",    goldDrop: "11d10", weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 30,  maxLevel: 37 }
+{ name: "Ogre Fighter",       profession: "Fighter",  goldDrop: "8d4",   weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 30,  maxLevel: 37 }
+{ name: "Ogre Mage",          profession: "Mage",     goldDrop: "10d4",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 30,  maxLevel: 37 }
+{ name: "Ogre Warmage",       profession: "Mage",     goldDrop: "10d5",  weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 36,  maxLevel: 46, bonusXp: 40, extendProfessions: { Fighter: 5 } }
+{ name: "Ogre Berserker",     profession: "Fighter",  goldDrop: "8d3",   weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 36,  maxLevel: 46, bonusXp: 40, skills: ["Attack", "Attack"] }
+
+{ name: "Dragon",             profession: "Monster",  goldDrop: "20d4",   weight: 4, equipment: { armor: 0, weapon: 0 },  minLevel: 45,  maxLevel: 50, bonusXp: 100 }
 
 ]
