@@ -33,7 +33,7 @@ export default class Character {
     }
 
     canAddToInventory() {
-        return this.inventory.length <= SETTINGS.INVENTORY_SIZE;
+        return this.inventory.length < SETTINGS.INVENTORY_SIZE;
     }
 
     addToInventory(item) {

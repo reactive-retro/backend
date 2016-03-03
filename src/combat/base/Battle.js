@@ -274,17 +274,13 @@ export default class Battle {
     }
 
     playerWin() {
-        const goldGained = _.reduce(this.monsters, (prev, monster) => prev + +Dice.roll(monster.goldDrop), 0);
-        const goldPerPerson = Math.floor(goldGained/this.players.length);
-
-        const xpGained = _.reduce(this.monsters, (prev, monster) => prev + XPCalculator.givenXp(monster), 0);
-        const xpPerPerson = Math.floor(xpGained/this.players.length);
+        const totalLuckBonus = 100 + _.reduce(this.playerData, (prev, cur) => prev + cur.stats.luk, 0);
 
         const droppedItems = _(this.monsters).map(monster => {
             const { armor, weapon } = monster.equipment;
             return [
-                armor.dropRate  && +Dice.roll('1d100') <= armor.dropRate  ? armor : null,
-                weapon.dropRate && +Dice.roll('1d100') <= weapon.dropRate ? weapon : null
+                armor.dropRate  && +Dice.roll('1d100') <= armor.dropRate  + totalLuckBonus ? armor : null,
+                weapon.dropRate && +Dice.roll('1d100') <= weapon.dropRate + totalLuckBonus ? weapon : null
             ];
         }).flatten().compact().value();
 
@@ -292,26 +288,37 @@ export default class Battle {
             'Heroes win!'
         ];
 
+        let goldGained = _.reduce(this.monsters, (prev, monster) => prev + +Dice.roll(monster.goldDrop), 0);
+        const xpGained = _.reduce(this.monsters, (prev, monster) => prev + XPCalculator.givenXp(monster), 0);
+
+        let playersWithAvailableSpace = _.filter(this.playerData, player => player.canAddToInventory());
+
+        // we need to calculate these first, but show the messages last
+        const itemMessages = [];
+        const leftoverItems = _.filter(droppedItems, item => {
+            if(playersWithAvailableSpace.length === 0) return true;
+            const chosenPlayer = _.sample(playersWithAvailableSpace);
+            chosenPlayer.addToInventory(item);
+            itemMessages.push(`${chosenPlayer.name} found ${item.name}!`);
+            playersWithAvailableSpace = _.filter(this.playerData, player => player.canAddToInventory());
+        });
+
+        // turn any extra items into gold
+        _.each(leftoverItems, item => goldGained += item.value);
+
+        const goldPerPerson = Math.floor(goldGained/this.players.length);
+        const xpPerPerson = Math.floor(xpGained/this.players.length);
+
         _.each(this.playerData, player => {
             player.addGold(goldPerPerson);
             const leveledUp = player.addXP(xpPerPerson);
             messages.push(`${player.name} earned ${xpPerPerson} XP and got ${goldPerPerson} Gold.`);
             if(leveledUp) {
-                messages.push(`${player.name} has reached level ${player.currentLevel}!`);
+                messages.push(`${player.name} has reached ${player.profession} level ${player.currentLevel}!`);
             }
         });
 
-        const playersWithAvailableSpace = _.filter(this.playerData, player => player.canAddToInventory());
-
-        if(playersWithAvailableSpace.length > 0) {
-            _.each(droppedItems, item => {
-                const chosenPlayer = _.sample(playersWithAvailableSpace);
-                chosenPlayer.addToInventory(item);
-                messages.push(`${chosenPlayer.name} found ${item.name}!`);
-            });
-        }
-
-        return messages;
+        return messages.concat(itemMessages);
     }
 
     playerLose() {
