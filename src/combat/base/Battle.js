@@ -294,8 +294,11 @@ export default class Battle {
 
         _.each(this.playerData, player => {
             player.addGold(goldPerPerson);
-            player.addXP(xpPerPerson);
+            const leveledUp = player.addXP(xpPerPerson);
             messages.push(`${player.name} earned ${xpPerPerson} XP and got ${goldPerPerson} Gold.`);
+            if(leveledUp) {
+                messages.push(`${player.name} has reached level ${player.currentLevel}!`);
+            }
         });
 
         const playersWithAvailableSpace = _.filter(this.playerData, player => player.canAddToInventory());

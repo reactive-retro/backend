@@ -109,7 +109,7 @@ export default class Player extends Character {
     addXP(xp) {
         this.stats.xp.add(xp);
         if(this.stats.xp.atMax()) {
-            this.levelUp();
+            return this.levelUp();
         }
     }
 
@@ -118,6 +118,7 @@ export default class Player extends Character {
         this.professionLevels[this.profession]++;
         this.stats.xp.maximum = XPCalculator.calculate();
         this.stats.xp = new RestrictedNumber(0, XPCalculator.calculate(this.currentLevel), 0);
+        return true;
     }
 
     changeClass(newProfession) {
