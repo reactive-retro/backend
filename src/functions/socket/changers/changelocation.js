@@ -28,6 +28,8 @@ export default (socket) => {
             return respond({ msg: e.msg });
         }
 
+        player.setLocation(coords);
+
         updatePlayer(socket, player, false);
 
         respond(null);

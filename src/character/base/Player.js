@@ -16,7 +16,7 @@ export default class Player extends Character {
                   equipment, stats, unlockedProfessions,
                   professionLevels, userId, homepoint,
                   statusEffects, cooldowns, battleId,
-                  lastHomepointChange, professionXp }) {
+                  lastHomepointChange, professionXp, location }) {
 
         super({
             name,
@@ -39,6 +39,7 @@ export default class Player extends Character {
         this.homepoint = homepoint;
         this.sellModifier = 4;
         this.lastHomepointChange = lastHomepointChange;
+        this.location = location;
 
         this.stats.xp = new RestrictedNumber(0, this.stats.xp.maximum || XPCalculator.calculate(2), this.stats.xp.__current || 0);
 
@@ -119,6 +120,11 @@ export default class Player extends Character {
         this.stats.xp.maximum = XPCalculator.calculate();
         this.stats.xp = new RestrictedNumber(0, XPCalculator.calculate(this.currentLevel), 0);
         return true;
+    }
+
+    setLocation(location) {
+        this.location = location;
+        selectiveSave(this, ['location']);
     }
 
     changeClass(newProfession) {
