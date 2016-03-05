@@ -291,6 +291,9 @@ export default class Battle {
         let goldGained = _.reduce(this.monsters, (prev, monster) => prev + +Dice.roll(monster.goldDrop), 0);
         const xpGained = _.reduce(this.monsters, (prev, monster) => prev + XPCalculator.givenXp(monster), 0);
 
+        // adjust monster level back to normal
+        const avgMonsterLevel = _.reduce(this.monsters, (prev, monster) => prev + monster.currentLevel - monster.rating, 0);
+
         let playersWithAvailableSpace = _.filter(this.playerData, player => player.canAddToInventory());
 
         // we need to calculate these first, but show the messages last
@@ -311,7 +314,7 @@ export default class Battle {
 
         _.each(this.playerData, player => {
             player.addGold(goldPerPerson);
-            const leveledUp = player.addXP(xpPerPerson);
+            const leveledUp = player.addXP(XPCalculator.calcXPForPerson(xpPerPerson, player, avgMonsterLevel));
             messages.push(`${player.name} earned ${xpPerPerson} XP and got ${goldPerPerson} Gold.`);
             if(leveledUp) {
                 messages.push(`${player.name} has reached ${player.profession} level ${player.currentLevel}!`);
