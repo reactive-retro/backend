@@ -54,6 +54,7 @@ export default {
     ALREADY_IN_PARTY: 'You are already in a party!',
     NOT_IN_PARTY: 'You are not in a party!',
     INVALID_PARTY: 'That party does not exist!',
+    PARTY_FULL: 'That party is full.',
     PARTY_LEAVE_SUCCESSFUL: 'Successfully left the party!',
     PARTY_JOIN_SUCCESSFUL: 'Successfully joined the party!'
 };

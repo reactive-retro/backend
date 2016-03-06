@@ -1,6 +1,7 @@
 
 import getPlayer from '../../../character/functions/getbyname';
 import MESSAGES from '../../../static/messages';
+import SETTINGS from '../../../static/settings';
 
 import loadParty from '../../../party/functions/loadparty';
 import updatePlayer from '../../../functions/updaters/player';
@@ -30,6 +31,10 @@ export default (socket, scWorker) => {
             party = await loadParty(partyId);
         } catch(e) {
             return respond({ msg: MESSAGES.INVALID_PARTY });
+        }
+
+        if(party.players.length >= SETTINGS.MAX_PARTY_MEMBERS) {
+            return respond({ msg: MESSAGES.PARTY_FULL });
         }
 
         if(player.battleId) {
