@@ -17,14 +17,18 @@ export default class XPCalculator {
         return baseEarnedXp + monster.currentLevel + monster.bonusXp + (monster.rating * earnedXpMultiplier);
     }
 
-    static calcXPForPerson(xpGained, player, levelToAdjustFor) {
+    static calcXPForPerson({ xpGained, player, levelToAdjustFor, partySizeBonus = 0 }) {
         const levelDifference = levelToAdjustFor - player.currentLevel;
 
         // anywhere from 0% xp to 200% xp - +-20% per level below/above
         const levelModifier = Math.min(levelDifferenceMax, Math.max(-levelDifferenceMax, levelDifference));
         const xpChange = xpGained * (levelModifier / levelDifferenceMax);
 
+        // +12.5% xp per party member (up to 4 member bonus)
+        const clampedPartyBonus = Math.max(0, Math.min(4, partySizeBonus));
+        const xpBonus = xpGained * (0.125 * clampedPartyBonus);
+
         // 1 pity xp
-        return Math.max(1, xpGained + xpChange);
+        return Math.floor(Math.max(1, xpGained + xpChange + xpBonus));
     }
 }

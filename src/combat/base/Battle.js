@@ -319,7 +319,12 @@ export default class Battle {
 
         _.each(this.playerData, player => {
             player.addGold(goldPerPerson);
-            const leveledUp = player.addXP(XPCalculator.calcXPForPerson(xpPerPerson, player, avgMonsterLevel));
+            const leveledUp = player.addXP(XPCalculator.calcXPForPerson({
+                xpGained: xpPerPerson,
+                player,
+                levelToAdjustFor: avgMonsterLevel,
+                partySize: this.players.length-1
+            }));
             messages.push(`${player.name} earned ${xpPerPerson} XP and got ${goldPerPerson} Gold.`);
             if(leveledUp) {
                 messages.push(`${player.name} has reached ${player.profession} level ${player.currentLevel}!`);

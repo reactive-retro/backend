@@ -45,9 +45,7 @@ export default async (name, scWorker) => {
         const party = await loadParty(player.partyId);
         party.playerLeave(player);
 
-        if(party.players.length > 0) {
-            // TODO notify party
-        }
+        party.notifyOfUpdates(scWorker);
         party.save();
     }
 
