@@ -29,7 +29,11 @@ const connectionPromise = new Promise((resolve, reject) => {
         db.collection('players').createIndex({ name: 1 }, { unique: true }, _.noop);
         db.collection('players').updateMany({}, { $set: { battleId: null } }, _.noop);
         db.collection('battles').deleteMany({}, _.noop);
+        db.collection('parties').deleteMany({}, _.noop);
         db.collection('homepointPlaces').createIndex({ location: 1 }, _.noop);
+
+        // log everyone out on server restart
+        db.collection('players').updateMany({}, { $set: { online: false } }, _.noop);
 
         const monsters = db.collection('monsters');
         monsters.deleteMany({}, () => {

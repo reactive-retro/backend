@@ -19,10 +19,15 @@ export default class Battle {
         this.players = players;
         this.monsters = _.map(monsters, m => new Monster(m));
         this.actions = actions || {};
+        this.setReadyToProcess();
 
         this.isReady = Promise.all(_.map(this.players, getPlayer)).then(playerData => {
             this.playerData = playerData;
         });
+    }
+
+    setReadyToProcess() {
+        this.isReadyToProcess = _.all(this.players, player => this.actions[player]);
     }
 
     getTargets(me, skill, fallback) {

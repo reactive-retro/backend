@@ -3,9 +3,9 @@ import _ from 'lodash';
 import path from 'path';
 import Logger from '../src/objects/logger';
 
-import clearBattle from '../src/character/functions/clearbattle';
+import logout from '../src/character/functions/logout';
 
-export var run = (worker) => {
+export const run = (worker) => {
     const scServer = worker.scServer;
 
     scServer.on('error', e => Logger.error('SC:Server', e));
@@ -20,7 +20,7 @@ export var run = (worker) => {
             if(!heroname) return;
 
             // disconnect = lose battle
-            clearBattle(heroname);
+            logout(heroname, worker);
         });
 
         const normalizedPath = path.join(__dirname, '..', 'src', 'functions', 'socket');

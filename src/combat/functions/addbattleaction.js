@@ -1,7 +1,7 @@
 
 import _ from 'lodash';
 
-import Battle from './../base/Battle';
+import loadBattle from './loadbattle';
 import dbPromise from '../../objects/db';
 
 export default async (battleId, action) => {
@@ -13,18 +13,10 @@ export default async (battleId, action) => {
         const setter = { $set: {} };
         setter.$set[`actions.${action.name}`] = action;
 
-        battles.updateOne({ _id: battleId }, setter, (err) => {
+        battles.updateOne({ _id: battleId }, setter, async (err) => {
             if(err) return reject(err);
 
-            battles.findOne({ _id: battleId }, async (err, doc) => {
-                if (err) return reject(err);
-
-                const battle = new Battle(doc);
-
-                await battle.isReady;
-                battle.isReadyToProcess = _.all(battle.players, player => battle.actions[player]);
-                resolve(battle);
-            });
+            resolve(await loadBattle(battleId));
         });
     });
 };

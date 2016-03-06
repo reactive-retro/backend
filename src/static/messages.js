@@ -14,8 +14,11 @@ export default {
     NO_NAME: 'No hero name specified.',
     NO_CLASS: 'No class specified.',
     NO_PLAYER: 'Player does not exist.',
+    ALREADY_LOGGED_IN: 'You are already logged in!',
+
     INVALID_PROF: 'Profession does not exist.',
     PROF_CHANGE_SUCCESS: 'Successfully changed profession.',
+
     NO_ITEM: 'No item id specified.',
     BAD_ITEM: 'Item not present in inventory.',
     EQUIP_SUCCESS: 'Successfully changed equipment.',
@@ -44,5 +47,13 @@ export default {
     NO_SETTINGS: 'No option changes specified.',
     SETTING_SUCCESS: 'Options changed successfully!',
 
-    SELL_SUCCESS: 'Item sold successfully!'
+    SELL_SUCCESS: 'Item sold successfully!',
+
+    PARTY_CREATE_SUCCESSFUL: 'Party created successfully!',
+    PARTY_CREATE_FAILED: 'Party create fail; please try again.',
+    ALREADY_IN_PARTY: 'You are already in a party!',
+    NOT_IN_PARTY: 'You are not in a party!',
+    INVALID_PARTY: 'That party does not exist!',
+    PARTY_LEAVE_SUCCESSFUL: 'Successfully left the party!',
+    PARTY_JOIN_SUCCESSFUL: 'Successfully joined the party!'
 };

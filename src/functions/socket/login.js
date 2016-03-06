@@ -39,6 +39,10 @@ const respondWithPlayer = async (socket, respond, msg, token, player) => {
     playerInst.clearDataOnLogin();
     playerInst.sendPlaces = true;
 
+    // set the player online on login
+    playerInst.online = true;
+    playerInst.selectiveSave(['online']);
+
     updatePlayer(socket, playerInst);
 
     respond(null, { msg, settings: SETTINGS });
@@ -78,6 +82,11 @@ export default (socket) => {
 
             // login
             if (doc) {
+
+                if(doc.online) {
+                    return respond({ msg: MESSAGES.ALREADY_LOGGED_IN });
+                }
+
                 respondWithPlayer(socket, respond, MESSAGES.LOGIN_SUCCESS, token, doc);
 
             } else {

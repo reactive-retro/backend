@@ -16,7 +16,8 @@ export default class Player extends Character {
                   equipment, stats, unlockedProfessions,
                   professionLevels, userId, homepoint,
                   statusEffects, cooldowns, battleId,
-                  lastHomepointChange, professionXp, location }) {
+                  lastHomepointChange, professionXp, location,
+                  partyId }) {
 
         super({
             name,
@@ -36,6 +37,7 @@ export default class Player extends Character {
         this.monsterToken = monsterToken;
         this.userId = userId;
         this.battleId = battleId;
+        this.partyId = partyId;
         this.homepoint = homepoint;
         this.sellModifier = 4;
         this.lastHomepointChange = lastHomepointChange;
@@ -151,6 +153,7 @@ export default class Player extends Character {
 
     clearDataOnLogin() {
         this.needsMonsterRefresh = true;
+        this.partyId = null;
         this.battleId = null;
         this.cooldowns = {};
         this.statusEffects = [];
@@ -161,5 +164,9 @@ export default class Player extends Character {
 
     save() {
         return save(this);
+    }
+
+    selectiveSave(keys) {
+        return selectiveSave(this, keys);
     }
 }

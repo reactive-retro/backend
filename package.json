@@ -29,6 +29,7 @@
     "lodash": "~3.8.0",
     "minimist": "1.2.0",
     "mongodb": "~2.0.31",
+    "moniker": "^0.1.2",
     "node-uuid": "^1.4.3",
     "q": "^1.4.1",
     "require-dir": "^0.3.0",
