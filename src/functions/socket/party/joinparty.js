@@ -1,6 +1,4 @@
 
-import _ from 'lodash';
-
 import getPlayer from '../../../character/functions/getbyname';
 import MESSAGES from '../../../static/messages';
 

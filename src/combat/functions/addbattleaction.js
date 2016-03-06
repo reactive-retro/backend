@@ -1,6 +1,4 @@
 
-import _ from 'lodash';
-
 import loadBattle from './loadbattle';
 import dbPromise from '../../objects/db';
 

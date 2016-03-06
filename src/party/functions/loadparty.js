@@ -1,5 +1,4 @@
 
-import _ from 'lodash';
 import dbPromise from '../../objects/db';
 
 import Party from '../Party';

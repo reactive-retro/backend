@@ -13,7 +13,7 @@ export default async ({ players }) => {
         const newParty = new Party({ players: _.pluck(players, 'name') });
         const insertParty = newParty.saveObject();
 
-        parties.insertOne(insertParty, async (err, res) => {
+        parties.insertOne(insertParty, async (err) => {
             if (err) {
                 return reject(err);
             }
