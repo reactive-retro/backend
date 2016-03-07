@@ -2,6 +2,7 @@
 import Logger from '../../../objects/logger';
 import addBattleAction from '../../../combat/functions/addbattleaction';
 import getPlayer from '../../../character/functions/getbyname';
+import loadParty from '../../../party/functions/loadparty';
 import MESSAGES from '../../../static/messages';
 
 export default (socket, scWorker) => {
@@ -46,6 +47,18 @@ export default (socket, scWorker) => {
         try {
             const actions = battle.processActions();
             scWorker.exchange.publish(`battle:${battle._id}:results`, { battle: battle.transmitObject(), actions, isDone: battle.isDone });
+
+            if(battle.isDone && player.partyId) {
+                let party = null;
+                try {
+                    party = await loadParty(player.partyId);
+                } catch(e) {
+                    return respond({ msg: MESSAGES.INVALID_PARTY });
+                }
+
+                party.notifyOfUpdates(scWorker);
+            }
+            // TODO update party if battle is done and player has a party id
         } catch(e) {
             Logger.error('Combat:PreStart', e);
         }

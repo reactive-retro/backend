@@ -1,7 +1,11 @@
 
+import _ from 'lodash';
+
 import getPlayer from '../../../character/functions/getbyname';
 import MESSAGES from '../../../static/messages';
 import SETTINGS from '../../../static/settings';
+
+import { calcDistanceBetween } from '../../helpers';
 
 import loadParty from '../../../party/functions/loadparty';
 import updatePlayer from '../../../functions/updaters/player';
@@ -31,6 +35,14 @@ export default (socket, scWorker) => {
             party = await loadParty(partyId);
         } catch(e) {
             return respond({ msg: MESSAGES.INVALID_PARTY });
+        }
+
+        if(party) {
+            if(_.any(party.playerData, memberData => {
+                return SETTINGS.MAX_PARTY_JOIN_DISTANCE < calcDistanceBetween(player.location.latitude, player.location.longitude, memberData.location.latitude, memberData.location.longitude);
+            })) {
+                return respond({ msg: MESSAGES.PARTY_TOO_FAR });
+            }
         }
 
         if(party.players.length >= SETTINGS.MAX_PARTY_MEMBERS) {

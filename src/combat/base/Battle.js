@@ -129,6 +129,11 @@ export default class Battle {
                 const { chance, roll } = skill.spellEffects.Damage;
                 const accuracyBonus = caster.stats.acc;
 
+                if(target.stats.hp.atMin()) {
+                    messages.push(`${caster.name} swung at ${target.name}, but ${target.name} is already dead!`);
+                    return;
+                }
+
                 if(+Dice.roll('1d100') > chance + accuracyBonus) {
                     messages.push(`${caster.name} missed ${target.name}!`);
                     return;
@@ -299,7 +304,7 @@ export default class Battle {
         // adjust monster level back to normal
         const avgMonsterLevel = _.reduce(this.monsters, (prev, monster) => prev + monster.currentLevel - monster.rating, 0);
 
-        let playersWithAvailableSpace = _.filter(this.playerData, player => player.canAddToInventory());
+        let playersWithAvailableSpace = _.filter(this.playerData, player => !player.stats.hp.atMin() && player.canAddToInventory());
 
         // we need to calculate these first, but show the messages last
         const itemMessages = [];
@@ -318,6 +323,9 @@ export default class Battle {
         const xpPerPerson = Math.floor(xpGained/this.players.length);
 
         _.each(this.playerData, player => {
+
+            // you only get rewards if you were alive
+            if(player.stats.hp.atMin()) return;
             player.addGold(goldPerPerson);
             const leveledUp = player.addXP(XPCalculator.calcXPForPerson({
                 xpGained: xpPerPerson,
@@ -335,9 +343,6 @@ export default class Battle {
     }
 
     playerLose() {
-        _.each(this.playerData, player => {
-            player.fullheal();
-        });
         return [
             'Heroes lost!'
         ];
@@ -345,11 +350,15 @@ export default class Battle {
 
     battleOver() {
         this.isDone = true;
-        _.each(this.playerData, player => {
+        _.map(this.playerData, player => {
             _.each(player.statusEffects, effect => effect.unapply(player));
+
+            // heal dead allies
+            if(player.stats.hp.atMin()) player.fullheal();
+
             player.cooldowns = {};
             player.battleId = null;
-            player.save();
+            return player.save();
         });
 
         this.save();

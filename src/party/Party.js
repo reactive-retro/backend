@@ -42,6 +42,11 @@ export default class Party {
         this.save();
     }
 
+    notifyOfCombat(scWorker, battle) {
+        if(this.players.length === 0) return;
+        scWorker.exchange.publish(`party:${this._id}:battle`, battle.transmitObject());
+    }
+
     notifyOfUpdates(scWorker) {
         if(this.players.length === 0) return;
         scWorker.exchange.publish(`party:${this._id}`, this.transmitObject());
