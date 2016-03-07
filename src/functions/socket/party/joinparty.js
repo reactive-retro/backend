@@ -30,6 +30,10 @@ export default (socket, scWorker) => {
             return respond({ msg: e.msg });
         }
 
+        if(!player.location) {
+            return respond({ msg: MESSAGES.PARTY_NEED_LOCATION });
+        }
+
         let party = null;
         try {
             party = await loadParty(partyId);

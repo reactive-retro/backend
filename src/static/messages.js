@@ -58,5 +58,6 @@ export default {
     PARTY_LEAVE_SUCCESSFUL: 'Successfully left the party!',
     PARTY_JOIN_SUCCESSFUL: 'Successfully joined the party!',
     PARTY_TOO_FAR: 'You are too far from that party!',
-    PARTY_IN_COMBAT: 'The party is currently in combat!'
+    PARTY_IN_COMBAT: 'The party is currently in combat!',
+    PARTY_NEED_LOCATION: 'You need a location to join a party!'
 };
