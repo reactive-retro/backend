@@ -36,7 +36,7 @@ export default (socket, scWorker) => {
 
         let party = null;
         try {
-            party = await loadParty(partyId);
+            party = await loadParty(partyId.trim());
         } catch(e) {
             return respond({ msg: MESSAGES.INVALID_PARTY });
         }
