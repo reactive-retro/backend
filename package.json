@@ -31,7 +31,6 @@
     "mongodb": "~2.0.31",
     "moniker": "^0.1.2",
     "node-uuid": "^1.4.3",
-    "q": "^1.4.1",
     "require-dir": "^0.3.0",
     "restricted-number": "1.0.0",
     "rollbar": "^0.5.13",
