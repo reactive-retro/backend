@@ -23,6 +23,7 @@ export default async (name, scWorker) => {
     if(player.battleId) {
         const battle = await loadBattle(player.battleId);
         _.pull(battle.players, name);
+        _.remove(battle.playerData, checkPlayer => checkPlayer.name === player.name);
 
         if(battle.players.length > 0) {
             battle.setReadyToProcess();
