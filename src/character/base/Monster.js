@@ -24,5 +24,6 @@ export default class Monster extends Character {
         this.location = location;
         this.rating = rating;
         this.goldDrop = goldDrop;
+        this.calculate();
     }
 }

@@ -25,7 +25,6 @@ export default class Character {
 
         this.slug = `${this.profession.substring(0, 3).toUpperCase()}-${this.professionLevels[this.profession]}`;
         this.loadStatusEffects();
-        this.calculate();
     }
 
     get currentLevel() {
@@ -125,8 +124,11 @@ export default class Character {
         });
 
         const hpMult = this.constructor.name === 'Player' ? 2 : 1;
-        this.stats.hp = new RestrictedNumber(0, profession.hp(this) * hpMult, this.stats.hp.__current || profession.hp(this) * hpMult);
-        this.stats.mp = new RestrictedNumber(0, profession.mp(this), this.stats.mp.__current || profession.mp(this));
+
+        const curHp = this.battleId && this.stats.hp.__current === 0 ? 0 : this.stats.hp.__current || profession.hp(this) * hpMult;
+        const curMp = this.battleId && this.stats.mp.__current === 0 ? 0 : this.stats.mp.__current || profession.mp(this);
+        this.stats.hp = new RestrictedNumber(0, profession.hp(this) * hpMult, curHp);
+        this.stats.mp = new RestrictedNumber(0, profession.mp(this), curMp);
     }
 
     fullheal() {

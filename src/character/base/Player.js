@@ -42,6 +42,7 @@ export default class Player extends Character {
         this.sellModifier = 4;
         this.lastHomepointChange = lastHomepointChange;
         this.location = location;
+        this.calculate();
 
         this.stats.xp = new RestrictedNumber(0, this.stats.xp.maximum || XPCalculator.calculate(2), this.stats.xp.__current || 0);
 
