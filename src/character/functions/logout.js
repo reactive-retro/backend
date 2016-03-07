@@ -54,6 +54,7 @@ export default async (name, scWorker) => {
         online: false,
         partyId: null,
         battleId: null,
+        location: null,
         statusEffects: [],
         'equipment.buffs.stats': {},
         cooldowns: {} } }, _.noop);
