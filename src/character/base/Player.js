@@ -77,7 +77,7 @@ export default class Player extends Character {
         seedHomepoint.lat = seedHomepoint.lat.toFixed(5);
         seedHomepoint.lon = seedHomepoint.lon.toFixed(5);
 
-        const checkToken = generateMonsterToken(JSON.stringify(seedHomepoint));
+        const checkToken = generateMonsterToken(JSON.stringify(seedHomepoint)+this.profession);
 
         if(this.monsterToken !== checkToken) {
             this.needsMonsterRefresh = true;
