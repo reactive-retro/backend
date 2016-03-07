@@ -57,5 +57,6 @@ export default {
     PARTY_FULL: 'That party is full.',
     PARTY_LEAVE_SUCCESSFUL: 'Successfully left the party!',
     PARTY_JOIN_SUCCESSFUL: 'Successfully joined the party!',
-    PARTY_TOO_FAR: 'You are too far from that party!'
+    PARTY_TOO_FAR: 'You are too far from that party!',
+    PARTY_IN_COMBAT: 'The party is currently in combat!'
 };

@@ -43,6 +43,10 @@ export default (socket, scWorker) => {
             })) {
                 return respond({ msg: MESSAGES.PARTY_TOO_FAR });
             }
+
+            if(_.any(party.playerData, memberData => memberData.battleId)) {
+                return respond({ msg: MESSAGES.PARTY_IN_COMBAT });
+            }
         }
 
         if(party.players.length >= SETTINGS.MAX_PARTY_MEMBERS) {
