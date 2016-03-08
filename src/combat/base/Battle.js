@@ -10,6 +10,7 @@ import SpellEffectManager from '../../objects/spelleffectmanager';
 import Monster from '../../character/base/Monster';
 import getPlayer from '../../character/functions/getbyname';
 import save from './../functions/save';
+import { itemId } from '../../functions/helpers';
 
 const randomBetween = (min, max) => Math.random() * (max - min) + min;
 
@@ -311,6 +312,7 @@ export default class Battle {
         const leftoverItems = _.filter(droppedItems, item => {
             if(playersWithAvailableSpace.length === 0) return true;
             const chosenPlayer = _.sample(playersWithAvailableSpace);
+            item.itemId = itemId();
             chosenPlayer.addToInventory(item);
             itemMessages.push(`${chosenPlayer.name} found ${item.name}!`);
             playersWithAvailableSpace = _.filter(this.playerData, player => player.canAddToInventory());
