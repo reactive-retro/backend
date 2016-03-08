@@ -22,6 +22,7 @@ export default {
     NO_ITEM: 'No item id specified.',
     BAD_ITEM: 'Item not present in inventory.',
     EQUIP_SUCCESS: 'Successfully changed equipment.',
+    TOO_LOW_LEVEL: 'Level requirement not met.',
 
     NO_HOMEPOINT: 'Invalid Beacon of Light location specified.',
     HOMEPOINT_CHANGE_SUCCESS: 'Successfully changed Beacon of Light location.',

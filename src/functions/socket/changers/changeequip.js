@@ -35,8 +35,12 @@ export default (socket) => {
 
         const item = _.findWhere(player.inventory, { itemId: itemId });
 
-        if (!item) {
+        if(!item) {
             return respond({ msg: MESSAGES.BAD_ITEM });
+        }
+
+        if(item.levelRequirement > player.currentLevel) {
+            return respond({ msg: MESSAGES.TOO_LOW_LEVEL });
         }
 
         // level requirements, maybe.
