@@ -1,13 +1,12 @@
 
-import places from 'googleplaces';
 import _ from 'lodash';
+import rest from 'restler';
 
 import dbPromise from '../../objects/db';
-
 import SETTINGS from '../../static/settings';
 
 const RADIUS = SETTINGS.RADIUS;
-const placesFactory = places(process.env.GOOGLE_PLACES_API_KEY, 'json');
+const KEY = process.env.GOOGLE_PLACES_API_KEY;
 
 export default async (homepoint) => {
 
@@ -19,19 +18,37 @@ export default async (homepoint) => {
         cached.findOne({ location: homepoint }, (err, doc) => {
 
             if(!doc || !doc.places) {
-                placesFactory.placeSearch({ location: [homepoint.lat, homepoint.lon], radius: RADIUS }, (err, res) => {
 
-                    if(err) {
-                        return reject(err);
-                    }
+                let foundPlaces = [];
 
-                    const places = _.map(res.results, _.partialRight(_.pick, ['geometry', 'id', 'name', 'types']));
+                const getPlaces = (token = '') => {
 
-                    cached.insertOne({ location: homepoint, places }, _.noop);
+                    const baseUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
+                    const fullUrl = `${baseUrl}?key=${KEY}&radius=${RADIUS}&location=${homepoint.lat},${homepoint.lon}&pagetoken=${token}`;
 
-                    resolve(places);
+                    rest.get(fullUrl, { timeout: 10000 }).on('complete', data => {
 
-                });
+                        if(data.results) {
+                            const places = _.map(data.results, _.partialRight(_.pick, ['geometry', 'place_id', 'name', 'types']));
+                            foundPlaces.push(...places);
+                        }
+
+                        if(data.next_page_token) {
+                            // google requires an arbitrary delay between requests
+                            // this is annoying.
+                            setTimeout(() => getPlaces(data.next_page_token), 2000);
+
+                        } else {
+                            foundPlaces = _(foundPlaces).filter(place => place.geometry.location).uniq(place => place.place_id).value();
+                            cached.insertOne({ location: homepoint, places: foundPlaces }, _.noop);
+                            resolve(foundPlaces);
+                        }
+
+                    }).on('timeout', reject);
+                };
+
+                getPlaces();
+
             } else {
                 resolve(doc.places);
             }
