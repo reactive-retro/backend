@@ -3,6 +3,8 @@ import _ from 'lodash';
 import crypto from 'crypto';
 import Dice from 'dice.js';
 
+import Logger from '../objects/logger';
+
 import Monster from '../character/base/Monster';
 import SkillManager from '../objects/skillmanager';
 import ItemGenerator from '../objects/itemgenerator';
@@ -49,8 +51,12 @@ export default async (baseOpts, availableMonsters) => {
 
     if(chosenMonster.equipment) {
         const { weapon, armor } = chosenMonster.equipment;
-        if(weapon && +Dice.roll('1d100') <= weapon) monster.equip(await ItemGenerator.generate(monster, 'weapon', opts.seed+'weapon'));
-        if(armor  && +Dice.roll('1d100') <= armor)  monster.equip(await ItemGenerator.generate(monster, 'armor',  opts.seed+'armor'));
+        try {
+            if(weapon && +Dice.roll('1d100') <= weapon) monster.equip(await ItemGenerator.generate(monster, 'weapon', opts.seed+'weapon'));
+            if(armor  && +Dice.roll('1d100') <= armor)  monster.equip(await ItemGenerator.generate(monster, 'armor',  opts.seed+'armor'));
+        } catch(e) {
+            Logger.error('MonsterGenerate:Equipment', e);
+        }
     }
 
     monster.verifyToken = generate(monster);

@@ -3,6 +3,8 @@ import _ from 'lodash';
 import Dice from 'dice.js';
 import seedrandom from 'seedrandom';
 
+import SETTINGS from '../static/settings';
+
 import Weapon from '../items/Weapon';
 import Armor from '../items/Armor';
 
@@ -20,7 +22,6 @@ const QUALITY = [
 ];
 
 const determineBaseQuality = (playerLevel, luckBonus = 0) => {
-
     const adjustedQualities = _.cloneDeep(QUALITY);
     _.each(adjustedQualities, q => q.weight += luckBonus);
 
@@ -137,7 +138,7 @@ export default class ItemGenerator {
 
         // set the quality to whatever was generated
         item.quality = currentQuality;
-        item.levelRequirement = currentLevelRequirement;
+        item.levelRequirement = Math.min(SETTINGS.MAX_LEVEL, currentLevelRequirement);
         const constructedItem = new (getProto(type))(item);
         constructedItem.dropRate = item.dropRate;
 
