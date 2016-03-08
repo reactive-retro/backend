@@ -10,17 +10,21 @@ import dbPromise from './db';
 import { weightedChoice } from '../functions/helpers';
 
 const QUALITY = [
-    { tier: -1, name: 'Trash',        weight: -1, minLevel: 0 },
-    { tier: 0,  name: 'Basic',        weight: 20, minLevel: 0 },
-    { tier: 1,  name: 'Common',       weight: 7,  minLevel: 0 },
-    { tier: 2,  name: 'Uncommon',     weight: 5,  minLevel: 10 },
-    { tier: 3,  name: 'Rare',         weight: 3,  minLevel: 25 },
-    { tier: 4,  name: 'Epic',         weight: 1,  minLevel: 40 },
-    { tier: 10, name: 'Legendary',    weight: -1, minLevel: 51 }
+    { tier: -1, name: 'Trash',        weight: -1000, minLevel: 0 },
+    { tier: 0,  name: 'Basic',        weight: 20,    minLevel: 0 },
+    { tier: 1,  name: 'Common',       weight: 7,     minLevel: 0 },
+    { tier: 2,  name: 'Uncommon',     weight: 5,     minLevel: 10 },
+    { tier: 3,  name: 'Rare',         weight: 3,     minLevel: 25 },
+    { tier: 4,  name: 'Epic',         weight: 1,     minLevel: 40 },
+    { tier: 10, name: 'Legendary',    weight: -100,  minLevel: 50 }
 ];
 
-const determineBaseQuality = (playerLevel) => {
-    return weightedChoice(_.reject(QUALITY, q => q.minLevel > playerLevel));
+const determineBaseQuality = (playerLevel, luckBonus = 0) => {
+
+    const adjustedQualities = _.cloneDeep(QUALITY);
+    _.each(adjustedQualities, q => q.weight += luckBonus);
+
+    return weightedChoice(_.reject(adjustedQualities, q => q.minLevel > playerLevel));
 };
 
 const getProto = (type) => {
@@ -71,13 +75,14 @@ export default class ItemGenerator {
     }
 
     static async generate(playerReference, type, seed) {
-        const baseItemQuality = determineBaseQuality(playerReference.currentLevel);
+
+        const luckBonus = playerReference.stats.luk;
+        const baseItemQuality = determineBaseQuality(playerReference.currentLevel, luckBonus);
         if(!type) type = _.sample(['armor', 'weapon']);
 
         const item = await this.getRandom(type, { baseQuality: { $lte: baseItemQuality.tier } });
 
         const extraValidity = { minLevel: { $lte: playerReference.currentLevel } };
-        const luckBonus = playerReference.stats.luk;
 
         let attributeMaxDice = 20;
         let currentQuality = 0;
@@ -85,7 +90,19 @@ export default class ItemGenerator {
 
         const chosenAttrs = [];
 
-        while((chosenAttrs.length === 0 && baseItemQuality.tier > 1) || this.rollCheck(`1d${attributeMaxDice}`, luckBonus)) {
+        const canChooseMoreAttrs = () => {
+
+                    // uncommon items get 1 guaranteed prefix
+            return (chosenAttrs.length < 1 && baseItemQuality.tier > 1) ||
+
+                    // epic items get 2 guaranteed prefixes
+                   (chosenAttrs.length < 2 && baseItemQuality.tier > 3) ||
+
+                    // legendary items get 3 guaranteed prefixes
+                   (chosenAttrs.length < 3 && baseItemQuality.tier > 9);
+        };
+
+        while(canChooseMoreAttrs() || this.rollCheck(`1d${attributeMaxDice}`, luckBonus)) {
 
             // 10 times harder to roll subsequent attributes
             attributeMaxDice *= 10;
