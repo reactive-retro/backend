@@ -2,7 +2,7 @@
 import _ from 'lodash';
 
 import getPlayer from '../../../character/functions/getbyname';
-import { verify as placeVerify, generate } from '../../../objects/placegenerator';
+import { verify as placeVerify } from '../../../objects/placegenerator';
 import MESSAGES from '../../../static/messages';
 import updatePlayer from '../../updaters/player';
 
