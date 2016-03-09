@@ -28,11 +28,11 @@ export default {
         }),
         Mage: () => ({
             weapon: new Weapon({ name: 'Twig', stats: { mnt: 2 } }),
-            armor: new Armor({ name: 'Robe', stats: { mnt: 1, vit: 1 } })
+            armor: new Armor({ name: 'Mage Robe', stats: { mnt: 1, vit: 1 } })
         }),
         Thief: () => ({
             weapon: new Weapon({ name: 'Kitchen Knife', stats: { dex: 2 } }),
-            armor: new Armor({ name: 'Leather Armor', stats: { vit: 1, dex: 1 } })
+            armor: new Armor({ name: 'Thief Jerkin', stats: { vit: 1, dex: 1 } })
         }),
         Monster: () => ({
             weapon: new Weapon({ name: 'Claw' }),
