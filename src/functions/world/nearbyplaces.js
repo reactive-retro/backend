@@ -5,7 +5,7 @@ import rest from 'restler';
 import dbPromise from '../../objects/db';
 import SETTINGS from '../../static/settings';
 
-import placeGenerator from '../../objects/placegenerator';
+import placeGenerator, { getSeed } from '../../objects/placegenerator';
 
 const RADIUS = SETTINGS.RADIUS;
 const KEY = process.env.GOOGLE_PLACES_API_KEY;
@@ -17,6 +17,10 @@ const handlePlaces = async (resolve, places, genOpts) => {
 };
 
 const isPlaceAllowed = (place) => _.intersection(['locality'], place.types).length === 0;
+
+export const shoptoken = () => {
+    return getSeed();
+};
 
 export default async (homepoint, genOpts) => {
 

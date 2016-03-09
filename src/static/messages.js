@@ -60,5 +60,11 @@ export default {
     PARTY_JOIN_SUCCESSFUL: 'Successfully joined the party!',
     PARTY_TOO_FAR: 'You are too far from that party!',
     PARTY_IN_COMBAT: 'The party is currently in combat!',
-    PARTY_NEED_LOCATION: 'You need a location to join a party!'
+    PARTY_NEED_LOCATION: 'You need a location to join a party!',
+
+    BAD_PLACE: 'Invalid place data.',
+    ITEM_NONEXISTENT: 'That item does not exist!',
+    INVENTORY_FULL: 'Your inventory is full!',
+    SUCCESSFUL_TAKE: 'Successfully took item!',
+    ALREADY_TAKEN_ITEM: 'Item already taken!'
 };

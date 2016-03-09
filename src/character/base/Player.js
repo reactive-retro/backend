@@ -9,15 +9,16 @@ import SkillManager from '../../objects/skillmanager';
 import XPCalculator from '../../objects/xpcalculator';
 import save, { selectiveSave } from '../functions/save';
 import { monstertoken as generateMonsterToken } from '../../functions/world/nearbymonsters';
+import { shoptoken as generateShopToken } from '../../functions/world/nearbyplaces';
 
 export default class Player extends Character {
     constructor({ name, profession, options,
-                  monsterToken, skills, inventory,
+                  monsterToken, shopToken, skills, inventory,
                   equipment, stats, unlockedProfessions,
                   professionLevels, userId, homepoint,
                   statusEffects, cooldowns, battleId,
                   lastHomepointChange, professionXp, location,
-                  partyId }) {
+                  partyId, actionsTaken }) {
 
         super({
             name,
@@ -34,7 +35,9 @@ export default class Player extends Character {
 
         this.options = options || {};
         this.professionXp = professionXp || {};
+        this.actionsTaken = actionsTaken || {};
         this.monsterToken = monsterToken;
+        this.shopToken = shopToken;
         this.userId = userId;
         this.battleId = battleId;
         this.partyId = partyId;
@@ -48,7 +51,38 @@ export default class Player extends Character {
 
         this.handleDefaults();
         this.checkForNewMonsters();
+        this.checkShopsForNewInventory();
         this.checkIfCanChangeHomepoint();
+    }
+
+    hasTakenAction(action, mainType, subType) {
+        if(!this.actionsTaken) return false;
+        if(!this.actionsTaken[action]) return false;
+
+        if(subType) {
+            if(!this.actionsTaken[action][mainType]) return false;
+            return _.contains(this.actionsTaken[action][mainType], subType);
+        }
+
+        return _.contains(this.actionsTaken[action], mainType);
+    }
+
+    markActionTaken(action, mainType, subType) {
+        if(!this.actionsTaken) this.actionsTaken = {};
+
+        if(subType) {
+
+            // shops, chests, etc
+            if(!this.actionsTaken[action]) this.actionsTaken[action] = {};
+            if(!this.actionsTaken[action][mainType]) this.actionsTaken[action][mainType] = [];
+            this.actionsTaken[action][mainType].push(subType);
+
+        } else {
+
+            // monsters killed
+            if(!this.actionsTaken[action]) this.actionsTaken[action] = [];
+            this.actionsTaken[action].push(mainType);
+        }
     }
 
     changeHomepoint(newHomepoint) {
@@ -85,6 +119,17 @@ export default class Player extends Character {
         }
         this.monsterToken = checkToken;
         selectiveSave(this, ['monsterToken']);
+    }
+
+    checkShopsForNewInventory() {
+        const checkToken = generateShopToken();
+
+        if(this.shopToken !== checkToken) {
+            this.sendPlaces = true;
+            this.actionsTaken.shop = {};
+        }
+        this.shopToken = checkToken;
+        selectiveSave(this, ['shopToken', 'actionsTaken']);
     }
 
     handleDefaults() {

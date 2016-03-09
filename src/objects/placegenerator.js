@@ -40,7 +40,7 @@ const getPlaceType = (place) => {
 };
 
 // seed places based on the day
-const getSeed = () => {
+export const getSeed = () => {
     const now = new Date();
     now.setMilliseconds(0);
     now.setSeconds(0);
@@ -80,17 +80,17 @@ export default async (baseOpts, playerReference) => {
     return new Promise(async resolve => {
 
         place.seed = getSeed() + place.place_id;
-        place.verifyToken = generate(place);
         place.derivedType = getPlaceType(place);
         place.location = baseOpts.geometry.location;
         place.contents = await Promise.all(getContents(place.derivedType, place.seed, playerReference));
+        place.verifyToken = generate(place);
 
-        resolve(_.pick(place, ['name', 'location', 'contents', 'derivedType', 'rating', 'seed', 'verifyToken']));
+        resolve(_.pick(place, ['name', 'location', 'contents', 'derivedType', 'seed', 'verifyToken']));
     });
 };
 
 export const generate = (place) => {
-    const props = _.pick(place, ['name', 'location', 'contents', 'derivedType', 'rating', 'seed']);
+    const props = _.pick(place, ['name', 'location', 'contents', 'derivedType', 'seed']);
     return crypto.createHash('md5').update(serverSalt + JSON.stringify(props)).digest('hex');
 };
 
