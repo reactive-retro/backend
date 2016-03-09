@@ -1,9 +1,9 @@
 
-import { itemId } from '../functions/helpers';
+import { itemId as newItemId } from '../functions/helpers';
 
 export default class Item {
-    constructor({ name, isDefault, levelRequirement, quality, stats = {} }) {
-        this.itemId = itemId();
+    constructor({ name, isDefault, levelRequirement, quality, itemId, seed, stats = {} }) {
+        this.itemId = itemId || newItemId(seed);
         this.name = name;
         this.isDefault = isDefault;
         this.stats = stats;

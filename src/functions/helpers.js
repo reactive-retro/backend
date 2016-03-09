@@ -3,7 +3,19 @@ import _ from 'lodash';
 import uuid from 'node-uuid';
 import seedrandom from 'seedrandom';
 
-export const itemId = () => uuid.v4();
+const prng = (seed) => () => {
+    const rng = seedrandom(seed);
+    const randoms = [];
+
+    for(let i = 0, r; i < 16; i++) {
+        if ((i & 0x03) === 0) { r = rng() * 0x100000000; }
+        randoms[i] = r >>> ((i & 0x03) << 3) & 0xff;
+    }
+
+    return randoms;
+};
+
+export const itemId = (seed = Date.now()) => uuid.v4({ rng: prng(seed) });
 
 export const calcDistanceBetween = (lat1, lon1, lat2, lon2) => {
     const R = 6371;

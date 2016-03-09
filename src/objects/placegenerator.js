@@ -64,15 +64,17 @@ const getContents = (placeType, seed, playerReference) => {
     const maxItems = placeType === TYPES.TREASURE_CHEST ? 1 : 3;
     const itemType = getItemType(placeType);
 
+    const genSeed = seed + JSON.stringify(playerReference.homepoint);
+
     for(let i = 0; i < maxItems; i++) {
-        const item = ItemGenerator.generate(playerReference, itemType, seed+i);
+        const item = ItemGenerator.generate(playerReference, itemType, genSeed+i);
         contents.push(item);
     }
 
     return contents;
 };
 
-export default async (baseOpts, genOpts) => {
+export default async (baseOpts, playerReference) => {
     const place = _.clone(baseOpts);
 
     return new Promise(async resolve => {
@@ -81,7 +83,7 @@ export default async (baseOpts, genOpts) => {
         place.verifyToken = generate(place);
         place.derivedType = getPlaceType(place);
         place.location = baseOpts.geometry.location;
-        place.contents = await Promise.all(getContents(place.derivedType, place.seed, genOpts));
+        place.contents = await Promise.all(getContents(place.derivedType, place.seed, playerReference));
 
         resolve(_.pick(place, ['name', 'location', 'contents', 'derivedType', 'rating', 'seed', 'verifyToken']));
     });

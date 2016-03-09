@@ -1,6 +1,5 @@
 
 import _ from 'lodash';
-import Dice from 'dice.js';
 import seedrandom from 'seedrandom';
 
 import SETTINGS from '../static/settings';
@@ -21,11 +20,11 @@ const QUALITY = [
     { tier: 10, name: 'Legendary',    weight: -100,  minLevel: 50 }
 ];
 
-const determineBaseQuality = (playerLevel, luckBonus = 0) => {
+const determineBaseQuality = (playerLevel, luckBonus = 0, seed = Date.now()) => {
     const adjustedQualities = _.cloneDeep(QUALITY);
     _.each(adjustedQualities, q => q.weight += luckBonus);
 
-    return weightedChoice(_.reject(adjustedQualities, q => q.minLevel > playerLevel));
+    return weightedChoice(_.reject(adjustedQualities, q => q.minLevel > playerLevel), seed);
 };
 
 const getProto = (type) => {
@@ -71,17 +70,19 @@ export default class ItemGenerator {
         return myStats;
     }
 
-    static rollCheck(dice, luckBonus) {
-        return +Dice.roll(dice) <= 1 + luckBonus;
+    static rollCheck(dice, luckBonus, rng) {
+        return Math.floor(rng() * dice) <= 1 + luckBonus;
     }
 
     static async generate(playerReference, type, seed) {
 
         const luckBonus = playerReference.stats.luk;
-        const baseItemQuality = determineBaseQuality(playerReference.currentLevel, luckBonus);
-        if(!type) type = _.sample(['armor', 'weapon']);
+        const baseItemQuality = determineBaseQuality(playerReference.currentLevel, luckBonus, seed);
 
-        const item = await this.getRandom(type, { baseQuality: { $lte: baseItemQuality.tier } });
+        const rng = seedrandom(seed);
+        if(!type) type = ['armor', 'weapon'][Math.round(rng())];
+
+        const item = await this.getRandom(type, { baseQuality: { $lte: baseItemQuality.tier } }, rng);
 
         const extraValidity = { minLevel: { $lte: playerReference.currentLevel } };
 
@@ -103,7 +104,7 @@ export default class ItemGenerator {
                    (chosenAttrs.length < 3 && baseItemQuality.tier > 9);
         };
 
-        while(canChooseMoreAttrs() || this.rollCheck(`1d${attributeMaxDice}`, luckBonus)) {
+        while(canChooseMoreAttrs() || this.rollCheck(attributeMaxDice, luckBonus, rng)) {
 
             // 10 times harder to roll subsequent attributes
             attributeMaxDice *= 10;
@@ -112,7 +113,7 @@ export default class ItemGenerator {
             const validityCheck = _.cloneDeep(extraValidity);
             validityCheck.name = { $nin: chosenAttrs };
 
-            const attribute = await this.getRandom('attribute', validityCheck, seed);
+            const attribute = await this.getRandom('attribute', validityCheck, rng);
             item.stats = this.mergeItemStats(item.stats, attribute.stats);
             item.name = `${attribute.name} ${item.name}`;
             chosenAttrs.push(attribute.name);
@@ -120,16 +121,16 @@ export default class ItemGenerator {
             currentLevelRequirement += attribute.levelMod || 0;
         }
 
-        if(baseItemQuality.tier > 2 || this.rollCheck('1d100', luckBonus)) {
-            const prefix = await this.getRandom('prefix', extraValidity, seed);
+        if(baseItemQuality.tier > 2 || this.rollCheck(100, luckBonus, rng)) {
+            const prefix = await this.getRandom('prefix', extraValidity, rng);
             item.stats = this.mergeItemStats(item.stats, prefix.stats);
             item.name = `${prefix.name} ${item.name}`;
             currentQuality += 1;
             currentLevelRequirement += prefix.levelMod || 0;
         }
 
-        if(baseItemQuality.tier > 3 || this.rollCheck('1d100', luckBonus)) {
-            const suffix = await this.getRandom('suffix', extraValidity, seed);
+        if(baseItemQuality.tier > 3 || this.rollCheck(100, luckBonus, rng)) {
+            const suffix = await this.getRandom('suffix', extraValidity, rng);
             item.stats = this.mergeItemStats(item.stats, suffix.stats);
             item.name = `${item.name} ${suffix.name}`;
             currentQuality += 1;
@@ -139,20 +140,19 @@ export default class ItemGenerator {
         // set the quality to whatever was generated
         item.quality = currentQuality;
         item.levelRequirement = Math.min(SETTINGS.MAX_LEVEL, currentLevelRequirement);
+        item.seed = seed;
         const constructedItem = new (getProto(type))(item);
         constructedItem.dropRate = item.dropRate;
 
         return constructedItem;
     }
 
-    static async getRandom(type, extraFilter = {}, seed = Date.now()) {
+    static async getRandom(type, extraFilter = {}, rng = Math.random) {
         const db = await dbPromise();
         const itemData = db.collection(`item.${type}Data`);
 
         const typeData = await Promise.all(this.typeData);
         const { diff } = _.find(typeData, { type });
-
-        const rng = seedrandom(seed);
 
         const _id = Math.floor(rng() * diff);
 
