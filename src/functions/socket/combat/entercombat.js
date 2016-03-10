@@ -32,6 +32,10 @@ export default (socket, scWorker) => {
             return respond({ msg: MESSAGES.ALREADY_IN_COMBAT });
         }
 
+        if(player.hasTakenAction('monster', monsters[0].id)) {
+            return respond({ msg: MESSAGES.MONSTER_ALREADY_DEAD });
+        }
+
         let players = [player];
         let party = null;
 

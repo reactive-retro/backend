@@ -16,6 +16,7 @@ const prng = (seed) => () => {
 };
 
 export const itemId = (seed = Date.now()) => uuid.v4({ rng: prng(seed) });
+export const monsterId = (seed = Date.now()) => uuid.v4({ rng: prng(seed) });
 
 export const calcDistanceBetween = (lat1, lon1, lat2, lon2) => {
     const R = 6371;

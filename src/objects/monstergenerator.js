@@ -62,12 +62,12 @@ export default async (baseOpts, availableMonsters) => {
     monster.verifyToken = generate(monster);
 
     return new Promise(resolve => {
-        resolve(_.pick(monster, ['name', 'profession', 'goldDrop', 'equipment', 'professionLevels', 'skills', 'location', 'rating', 'seed', 'verifyToken']));
+        resolve(_.pick(monster, ['id', 'name', 'profession', 'goldDrop', 'equipment', 'professionLevels', 'skills', 'location', 'rating', 'seed', 'verifyToken']));
     });
 };
 
 export const generate = (monster) => {
-    const props = _.pick(monster, ['name', 'profession', 'goldDrop', 'equipment', 'professionLevels', 'skills', 'location', 'rating', 'seed']);
+    const props = _.pick(monster, ['id', 'name', 'profession', 'goldDrop', 'equipment', 'professionLevels', 'skills', 'location', 'rating', 'seed']);
     return crypto.createHash('md5').update(serverSalt + JSON.stringify(props)).digest('hex');
 };
 

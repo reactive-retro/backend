@@ -1,5 +1,5 @@
 
-import uuid from 'node-uuid';
+import { monsterId } from '../../functions/helpers';
 
 import Character from './Character';
 
@@ -17,7 +17,7 @@ export default class Monster extends Character {
             professionLevels: professionLevels || { Monster: 1 }
         });
 
-        this.id = id || uuid.v4();
+        this.id = id || monsterId(seed);
         this.bonusXp = bonusXp || 0;
         this.seed = seed;
         this.verifyToken = verifyToken;

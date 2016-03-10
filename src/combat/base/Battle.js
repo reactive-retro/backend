@@ -338,6 +338,10 @@ export default class Battle {
             if(leveledUp) {
                 messages.push(`${player.name} has reached ${player.profession} level ${player.currentLevel}!`);
             }
+
+            _.each(this.monsters, monster => {
+                player.markActionTaken('monster', monster.id);
+            });
         });
 
         return messages.concat(itemMessages);

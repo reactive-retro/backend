@@ -44,6 +44,7 @@ export default {
     NO_COMBAT_TARGET: 'No target selected.',
     NO_COMBAT_SKILL: 'No skill selected.',
     CONFIRMED_SKILL: 'Confirmed skill usage.',
+    MONSTER_ALREADY_DEAD: 'Monster already dead!',
 
     NO_SETTINGS: 'No option changes specified.',
     SETTING_SUCCESS: 'Options changed successfully!',
