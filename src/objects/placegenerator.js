@@ -7,9 +7,9 @@ import ItemGenerator from '../objects/itemgenerator';
 const serverSalt = crypto.createHash('md5').update(''+Math.random()).digest('hex');
 
 const TYPES = {
-    ITEM_SHOP: 'Item Shop',
-    WEAPON_SHOP: 'Weapon Shop',
-    ARMOR_SHOP: 'Armor Shop',
+    ITEM_SHOP: 'Item Store',
+    WEAPON_SHOP: 'Weapon Store',
+    ARMOR_SHOP: 'Armor Store',
     MIXED_SHOP: 'General Store',
     TREASURE_CHEST: 'Treasure Chest'
 };

@@ -66,5 +66,10 @@ export default {
     ITEM_NONEXISTENT: 'That item does not exist!',
     INVENTORY_FULL: 'Your inventory is full!',
     SUCCESSFUL_TAKE: 'Successfully took item!',
-    ALREADY_TAKEN_ITEM: 'Item already taken!'
+    ALREADY_TAKEN_ITEM: 'Item already taken!',
+    ALREADY_BOUGHT_ITEM: 'Item already bought!',
+    NOT_ENOUGH_GOLD: 'Not enough gold!',
+    SUCCESSFUL_BUY: 'Successfully bought item!',
+    NOT_A_SHOP: 'This is not a shop!',
+    NOT_A_CHEST: 'This is not a chest!'
 };

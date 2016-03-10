@@ -8,14 +8,14 @@ import updatePlayer from '../../updaters/player';
 
 export default (socket) => {
 
-    const takeItem = async ({ name, place, itemId }, respond) => {
+    const buyItem = async ({ name, place, itemId }, respond) => {
 
         if(!name) {
             return respond({ msg: MESSAGES.NO_NAME });
         }
 
-        if(!_.contains(place.derivedType, 'Chest')) {
-            return respond({ msg: MESSAGES.NOT_A_CHEST });
+        if(!_.contains(place.derivedType, 'Store')) {
+            return respond({ msg: MESSAGES.NOT_A_SHOP });
         }
 
         if(!placeVerify(place)) {
@@ -40,21 +40,26 @@ export default (socket) => {
         }
 
         if(player.hasTakenAction('shop', place.seed, itemId)) {
-            return respond({ msg: MESSAGES.ALREADY_TAKEN_ITEM });
+            return respond({ msg: MESSAGES.ALREADY_BOUGHT_ITEM });
         }
 
         if(!player.canAddToInventory()) {
             return respond({ msg: MESSAGES.INVENTORY_FULL });
         }
 
+        if(player.gold < item.value) {
+            return respond({ msg: MESSAGES.NOT_ENOUGH_GOLD });
+        }
+
+        player.addGold(-item.value);
         player.addToInventory(item);
         player.markActionTaken('shop', place.seed, itemId);
         player.save();
 
         updatePlayer(socket, player);
 
-        respond({ msg: MESSAGES.SUCCESSFUL_TAKE });
+        respond({ msg: MESSAGES.SUCCESSFUL_BUY });
     };
 
-    socket.on('shop:take', takeItem);
+    socket.on('shop:buy', buyItem);
 };
