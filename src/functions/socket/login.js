@@ -49,6 +49,12 @@ const respondWithPlayer = async (socket, respond, msg, token, player) => {
 
     socket.emit('update:options', playerInst.options);
     socket.emit('update:skills', SkillManager.getSkills(playerInst));
+
+    // just a check to make sure the character has a creation date, this will be useful
+    if(!playerInst.creationDate) {
+        playerInst.creationDate = new Date();
+        playerInst.selectiveSave(['creationDate']);
+    }
 };
 
 export default (socket) => {
