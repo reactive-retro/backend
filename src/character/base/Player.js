@@ -116,9 +116,10 @@ export default class Player extends Character {
 
         if(this.monsterToken !== checkToken) {
             this.needsMonsterRefresh = true;
+            this.actionsTaken.monsters = [];
         }
         this.monsterToken = checkToken;
-        selectiveSave(this, ['monsterToken']);
+        selectiveSave(this, ['monsterToken', 'actionsTaken']);
     }
 
     checkShopsForNewInventory() {
