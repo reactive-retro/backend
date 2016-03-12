@@ -340,7 +340,8 @@ export default class Battle {
             }
 
             _.each(this.monsters, monster => {
-                player.markActionTaken('monster', monster.id);
+                const key = monster.isDungeon ? 'dungeonMonster' : 'monster';
+                player.markActionTaken(key, monster.id);
             });
         });
 

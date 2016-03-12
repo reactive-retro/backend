@@ -39,6 +39,10 @@ export default (socket) => {
             return respond({ msg: MESSAGES.CURRENTLY_IN_COMBAT });
         }
 
+        if(_.intersection(player.actionsTaken.dungeonMonster, place.requirements).length !== place.requirements.length) {
+            return respond({ msg: MESSAGES.REQUIREMENTS_NOT_MET });
+        }
+
         if(player.hasTakenAction('shop', place.seed, itemId)) {
             return respond({ msg: MESSAGES.ALREADY_TAKEN_ITEM });
         }

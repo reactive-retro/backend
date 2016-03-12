@@ -3,6 +3,7 @@ import _ from 'lodash';
 import seedrandom from 'seedrandom';
 
 import SETTINGS from '../static/settings';
+import Logger from '../objects/logger';
 
 import Weapon from '../items/Weapon';
 import Armor from '../items/Armor';
@@ -11,20 +12,32 @@ import dbPromise from './db';
 import { weightedChoice } from '../functions/helpers';
 
 const QUALITY = [
-    { tier: -1, name: 'Trash',        weight: -1000, minLevel: 0 },
-    { tier: 0,  name: 'Basic',        weight: 20,    minLevel: 0 },
-    { tier: 1,  name: 'Common',       weight: 7,     minLevel: 0 },
-    { tier: 2,  name: 'Uncommon',     weight: 5,     minLevel: 10 },
-    { tier: 3,  name: 'Rare',         weight: 3,     minLevel: 25 },
-    { tier: 4,  name: 'Epic',         weight: 1,     minLevel: 40 },
+    { tier: -1, name: 'Trash',        weight: -1000, minLevel: 0  },
+    { tier: 0,  name: 'Basic',        weight: 40,    minLevel: 0  },
+    { tier: 1,  name: 'Common',       weight: 17,    minLevel: 0  },
+    { tier: 2,  name: 'Uncommon',     weight: 10,    minLevel: 3  },
+    { tier: 3,  name: 'Rare',         weight: 1,     minLevel: 10 },
+    { tier: 4,  name: 'Epic',         weight: -20,   minLevel: 25 },
     { tier: 10, name: 'Legendary',    weight: -100,  minLevel: 50 }
 ];
 
-const determineBaseQuality = (playerLevel, luckBonus = 0, seed = Date.now()) => {
+const determineBaseQuality = (playerLevel, luckBonus = 0, seed = Date.now(), baseTier = 0) => {
     const adjustedQualities = _.cloneDeep(QUALITY);
     _.each(adjustedQualities, q => q.weight += luckBonus);
 
-    return weightedChoice(_.reject(adjustedQualities, q => q.minLevel > playerLevel), seed);
+    baseTier = Math.min(10, baseTier);
+    const choices = _.reject(adjustedQualities, q => q.tier < baseTier);
+
+    // if some weird case happens, generate a basic item
+    let choice = weightedChoice(choices, seed);
+    if(!choice) {
+        Logger.error('ItemGenerator:QualityChoice', new Error('Quality choice was not correct'), {
+            playerLevel, luckBonus, seed, baseTier
+        });
+        choice = QUALITY[1];
+    }
+
+    return choice;
 };
 
 const getProto = (type) => {
@@ -74,10 +87,10 @@ export default class ItemGenerator {
         return Math.floor(rng() * dice) <= 1 + luckBonus;
     }
 
-    static async generate(playerReference, type, seed) {
+    static async generate({ playerReference, type, seed, minQuality = 0 }) {
 
         const luckBonus = playerReference.stats.luk;
-        const baseItemQuality = determineBaseQuality(playerReference.currentLevel, luckBonus, seed);
+        const baseItemQuality = determineBaseQuality(playerReference.currentLevel, luckBonus, seed, minQuality);
 
         const rng = seedrandom(seed);
         if(!type) type = ['armor', 'weapon'][Math.round(rng())];

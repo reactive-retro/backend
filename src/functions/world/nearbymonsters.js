@@ -5,15 +5,13 @@ import monstergenerate from '../../objects/monstergenerator';
 import { calcDistanceBetween } from '../helpers';
 import availableMonsters from './availablemonsters';
 
-// the offsets and directions to generate the bounds at which monsters spawn
-const OFFSETS = {
-    lat: 0.025,
-    lon: 0.025
-};
-
 const randomBetween = (rng = Math.random, min, max) => rng() * (max - min) + min;
 const normalBetween = (rng = Math.random, min, max) => {
     const normalRng = () => (rng() + rng() + rng() + rng() - 2) / 2;
+    return randomBetween(normalRng, min, max);
+};
+const normalAround = (rng = Math.random, min, max) => {
+    const normalRng = () => (3 / (rng() + rng() + rng() + rng() + rng() + rng() - 3)) / 3;
     return randomBetween(normalRng, min, max);
 };
 
@@ -45,23 +43,27 @@ export const monstertoken = (extraData = '') => {
     return getSeed() + extraData;
 };
 
-export default async ({ lat, lon }, playerLevel) => {
+export default async ({ lat, lon, playerLevel, ratingOffset, offsets, amounts, seed }) => {
+    if(!seed) seed = getSeed();
+    if(!ratingOffset) ratingOffset = 0;
+
+    // monster generation for places has a tight generation area
+    // placing them right on top of the place makes them hard to hit
+    const normalFunction = ratingOffset > 0 ? normalAround : normalBetween;
 
     const possibleMonsters = await availableMonsters(playerLevel);
 
-    const seed = getSeed();
-
     const rng = seedrandom(seed);
-    const numMonsters = randomBetween(rng, 500, 650);
+    const numMonsters = randomBetween(rng, amounts.min, amounts.max);
 
     const monsters = [];
 
     for(let i = 0; i < numMonsters; i++) {
-        const monLat = normalBetween(rng, lat-OFFSETS.lat, lat+OFFSETS.lat) + OFFSETS.lat;
-        const monLon = normalBetween(rng, lon-OFFSETS.lon, lon+OFFSETS.lon) + OFFSETS.lon;
+        const monLat = normalFunction(rng, lat-offsets.lat, lat+offsets.lat) + offsets.lat;
+        const monLon = normalFunction(rng, lon-offsets.lon, lon+offsets.lon) + offsets.lon;
 
         const distanceBetweenHomepointAndMonster = calcDistanceBetween(lat, lon, monLat, monLon);
-        const rating = rateMonster(distanceBetweenHomepointAndMonster);
+        const rating = rateMonster(distanceBetweenHomepointAndMonster) + ratingOffset;
 
         const monster = monstergenerate({
             location: {

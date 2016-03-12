@@ -72,5 +72,6 @@ export default {
     NOT_ENOUGH_GOLD: 'Not enough gold!',
     SUCCESSFUL_BUY: 'Successfully bought item!',
     NOT_A_SHOP: 'This is not a shop!',
-    NOT_A_CHEST: 'This is not a chest!'
+    NOT_A_CHEST: 'This is not a chest!',
+    REQUIREMENTS_NOT_MET: 'You cannot loot that yet; you have more monsters to kill.'
 };

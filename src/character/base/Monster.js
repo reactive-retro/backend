@@ -4,7 +4,10 @@ import { monsterId } from '../../functions/helpers';
 import Character from './Character';
 
 export default class Monster extends Character {
-    constructor({ seed, verifyToken, name, equipment, bonusXp, skills, goldDrop, profession, location, rating, professionLevels, stats, statusEffects, cooldowns, id }) {
+    constructor({ seed, verifyToken, name, equipment, bonusXp,
+                  skills, goldDrop, profession, location, rating,
+                  professionLevels, stats, statusEffects, cooldowns,
+                  id, isDungeon }) {
 
         super({
             name,
@@ -24,6 +27,7 @@ export default class Monster extends Character {
         this.location = location;
         this.rating = rating;
         this.goldDrop = goldDrop;
+        this.isDungeon = isDungeon;
         this.calculate();
     }
 }

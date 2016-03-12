@@ -128,6 +128,7 @@ export default class Player extends Character {
         if(this.shopToken !== checkToken) {
             this.sendPlaces = true;
             this.actionsTaken.shop = {};
+            this.actionsTaken.dungeonMonster = [];
         }
         this.shopToken = checkToken;
         selectiveSave(this, ['shopToken', 'actionsTaken']);

@@ -52,8 +52,11 @@ export default async (baseOpts, availableMonsters) => {
     if(chosenMonster.equipment) {
         const { weapon, armor } = chosenMonster.equipment;
         try {
-            if(weapon && +Dice.roll('1d100') <= weapon) monster.equip(await ItemGenerator.generate(monster, 'weapon', opts.seed+'weapon'));
-            if(armor  && +Dice.roll('1d100') <= armor)  monster.equip(await ItemGenerator.generate(monster, 'armor',  opts.seed+'armor'));
+            if(weapon && +Dice.roll('1d100') <= weapon)
+                monster.equip(await ItemGenerator.generate({ playerReference: monster, type: 'weapon', seed: opts.seed+'weapon' }));
+
+            if(armor  && +Dice.roll('1d100') <= armor)
+                monster.equip(await ItemGenerator.generate({ playerReference: monster, type: 'armor',  seed: opts.seed+'armor' }));
         } catch(e) {
             Logger.error('MonsterGenerate:Equipment', e);
         }

@@ -2,7 +2,12 @@
 import _ from 'lodash';
 import crypto from 'crypto';
 
+import SETTINGS from '../static/settings';
 import ItemGenerator from '../objects/itemgenerator';
+
+import nearbyMonsters from '../functions/world/nearbymonsters';
+
+import { singleChoice } from '../functions/helpers';
 
 const serverSalt = crypto.createHash('md5').update(''+Math.random()).digest('hex');
 
@@ -11,7 +16,8 @@ const TYPES = {
     WEAPON_SHOP: 'Weapon Store',
     ARMOR_SHOP: 'Armor Store',
     MIXED_SHOP: 'General Store',
-    TREASURE_CHEST: 'Treasure Chest'
+    TREASURE_CHEST: 'Treasure Chest',
+    DUNGEON_CHEST: 'Dungeon Chest'
 };
 
 const TYPE_MAP = {
@@ -25,6 +31,11 @@ const TYPE_MAP = {
     [TYPES.MIXED_SHOP]: [
         'convenience_store', 'department_store', 'store', 'gas_station',
         'grocery_or_supermarket', 'home_goods_store', 'shopping_mall'],
+    [TYPES.DUNGEON_CHEST]: [
+        'hospital', 'amusement_park', 'art_gallery', 'library', 'local_government_office', 'bank',
+        'mosque', 'museum', 'night_club', 'park', 'cemetery', 'city_hall', 'embassy', 'school',
+        'stadium', 'hindu_temple', 'university', 'zoo', 'synagogue', 'place_of_worship', 'church'
+    ],
     [TYPES.TREASURE_CHEST]: []
 };
 
@@ -35,6 +46,8 @@ const getPlaceType = (place) => {
     if(typeMatches(TYPES.WEAPON_SHOP)) return TYPES.WEAPON_SHOP;
     if(typeMatches(TYPES.ARMOR_SHOP)) return TYPES.ARMOR_SHOP;
     if(typeMatches(TYPES.MIXED_SHOP)) return TYPES.MIXED_SHOP;
+
+    if(typeMatches(TYPES.DUNGEON_CHEST)) return TYPES.DUNGEON_CHEST;
 
     return TYPES.TREASURE_CHEST;
 };
@@ -58,16 +71,55 @@ const getItemType = (placeType) => {
     }
 };
 
-const getContents = (placeType, seed, playerReference) => {
+const getItemCountForPlace = (placeType) => {
+    switch(placeType) {
+        case TYPES.WEAPON_SHOP:
+        case TYPES.ARMOR_SHOP: return 3;
+
+        case TYPES.DUNGEON_CHEST: return 3;
+        default: return 1;
+    }
+};
+
+const getItemGenOpts = ({ placeType, ratingOffset }) => {
+    const maxRating = SETTINGS.MONSTER_GENERATION.DUNGEON.levelOffset.max;
+
+    switch(placeType) {
+        case TYPES.DUNGEON_CHEST: return { minQuality: ratingOffset < maxRating - 1 ? 1 : 2 };
+        default: return {};
+    }
+};
+
+const getRequirements = ({ location, derivedType, seed, ratingOffset }, playerReference) => {
+    const monsterSettings = SETTINGS.MONSTER_GENERATION.DUNGEON;
+
+    const args = _.extend(
+        _.cloneDeep(monsterSettings),
+        { playerLevel: playerReference.currentLevel, ratingOffset },
+        { lat: location.lat, lon: location.lng },
+        { seed }
+    );
+
+    switch(derivedType) {
+        case TYPES.DUNGEON_CHEST: return nearbyMonsters(args);
+        default: return [];
+    }
+};
+
+const getContents = ({ derivedType, seed, ratingOffset }, playerReference) => {
 
     const contents = [];
-    const maxItems = placeType === TYPES.TREASURE_CHEST ? 1 : 3;
-    const itemType = getItemType(placeType);
+    const maxItems = getItemCountForPlace(derivedType);
+    const itemType = getItemType(derivedType);
+    const itemOpts = getItemGenOpts({ derivedType, ratingOffset });
 
     const genSeed = seed + JSON.stringify(playerReference.homepoint);
 
+    const baseOpts = _.extend({ playerReference, type: itemType }, itemOpts);
+
     for(let i = 0; i < maxItems; i++) {
-        const item = ItemGenerator.generate(playerReference, itemType, genSeed+i);
+        baseOpts.seed = genSeed + i;
+        const item = ItemGenerator.generate(baseOpts);
         contents.push(item);
     }
 
@@ -82,15 +134,24 @@ export default async (baseOpts, playerReference) => {
         place.seed = getSeed() + place.place_id;
         place.derivedType = getPlaceType(place);
         place.location = baseOpts.geometry.location;
-        place.contents = await Promise.all(getContents(place.derivedType, place.seed, playerReference));
-        place.verifyToken = generate(place);
 
-        resolve(_.pick(place, ['name', 'location', 'contents', 'derivedType', 'seed', 'verifyToken']));
+        const { min, max } = SETTINGS.MONSTER_GENERATION.DUNGEON.levelOffset;
+        place.ratingOffset = singleChoice(_.range(min, max), place.seed);
+
+        place.contents = await Promise.all(getContents(place, playerReference));
+        const requirements = await getRequirements(place, playerReference);
+
+        _.each(requirements, r => r.isDungeon = true);
+        place.requirements = _.map(requirements, 'id');
+        place.fullRequirements = requirements;
+        place.verifyToken = generate(place, playerReference);
+
+        resolve(_.pick(place, ['name', 'requirements', 'fullRequirements', 'location', 'contents', 'derivedType', 'seed', 'verifyToken']));
     });
 };
 
 export const generate = (place) => {
-    const props = _.pick(place, ['name', 'location', 'contents', 'derivedType', 'seed']);
+    const props = _.pick(place, ['name', 'requirements', 'location', 'contents', 'derivedType', 'seed']);
     return crypto.createHash('md5').update(serverSalt + JSON.stringify(props)).digest('hex');
 };
 
