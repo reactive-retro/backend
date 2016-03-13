@@ -75,7 +75,8 @@ const getItemType = (placeType) => {
 const getItemCountForPlace = (placeType) => {
     switch(placeType) {
         case TYPES.WEAPON_SHOP:
-        case TYPES.ARMOR_SHOP: return 3;
+        case TYPES.ARMOR_SHOP:
+        case TYPES.MIXED_SHOP: return 3;
 
         case TYPES.DUNGEON_CHEST: return 3;
         default: return 1;
