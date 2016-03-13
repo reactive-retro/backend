@@ -8,6 +8,7 @@ let weaponData = null;
 let prefixData = null;
 let suffixData = null;
 let attributeData = null;
+let zoneData = null;
 
 test.serial('Armor data is valid hjson', t => {
     armorData = loadDataFile('armor');
@@ -31,6 +32,11 @@ test.serial('Prefix data is valid hjson', t => {
 
 test.serial('Suffix data is valid hjson', t => {
     suffixData = loadDataFile('suffix');
+    t.pass();
+});
+
+test.serial('Zone data is valid hjson', t => {
+    zoneData = loadDataFile('zone');
     t.pass();
 });
 
@@ -61,6 +67,10 @@ const validateAttribute = (t, attr) => {
     }
 };
 
+const validateZone = (t, attr) => {
+    t.ok(attr.name);
+};
+
 test('Armor data has valid attribute values', t => {
     armorData.forEach(armor => validateItem(t, armor));
     t.pass();
@@ -83,5 +93,10 @@ test('Suffix data has valid attribute values', t => {
 
 test('Attribute data has valid attribute values', t => {
     attributeData.forEach(attr => validateAttribute(t, attr));
+    t.pass();
+});
+
+test('Zone data has valid attribute values', t => {
+    zoneData.forEach(attr => validateZone(t, attr));
     t.pass();
 });

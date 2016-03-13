@@ -24,6 +24,7 @@ test('Monsters have valid attribute values', t => {
         t.true(monster.minLevel > 0);
         t.true(monster.maxLevel <= 100);
         t.true(monster.minLevel <= monster.maxLevel);
+        t.true(monster.zones.length > 0);
 
         if(monster.equipment) {
             if(monster.equipment.armor)  t.true(monster.equipment.armor > 0  && monster.equipment.armor <= 100);

@@ -71,7 +71,7 @@ export default class ItemGenerator {
     }
 
     static init() {
-        const typesToLoad = ['armor', 'weapon', 'attribute', 'prefix', 'suffix'];
+        const typesToLoad = ['armor', 'weapon', 'attribute', 'prefix', 'suffix', 'zone'];
         this.typeData = _.map(typesToLoad, this.loadType);
     }
 

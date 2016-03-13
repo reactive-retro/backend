@@ -43,15 +43,17 @@ export const monstertoken = (extraData = '') => {
     return getSeed() + extraData;
 };
 
-export default async ({ lat, lon, playerLevel, ratingOffset, offsets, amounts, seed }) => {
+export default async ({ lat, lon, playerLevel, ratingOffset, offsets, amounts, seed, zone, statBuff }) => {
     if(!seed) seed = getSeed();
     if(!ratingOffset) ratingOffset = 0;
+    if(!zone) zone = 'All';
+    if(!statBuff) statBuff = {};
 
     // monster generation for places has a tight generation area
     // placing them right on top of the place makes them hard to hit
     const normalFunction = ratingOffset > 0 ? normalAround : normalBetween;
 
-    const possibleMonsters = await availableMonsters(playerLevel);
+    const possibleMonsters = await availableMonsters(playerLevel, zone);
 
     const rng = seedrandom(seed);
     const numMonsters = randomBetween(rng, amounts.min, amounts.max);
@@ -74,6 +76,7 @@ export default async ({ lat, lon, playerLevel, ratingOffset, offsets, amounts, s
             // no negative level monsters
             baseLevel: Math.max(1, playerLevel + rating),
             rating,
+            statBuff,
 
             // if they are all the same seed, they will all be the same monster, which is bad
             seed: seed+i

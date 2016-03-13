@@ -39,6 +39,7 @@ export default async (baseOpts, availableMonsters) => {
     opts.goldDrop = chosenMonster.goldDrop;
     opts.bonusXp = chosenMonster.bonusXp;
     opts.professionLevels = { [opts.profession]: opts.baseLevel };
+    opts.equipment = { zone: { stats: baseOpts.statBuff } };
 
     // some monsters can have auxiliary classes
     if(chosenMonster.extendProfessions) {

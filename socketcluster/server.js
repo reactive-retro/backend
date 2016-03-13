@@ -16,6 +16,10 @@ if(ip) {
     console.log(`Your IP is: ${ip}`);
 }
 
+process.on('unhandledRejection', function(reason, p) {
+    console.log('Unhandled Rejection at: Promise ', p, ' reason: ', reason);
+});
+
 var socketCluster = new SocketCluster({
     workers: Number(argv.w) || 1,
     stores: Number(argv.s) || 1,

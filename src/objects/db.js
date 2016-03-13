@@ -27,20 +27,20 @@ const connectionPromise = new Promise((resolve, reject) => {
         }
 
         db.collection('players').createIndex({ name: 1 }, { unique: true }, _.noop);
-        db.collection('players').updateMany({}, { $set: { battleId: null } }, _.noop);
-        db.collection('battles').deleteMany({}, _.noop);
-        db.collection('parties').deleteMany({}, _.noop);
-        db.collection('homepointPlaces').createIndex({ location: 1 }, _.noop);
+        db.collection('players').updateMany({}, { $set: { battleId: null, online: false } }, _.noop);
 
-        // log everyone out on server restart
-        db.collection('players').updateMany({}, { $set: { online: false } }, _.noop);
+        db.collection('battles').deleteMany({}, _.noop);
+
+        db.collection('parties').deleteMany({}, _.noop);
+
+        db.collection('homepointPlaces').createIndex({ location: 1 }, _.noop);
 
         const monsters = db.collection('monsters');
         monsters.deleteMany({}, () => {
             monsters.insertMany(loadHjson('monster'), _.noop);
         });
 
-        const itemsLoaded = _.map(['armor', 'attribute', 'prefix', 'suffix', 'weapon'], type => {
+        const itemsLoaded = _.map(['armor', 'attribute', 'prefix', 'suffix', 'weapon', 'zone'], type => {
             const itemData = db.collection(`item.${type}Data`);
             itemData.createIndex({ name: 1 }, { unique: true }, _.noop);
             return new Promise((resolve, reject) => {

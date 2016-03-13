@@ -1,0 +1,9 @@
+[
+
+{ name: "Cave" }
+{ name: "Fortress" }
+{ name: "Plains" }
+{ name: "Temple" }
+{ name: "Tower" }
+
+]

@@ -1,6 +1,7 @@
 
 import _ from 'lodash';
 import crypto from 'crypto';
+import seedrandom from 'seedrandom';
 
 import SETTINGS from '../static/settings';
 import ItemGenerator from '../objects/itemgenerator';
@@ -90,14 +91,15 @@ const getItemGenOpts = ({ placeType, ratingOffset }) => {
     }
 };
 
-const getRequirements = ({ location, derivedType, seed, ratingOffset }, playerReference) => {
+const getRequirements = ({ location, derivedType, seed, ratingOffset }, playerReference, dungeonAttributes) => {
     const monsterSettings = SETTINGS.MONSTER_GENERATION.DUNGEON;
 
     const args = _.extend(
         _.cloneDeep(monsterSettings),
         { playerLevel: playerReference.currentLevel, ratingOffset },
         { lat: location.lat, lon: location.lng },
-        { seed }
+        { seed },
+        { zone: dungeonAttributes.zoneName, statBuff: dungeonAttributes.stats }
     );
 
     switch(derivedType) {
@@ -126,6 +128,32 @@ const getContents = ({ derivedType, seed, ratingOffset }, playerReference) => {
     return contents;
 };
 
+const getDungeonName = async (place) => {
+    const rng = seedrandom(place.seed);
+    const zone = await ItemGenerator.getRandom('zone', {}, rng);
+    let rollingStats = {};
+
+    const attribute = await ItemGenerator.getRandom('attribute', {}, rng);
+    rollingStats = ItemGenerator.mergeItemStats(rollingStats, attribute.stats);
+
+    let prefix = { name: '' };
+    let suffix = { name: '' };
+
+    if(Math.floor(rng() * 100) <= 3) {
+        prefix = await ItemGenerator.getRandom('prefix', {}, rng);
+        rollingStats = ItemGenerator.mergeItemStats(rollingStats, prefix.stats);
+    }
+
+    if(Math.floor(rng() * 100) <= 1) {
+        suffix = await ItemGenerator.getRandom('suffix', {}, rng);
+        rollingStats = ItemGenerator.mergeItemStats(rollingStats, suffix.stats);
+    }
+
+    const name = `${prefix.name} ${attribute.name} ${zone.name} ${suffix.name}`.trim();
+
+    return new Promise(resolve => resolve({ name, zoneName: zone.name, stats: rollingStats }));
+};
+
 export default async (baseOpts, playerReference) => {
     const place = _.clone(baseOpts);
 
@@ -135,23 +163,29 @@ export default async (baseOpts, playerReference) => {
         place.derivedType = getPlaceType(place);
         place.location = baseOpts.geometry.location;
 
+        let dungeonAttributes = {};
+        if(place.derivedType === TYPES.DUNGEON_CHEST) {
+            dungeonAttributes = await getDungeonName(place);
+            place.dungeonName = dungeonAttributes.name;
+        }
+
         const { min, max } = SETTINGS.MONSTER_GENERATION.DUNGEON.levelOffset;
         place.ratingOffset = singleChoice(_.range(min, max), place.seed);
 
         place.contents = await Promise.all(getContents(place, playerReference));
-        const requirements = await getRequirements(place, playerReference);
+        const requirements = await getRequirements(place, playerReference, dungeonAttributes);
 
         _.each(requirements, r => r.isDungeon = true);
         place.requirements = _.map(requirements, 'id');
         place.fullRequirements = requirements;
         place.verifyToken = generate(place, playerReference);
 
-        resolve(_.pick(place, ['name', 'requirements', 'fullRequirements', 'location', 'contents', 'derivedType', 'seed', 'verifyToken']));
+        resolve(_.pick(place, ['name', 'dungeonName', 'requirements', 'location', 'contents', 'derivedType', 'seed', 'fullRequirements', 'verifyToken']));
     });
 };
 
 export const generate = (place) => {
-    const props = _.pick(place, ['name', 'requirements', 'location', 'contents', 'derivedType', 'seed']);
+    const props = _.pick(place, ['name', 'dungeonName', 'requirements', 'location', 'contents', 'derivedType', 'seed']);
     return crypto.createHash('md5').update(serverSalt + JSON.stringify(props)).digest('hex');
 };
 
