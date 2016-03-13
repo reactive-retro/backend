@@ -24,6 +24,10 @@ export default class SkillManager {
         return _.find(skills, { spellName: skill, spellDisabled: true });
     }
 
+    static isSkillUnstackable(skill) {
+        return _.find(skills, { spellName: skill, spellUnstackable: true });
+    }
+
     static doesSkillExist(skill) {
         return _.contains(skillNames, skill);
     }

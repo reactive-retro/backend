@@ -27,7 +27,7 @@ export default (socket) => {
             return respond({ msg: MESSAGES.NO_SKILL });
         }
 
-        if(SkillManager.isSkillDisabled(skillName)) {
+        if(SkillManager.isSkillDisabled(skillName) || SkillManager.isSkillUnstackable(skillName)) {
             return respond({ msg: MESSAGES.SKILL_DISABLED });
         }
 

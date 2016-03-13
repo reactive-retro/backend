@@ -8,6 +8,7 @@ export const description= (desc)     => (target) => { return target.prototype.sp
 export const useString  = (useStr)   => (target) => { return target.prototype.spellUseString = useStr, target; };
 export const disabled   =               (target) => { return target.prototype.spellDisabled = true, target; };
 export const unblockable=               (target) => { return target.prototype.spellUnblockable = true, target; };
+export const unstackable=               (target) => { return target.prototype.spellUnstackable = true, target; };
 
 export const effect     = (effect, effVal) => (target) => {
     if(!target.prototype.spellEffects) {
