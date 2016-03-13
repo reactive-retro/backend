@@ -290,8 +290,8 @@ export default class Battle {
         const droppedItems = _(this.monsters).map(monster => {
             const { armor, weapon } = monster.equipment;
             return [
-                armor.dropRate  && +Dice.roll('1d100') <= armor.dropRate  + totalLuckBonus ? armor : null,
-                weapon.dropRate && +Dice.roll('1d100') <= weapon.dropRate + totalLuckBonus ? weapon : null
+                armor && armor.dropRate  && +Dice.roll('1d100') <= armor.dropRate  + totalLuckBonus ? armor : null,
+                weapon && weapon.dropRate && +Dice.roll('1d100') <= weapon.dropRate + totalLuckBonus ? weapon : null
             ];
         }).flatten().compact().value();
 
