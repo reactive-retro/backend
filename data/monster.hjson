@@ -30,7 +30,7 @@
 
 { name: "Dragon",                   zones: ["All", "Cave"],     profession: "Monster",  goldDrop: "20d4",  weight: 4, equipment: { armor: 0, weapon: 0 },    minLevel: 45,  maxLevel: 50, bonusXp: 100 }
 
-{ name: "Zoobat",                   zones: ["Cave"],            profession: "Monster",  goldDrop: "1d4",   weight: 1, equipment: { armor: 0, weapon: 0 },    minLevel: 1,   maxLevel: 50 }
+{ name: "Zoobat",                   zones: ["Cave", "Tower"],   profession: "Monster",  goldDrop: "1d4",   weight: 1, equipment: { armor: 0, weapon: 0 },    minLevel: 1,   maxLevel: 50 }
 { name: "Gopher",                   zones: ["Plains"],          profession: "Monster",  goldDrop: "1d4",   weight: 1, equipment: { armor: 0, weapon: 0 },    minLevel: 1,   maxLevel: 50 }
 { name: "Guardian",                 zones: ["Fortress"],        profession: "Monster",  goldDrop: "1d4",   weight: 1, equipment: { armor: 0, weapon: 0 },    minLevel: 1,   maxLevel: 50 }
 { name: "Cultist",                  zones: ["Temple"],          profession: "Mage",     goldDrop: "1d4",   weight: 1, equipment: { armor: 50, weapon: 50 },  minLevel: 1,   maxLevel: 50 }
