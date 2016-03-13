@@ -1,7 +1,7 @@
 {
   "name": "retro-backend",
   "description": "Reactive Retros backend",
-  "version": "0.0.1",
+  "version": "0.3.0",
   "contributors": [
     {
       "name": "Kyle Kemp",
@@ -13,7 +13,10 @@
   },
   "scripts": {
     "start": "node index.js",
-    "test": "eslint src/** && ava"
+    "test": "eslint src/** && ava",
+    "bump:patch": "npm-bump patch",
+    "bump:minor": "npm-bump minor",
+    "bump:major": "npm-bump major"
   },
   "dependencies": {
     "atob": "^2.0.0",
@@ -42,7 +45,8 @@
     "ava": "^0.12.0",
     "babel-eslint": "^5.0.0",
     "eslint": "~2.2.0",
-    "eslint-config-kellyirc": "^3.1.0"
+    "eslint-config-kellyirc": "^3.1.0",
+    "npm-bump": "0.0.16"
   },
   "ava": {
     "files": [
