@@ -106,6 +106,14 @@ export default class Player extends Character {
         this.canChangeHomepoint = prevTest <= now;
     }
 
+    takeAStep() {
+        this.stats.hp.addPercent(5);
+        this.stats.hp.add(1);
+
+        this.stats.mp.addPercent(5);
+        this.stats.mp.add(1);
+    }
+
     checkForNewMonsters() {
         // specify it out to a certain gps precision so small changes don't affect everything
         const seedHomepoint = _.cloneDeep(this.homepoint);

@@ -29,6 +29,8 @@ export default (socket) => {
         }
 
         player.setLocation(coords);
+        player.takeAStep();
+        player.save();
 
         updatePlayer(socket, player, false);
 
