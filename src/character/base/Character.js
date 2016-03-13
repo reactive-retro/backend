@@ -3,6 +3,7 @@ import _ from 'lodash';
 import RestrictedNumber from 'restricted-number';
 import Dice from 'dice.js';
 
+import SkillManager from '../../objects/skillmanager';
 import SpellEffectManager from '../../objects/spelleffectmanager';
 
 import DEFAULTS from '../../static/chardefaults';
@@ -12,10 +13,11 @@ export default class Character {
     constructor({ name, profession, professionLevels, unlockedProfessions, stats, skills, inventory, equipment, statusEffects, cooldowns }) {
         this.name = name;
         this.profession = profession;
+        this.skills = skills;
         this.professionLevels = professionLevels || {};
         this.statusEffects = statusEffects || [];
         this.stats = stats || _.cloneDeep(DEFAULTS.stats);
-        this.skills = skills || _.cloneDeep(DEFAULTS.skills);
+        this.skills = SkillManager.getValidSkills(this) || _.cloneDeep(DEFAULTS.skills);
         this.inventory = inventory || [];
         this.equipment = equipment || DEFAULTS.equipment[this.profession]();
         this.unlockedProfessions = unlockedProfessions || _.cloneDeep(DEFAULTS.unlockedProfessions);

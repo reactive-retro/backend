@@ -37,6 +37,11 @@ export default class SkillManager {
         return _.difference(player.skills, skillNames).concat(disabledSkills);
     }
 
+    static getValidSkills(player) {
+        const validSkills = this.getSkills(player);
+        return _.intersection(player.skills, _.map(validSkills, 'spellName'));
+    }
+
     static getSkills(player) {
         return _(skills)
             .filter(skill => {
