@@ -5,7 +5,7 @@ import { name, cost, cooldown, classes, targets, description, effect, useString 
 @name('Slash')
 @cost(0)
 @cooldown(3)
-@classes({ Fighter: 1 })
+@classes({ Fighter: 7 })
 @targets(ActionTargets.SINGLE_ENEMY)
 @description('Slash an enemy, dealing medium damage with above-average accuracy.')
 @useString('%o used %n on %t and dealt %d damage!')

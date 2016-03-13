@@ -3,9 +3,9 @@ import Action, { ActionTargets } from '../../base/Action';
 import { name, cost, cooldown, classes, targets, description, effect, useString, unblockable } from '../../../static/decorators';
 
 @name('Shocking Touch')
-@cost(10)
+@cost(7)
 @cooldown(0)
-@classes({ Mage: 1 })
+@classes({ Mage: 3 })
 @targets(ActionTargets.SINGLE_ENEMY)
 @description('Zap your foe with the power of a badly-wired outlet, dealing low damage but carrying a chance of shock.')
 @useString('%o used %n on %t and dealt %d damage!')
