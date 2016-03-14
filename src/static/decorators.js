@@ -24,7 +24,7 @@ export const effect     = (effect, effVal) => (target) => {
 };
 
 const statPerLevel = (stat, val, bonus = () => 0) => (target) => {
-    target[stat] = (player) => target.getLevel(player) * val + bonus(target, player);
+    target[stat] = (player) => Math.floor(target.getLevel(player) * val + bonus(target, player));
     return target;
 };
 
