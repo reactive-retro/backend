@@ -1,6 +1,6 @@
 
 import Action, { ActionTargets } from '../../base/Action';
-import { name, cost, cooldown, classes, targets, description, effect, useString } from '../../../static/decorators';
+import { name, cost, cooldown, classes, targets, description, effect, useString } from '../../../static/decorators/spell';
 
 @name('Bash')
 @cost(0)

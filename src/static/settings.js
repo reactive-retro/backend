@@ -1,4 +1,6 @@
 
+import ProfessionManager from '../objects/professionmanager';
+
 export default {
     RADIUS: 5000,
     INVENTORY_SIZE: 50,
@@ -6,6 +8,8 @@ export default {
     MAX_PARTY_MEMBERS: 5,
     MAX_PARTY_JOIN_DISTANCE: 200,
     MAX_LEVEL: 50,
+
+    CLASS_DESCRIPTIONS: ProfessionManager.getProfessionDescriptions(),
 
     MONSTER_GENERATION: {
         PLAYER: {

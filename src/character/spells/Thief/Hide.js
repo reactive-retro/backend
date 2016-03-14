@@ -1,6 +1,6 @@
 
 import Action, { ActionTargets } from '../../base/Action';
-import { name, cost, cooldown, classes, targets, description, effect, useString, disabled } from '../../../static/decorators';
+import { name, cost, cooldown, classes, targets, description, effect, useString, disabled } from '../../../static/decorators/spell';
 
 @name('Hide')
 @cost(0)

@@ -1,7 +1,7 @@
 
 import _ from 'lodash';
 
-import { hp, mp, str, dex, vit, mnt, luk, acc } from '../../static/decorators';
+import { hp, mp, str, dex, vit, mnt, luk, acc } from '../../static/decorators/profession';
 
 @hp(10)
 @mp(0)

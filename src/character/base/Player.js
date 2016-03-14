@@ -6,6 +6,7 @@ import Character from './Character';
 import DEFAULTS from '../../static/chardefaults';
 import SETTINGS from '../../static/settings';
 import SkillManager from '../../objects/skillmanager';
+import ProfessionManager from '../../objects/professionmanager';
 import XPCalculator from '../../objects/xpcalculator';
 import save, { selectiveSave } from '../functions/save';
 import { monstertoken as generateMonsterToken } from '../../functions/world/nearbymonsters';
@@ -53,6 +54,15 @@ export default class Player extends Character {
         this.checkForNewMonsters();
         this.checkShopsForNewInventory();
         this.checkIfCanChangeHomepoint();
+        this.updateUnlockedProfessions();
+    }
+
+    updateUnlockedProfessions() {
+        const current = this.unlockedProfessions;
+        const all = ProfessionManager.getUnlockedProfessions(this);
+
+        this.unlockedProfessions = all;
+        return _.difference(all, current);
     }
 
     hasTakenAction(action, mainType, subType) {
