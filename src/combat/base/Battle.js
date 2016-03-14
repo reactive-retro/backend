@@ -52,7 +52,7 @@ export default class Battle {
     }
 
     canAct(target) {
-        if(target.stats.hp.atMin()) return '';
+        if(target.stats.hp.atMin() || target.isFled) return '';
 
         const reasons = _(target.statusEffects)
             .map(eff => eff.blocksTurn(target))
@@ -130,6 +130,10 @@ export default class Battle {
                 const { chance, roll } = skill.spellEffects.Damage;
                 const accuracyBonus = caster.stats.acc;
 
+                if(target.isFled) {
+                    messages.push(`${caster.name} swung at ${target.name}, but ${target.name} has fled the battle!`);
+                    return;
+                }
                 if(target.stats.hp.atMin()) {
                     messages.push(`${caster.name} swung at ${target.name}, but ${target.name} is already dead!`);
                     return;
@@ -229,7 +233,7 @@ export default class Battle {
             // no cheating
             const multiplier = me.calculateMultiplier(skillRef);
             const isInvalidSkill = !skillRef
-                                || !_.contains(me.skills, skill)
+                                || !_.contains(me.skills.concat(['Flee']), skill)
                                 || me.stats.mp.lessThan(skillRef.spellCost * multiplier)
                                 || me.isCoolingDown(skill);
 
@@ -239,7 +243,8 @@ export default class Battle {
 
             targets = this.getTargets(me, skillRef, this.getById(target));
         } else {
-            const allSkills = SkillManager.getSkills(me);
+            // monsters can't flee :(
+            const allSkills = _.reject(SkillManager.getSkills(me), skill => skill.spellName === 'Flee');
             const mySkillObjects = _.map(me.skills.concat('Attack'), skillName => _.find(allSkills, { spellName: skillName }));
             skillRef = _.sample(SkillManager.getCombatSkills(me, mySkillObjects));
             targets = this.getTargets(me, skillRef);
@@ -275,11 +280,14 @@ export default class Battle {
             this.battleOver();
         }
 
-        return results;
+        return _.uniq(results);
     }
 
     checkCombatEnd() {
         const isDead = (target) => target.stats.hp.atMin();
+        const isFled = (target) => target.isFled;
+
+        if(_.all(this.playerData, isFled)) return this.playerFled();
         if(_.all(this.playerData, isDead)) return this.playerLose();
         if(_.all(this.monsters, isDead)) return this.playerWin();
     }
@@ -346,6 +354,12 @@ export default class Battle {
         });
 
         return messages.concat(itemMessages);
+    }
+
+    playerFled() {
+        return [
+            'Heroes fled!'
+        ];
     }
 
     playerLose() {
