@@ -4,7 +4,7 @@ import _ from 'lodash';
 import DEFAULTS from '../static/chardefaults';
 const professionHash = require('require-dir')('../character/professions', { recurse: true });
 
-const professions = _(professionHash)
+export const allProfessions = _(professionHash)
     .values()
     .map('default')
     .reduce((prev, cur) => {
@@ -15,7 +15,7 @@ const professions = _(professionHash)
 
 export default class ProfessionManager {
     static getProfessionDescriptions() {
-        return _.reduce(_.values(professions), (prev, cur) => {
+        return _.reduce(_.values(allProfessions), (prev, cur) => {
             prev[cur.name] = cur.description;
             return prev;
         }, {});
@@ -30,7 +30,7 @@ export default class ProfessionManager {
     static getUnlockedProfessions(player) {
         const baseProfessions = DEFAULTS.unlockedProfessions;
 
-        const unlockedProfessions = _(professions)
+        const unlockedProfessions = _(allProfessions)
             .values()
             .map(prof => this.meetsRequirement(player, prof) ? prof.name : null)
 

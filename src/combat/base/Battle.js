@@ -6,7 +6,6 @@ import Logger from '../../objects/logger';
 import XPCalculator from '../../objects/xpcalculator';
 import { ActionTargets } from '../../character/base/Action';
 import SkillManager from '../../objects/skillmanager';
-import ProfessionManager from '../../objects/professionmanager';
 import SpellEffectManager from '../../objects/spelleffectmanager';
 import Monster from '../../character/base/Monster';
 import getPlayer from '../../character/functions/getbyname';

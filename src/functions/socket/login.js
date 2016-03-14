@@ -8,7 +8,6 @@ import MESSAGES from '../../static/messages';
 
 import Player from '../../character/base/Player';
 import SkillManager from '../../objects/skillmanager';
-import ProfessionManager from '../../objects/professionmanager';
 
 import SETTINGS from '../../static/settings';
 
