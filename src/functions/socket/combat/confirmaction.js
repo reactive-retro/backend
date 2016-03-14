@@ -58,7 +58,6 @@ export default (socket, scWorker) => {
 
                 party.notifyOfUpdates(scWorker);
             }
-            // TODO update party if battle is done and player has a party id
         } catch(e) {
             Logger.error('Combat:PreStart', e);
         }

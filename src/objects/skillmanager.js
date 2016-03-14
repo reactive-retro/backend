@@ -39,7 +39,14 @@ export default class SkillManager {
 
     static getValidSkills(player) {
         const validSkills = this.getSkills(player);
-        return _.intersection(player.skills, _.map(validSkills, 'spellName'));
+        const allValidSkills = _.map(validSkills, 'spellName');
+        return _.map(player.skills, skillName => _.contains(allValidSkills, skillName) ? skillName : null);
+    }
+
+    static getSkillsAtLevel(player) {
+        return _.filter(skills, skill => {
+            return skill.spellClasses[player.profession] === player.currentLevel;
+        });
     }
 
     static getSkills(player) {

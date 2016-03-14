@@ -345,6 +345,11 @@ export default class Battle {
             messages.push(`${player.name} earned ${xpGained} XP and got ${goldPerPerson} Gold.`);
             if(leveledUp) {
                 messages.push(`${player.name} has reached ${player.profession} level ${player.currentLevel}!`);
+
+                const learnedSkills = SkillManager.getSkillsAtLevel(player);
+                _.each(learnedSkills, skill => messages.push(`${player.name} has learned ${skill.spellName}!`));
+
+                player.newSkills = SkillManager.getSkills(player);
             }
 
             _.each(this.monsters, monster => {
