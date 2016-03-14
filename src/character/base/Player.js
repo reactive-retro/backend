@@ -107,11 +107,16 @@ export default class Player extends Character {
     }
 
     takeAStep() {
+        // no regen while in combat
+        if(this.battleId) return;
+
         this.stats.hp.addPercent(5);
         this.stats.hp.add(1);
+        this.stats.hp.__current = Math.floor(this.stats.hp.__current);
 
         this.stats.mp.addPercent(5);
         this.stats.mp.add(1);
+        this.stats.mp.__current = Math.floor(this.stats.mp.__current);
     }
 
     checkForNewMonsters() {
