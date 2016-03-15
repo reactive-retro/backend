@@ -16,7 +16,7 @@ Object.keys(allProfessions).forEach(profName => {
         t.ok(prof.mnt);
         t.ok(prof.vit);
         t.ok(prof.luk);
-        
+
         if(prof.prerequisites) {
             Object.keys(prof.prerequisites).forEach(profName => {
                 t.true(prof.prerequisites[profName] > 0);
