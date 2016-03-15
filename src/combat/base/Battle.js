@@ -130,12 +130,21 @@ export default class Battle {
                 const { chance, roll } = skill.spellEffects.Damage;
                 const accuracyBonus = caster.stats.acc;
 
+                if(caster.findStatus('Stealth')) {
+                    caster.removeStatus('Stealth');
+                }
+
                 if(target.isFled) {
                     messages.push(`${caster.name} swung at ${target.name}, but ${target.name} has fled the battle!`);
                     return;
                 }
                 if(target.stats.hp.atMin()) {
                     messages.push(`${caster.name} swung at ${target.name}, but ${target.name} is already dead!`);
+                    return;
+                }
+
+                if(target.findStatus('Stealth')) {
+                    messages.push(`${caster.name} can't find ${target.name}!`);
                     return;
                 }
 

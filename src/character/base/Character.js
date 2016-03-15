@@ -68,6 +68,16 @@ export default class Character {
         return baseMultiplier;
     }
 
+    findStatus(status) {
+        return _.find(this.statusEffects, { effectName: status });
+    }
+
+    removeStatus(status) {
+        const item = this.findStatus(status);
+        if(!item) return;
+        item.unapply(this);
+    }
+
     loadStatusEffects() {
         _.each(this.statusEffects, effect => {
             effect.__proto__ = SpellEffectManager.getEffectByName(effect.effectName).prototype;
