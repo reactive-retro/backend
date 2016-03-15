@@ -1,6 +1,6 @@
 
 const statPerLevel = (stat, val, bonus = () => 0) => (target) => {
-    target[stat] = (player) => Math.floor(target.getLevel(player) * val + bonus(target, player));
+    target[stat] = (player) => Math.floor(player.currentLevel * val + bonus(target, player));
     return target;
 };
 

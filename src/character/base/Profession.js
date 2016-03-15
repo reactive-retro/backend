@@ -12,6 +12,5 @@ import { hp, mp, str, dex, vit, mnt, luk, acc } from '../../static/decorators/pr
 @luk(1)
 @acc(0)
 export default class Profession {
-    static getLevel(player) { return player.professionLevels[player.profession]; }
     static getStat(player, stat) { return _.reduce(player.equipment, (prev, item) => prev + (item.stats[stat] || 0), 0); }
 }
