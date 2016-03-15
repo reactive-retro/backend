@@ -158,7 +158,6 @@ export default class Player extends Character {
     }
 
     handleDefaults() {
-
         const defaultWeapon = _.findWhere(this.inventory, { type: 'weapon', isDefault: true });
         if(!this.equipment.weapon.isDefault && !defaultWeapon) {
             this.inventory.push(DEFAULTS.defaultEquipment.weapon());
@@ -216,6 +215,16 @@ export default class Player extends Character {
         }
 
         this.stats.xp = new RestrictedNumber(0, XPCalculator.calculate(this.currentLevel), this.professionXp[this.profession]);
+
+        if(this.equipment.armor.levelRequirement > this.currentLevel) {
+            const defaultArmor = _.findWhere(this.inventory, { type: 'armor', isDefault: true });
+            this.equip(defaultArmor);
+        }
+
+        if(this.equipment.weapon.levelRequirement > this.currentLevel) {
+            const defaultWeapon = _.findWhere(this.inventory, { type: 'weapon', isDefault: true });
+            this.equip(defaultWeapon);
+        }
 
         this.calculate();
         this.skills = [];
