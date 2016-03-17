@@ -14,7 +14,7 @@ import { weightedChoice, singleChoice } from '../functions/helpers';
 const serverSalt = crypto.createHash('md5').update(''+Math.random()).digest('hex');
 
 const ITEM_WEIGHTS = [
-    { name: 0, weight: 15 },
+    { name: 0, weight: 10 },
     { name: 1, weight: 5 },
     { name: 2, weight: 2 },
     { name: 3, weight: 1 }
@@ -24,7 +24,7 @@ const ITEM_WEIGHTS = [
 const chooseSkills = (possibleSkills, rating, seed, currentSkills = []) => {
     if(rating < 0) return currentSkills;
     const skills = _.cloneDeep(currentSkills);
-    const availableSkills = _.reject(possibleSkills, skill => skill.spellDisabled);
+    const availableSkills = _.reject(possibleSkills, skill => skill.spellDisabled || _.contains(['Flee', 'Item'], skill.spellName));
 
     // rating of 0 = 1 skill, rating of 5 = 6 skills
     for(let i=0; i<rating+1-currentSkills.length; i++) {
@@ -68,7 +68,7 @@ export default async (baseOpts, availableMonsters) => {
                 monster.equip(await ItemGenerator.generate({ playerReference: monster, type: 'armor',  seed: opts.seed+'armor' }));
 
             if(items && items.length > 0) {
-                const numItems = weightedChoice(_.filter(ITEM_WEIGHTS, w => _.contains(items, w.name)), opts.seed+'itemcount');
+                const numItems = 2 || weightedChoice(_.filter(ITEM_WEIGHTS, w => _.contains(items, w.name)), opts.seed+'itemcount').name;
                 for(let i = 0; i < numItems; i++) {
                     monster.addToInventory(await ItemGenerator.generate({ playerReference: monster, type: 'consumable', seed: opts.seed+'item'+i }));
                 }
@@ -81,12 +81,12 @@ export default async (baseOpts, availableMonsters) => {
     monster.verifyToken = generate(monster);
 
     return new Promise(resolve => {
-        resolve(_.pick(monster, ['id', 'name', 'profession', 'goldDrop', 'equipment', 'professionLevels', 'skills', 'location', 'rating', 'seed', 'verifyToken']));
+        resolve(_.pick(monster, ['id', 'name', 'profession', 'inventory', 'goldDrop', 'equipment', 'professionLevels', 'skills', 'location', 'rating', 'seed', 'verifyToken']));
     });
 };
 
 export const generate = (monster) => {
-    const props = _.pick(monster, ['id', 'name', 'profession', 'goldDrop', 'equipment', 'professionLevels', 'skills', 'location', 'rating', 'seed']);
+    const props = _.pick(monster, ['id', 'name', 'profession', 'inventory', 'goldDrop', 'equipment', 'professionLevels', 'skills', 'location', 'rating', 'seed']);
     return crypto.createHash('md5').update(serverSalt + JSON.stringify(props)).digest('hex');
 };
 

@@ -7,7 +7,7 @@ export default class Monster extends Character {
     constructor({ seed, verifyToken, name, equipment, bonusXp,
                   skills, goldDrop, profession, location, rating,
                   professionLevels, stats, statusEffects, cooldowns,
-                  id, isDungeon }) {
+                  id, isDungeon, inventory }) {
 
         super({
             name,
@@ -16,6 +16,7 @@ export default class Monster extends Character {
             cooldowns,
             skills,
             stats,
+            inventory,
             profession: profession || 'Monster',
             professionLevels: professionLevels || { Monster: 1 }
         });

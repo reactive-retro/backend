@@ -189,11 +189,12 @@ export default class Battle {
 
         // if you don't do damage, you apply yourself immediately
         } else {
+
             _.each(targets, target => {
                 messages.push(this.stringFormat(skill.spellUseString, {
                     target: target.name,
                     origin: caster.name,
-                    itemName: this.actions[caster.name].itemName,
+                    itemName: this.actions[caster.name] ? this.actions[caster.name].itemName : null,
                     skillName: skill.spellName
                 }));
                 messages.push(...tryEffects(skill, target));
