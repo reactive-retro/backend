@@ -2,14 +2,14 @@
 import Action, { ActionTargets } from '../../base/Action';
 import { name, cost, cooldown, classes, targets, description, effect, useString } from '../../../static/decorators/spell';
 
-@name('Minor Heal')
-@cost(5)
+@name('Major Heal')
+@cost(100)
 @cooldown(0)
-@classes({ Cleric: 5 })
+@classes({ Cleric: 40 })
 @targets(ActionTargets.SINGLE_ALLY)
-@description('Provide a ray of healing for an ally.')
+@description('Provide a powerful surge of healing for an ally.')
 @useString('%o healed %t for %d hp!')
-@effect('Heal', { roll: '2df([mnt] / 6)', string: 'HP', instant: true })
-export default class MinorHeal extends Action {
+@effect('Heal', { roll: '6df([mnt] / 6)', string: 'HP', instant: true })
+export default class MajorHeal extends Action {
 
 }
