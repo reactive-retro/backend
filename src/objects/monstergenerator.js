@@ -13,6 +13,14 @@ import { weightedChoice, singleChoice } from '../functions/helpers';
 
 const serverSalt = crypto.createHash('md5').update(''+Math.random()).digest('hex');
 
+const ITEM_WEIGHTS = [
+    { name: 0, weight: 15 },
+    { name: 1, weight: 5 },
+    { name: 2, weight: 2 },
+    { name: 3, weight: 1 }
+];
+
+
 const chooseSkills = (possibleSkills, rating, seed, currentSkills = []) => {
     if(rating < 0) return currentSkills;
     const skills = _.cloneDeep(currentSkills);
@@ -51,13 +59,20 @@ export default async (baseOpts, availableMonsters) => {
     const monster = new Monster(opts);
 
     if(chosenMonster.equipment) {
-        const { weapon, armor } = chosenMonster.equipment;
+        const { weapon, armor, items } = chosenMonster.equipment;
         try {
             if(weapon && +Dice.roll('1d100') <= weapon)
                 monster.equip(await ItemGenerator.generate({ playerReference: monster, type: 'weapon', seed: opts.seed+'weapon' }));
 
             if(armor  && +Dice.roll('1d100') <= armor)
                 monster.equip(await ItemGenerator.generate({ playerReference: monster, type: 'armor',  seed: opts.seed+'armor' }));
+
+            if(items && items.length > 0) {
+                const numItems = weightedChoice(_.filter(ITEM_WEIGHTS, w => _.contains(items, w.name)), opts.seed+'itemcount');
+                for(let i = 0; i < numItems; i++) {
+                    monster.addToInventory(await ItemGenerator.generate({ playerReference: monster, type: 'consumable', seed: opts.seed+'item'+i }));
+                }
+            }
         } catch(e) {
             Logger.error('MonsterGenerate:Equipment', e);
         }

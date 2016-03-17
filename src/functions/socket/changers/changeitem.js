@@ -7,7 +7,7 @@ import updatePlayer from '../../updaters/player';
 
 export default (socket) => {
 
-    const equip = async ({ name, itemId }, respond) => {
+    const changeitem = async ({ name, itemId, itemSlot }, respond) => {
 
         if(!socket.getAuthToken()) {
             return respond({ msg: MESSAGES.INVALID_TOKEN });
@@ -17,7 +17,7 @@ export default (socket) => {
             return respond({ msg: MESSAGES.NO_NAME });
         }
 
-        if(!itemId) {
+        if(!itemId && itemId !== null) {
             return respond({ msg: MESSAGES.NO_ITEM });
         }
 
@@ -33,25 +33,35 @@ export default (socket) => {
             return respond({ msg: MESSAGES.CURRENTLY_IN_COMBAT });
         }
 
-        const item = _.findWhere(player.inventory, { itemId: itemId });
 
-        if(!item || !_.contains(['weapon', 'armor'], item.type)) {
-            return respond({ msg: MESSAGES.BAD_ITEM });
+        if(itemId) {
+            const item = _.findWhere(player.inventory, { itemId: itemId });
+
+            if(!item || item.type !== 'consumable') {
+                return respond({ msg: MESSAGES.BAD_ITEM });
+            }
+
+            if(item.levelRequirement > player.currentLevel) {
+                return respond({ msg: MESSAGES.TOO_LOW_LEVEL });
+            }
+
+            if(!player.canSlotItem(item)) {
+                return respond({ msg: MESSAGES.NOT_ENOUGH_OF_ITEM });
+            }
+
+            player.slotItem(item, itemSlot);
+
+        } else {
+            player.slotItem(null, itemSlot);
         }
 
-        if(item.levelRequirement > player.currentLevel) {
-            return respond({ msg: MESSAGES.TOO_LOW_LEVEL });
-        }
-
-        player.equip(item);
-        player.calculate();
         player.save();
 
         updatePlayer(socket, player);
 
-        respond(null, { msg: MESSAGES.EQUIP_SUCCESS });
+        respond(null, { msg: MESSAGES.ITEM_CHANGE_SUCCESS });
 
     };
 
-    socket.on('player:change:equipment', equip);
+    socket.on('player:change:item', changeitem);
 };

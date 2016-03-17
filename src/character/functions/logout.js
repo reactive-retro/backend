@@ -17,6 +17,7 @@ export default async (name, scWorker) => {
     try {
         player = await getPlayer(name);
     } catch(e) {
+        Logger.error('PlayerLogout', e);
         return;
     }
 
@@ -56,6 +57,7 @@ export default async (name, scWorker) => {
         partyId: null,
         battleId: null,
         location: null,
+        itemUses: null,
         statusEffects: [],
         'equipment.buffs.stats': {},
         cooldowns: {} } }, _.noop);

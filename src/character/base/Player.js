@@ -19,7 +19,7 @@ export default class Player extends Character {
                   professionLevels, userId, homepoint,
                   statusEffects, cooldowns, battleId,
                   lastHomepointChange, professionXp, location,
-                  partyId, actionsTaken }) {
+                  partyId, actionsTaken, items, creationDate, itemUses }) {
 
         super({
             name,
@@ -31,9 +31,12 @@ export default class Player extends Character {
             skills,
             inventory,
             cooldowns,
-            equipment
+            equipment,
+            items,
+            itemUses
         });
 
+        this.creationDate = creationDate;
         this.options = options || {};
         this.professionXp = professionXp || {};
         this.actionsTaken = actionsTaken || {};

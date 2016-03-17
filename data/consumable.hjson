@@ -1,0 +1,48 @@
+[
+
+{ name: "Basic Healing Potion",             baseQuality: 0, dropRate: 50, minLevel: 1,    value: 10,      effects: [{ name: "Heal", statBuff: 50 }],   weight: 1 }
+{ name: "Minor Healing Potion",             baseQuality: 0, dropRate: 50, minLevel: 5,    value: 50,      effects: [{ name: "Heal", statBuff: 100 }],  weight: 1 }
+{ name: "Healing Potion",                   baseQuality: 0, dropRate: 50, minLevel: 15,   value: 250,     effects: [{ name: "Heal", statBuff: 500 }],  weight: 1 }
+{ name: "Major Healing Potion",             baseQuality: 0, dropRate: 50, minLevel: 25,   value: 750,     effects: [{ name: "Heal", statBuff: 1500 }], weight: 1 }
+{ name: "Advanced Healing Potion",          baseQuality: 0, dropRate: 50, minLevel: 35,   value: 2500,    effects: [{ name: "Heal", statBuff: 5000 }], weight: 1 }
+{ name: "Full Healing Potion",              baseQuality: 0, dropRate: 50, minLevel: 45,   value: 5000,    effects: [{ name: "Heal", statBuff: 9999 }], weight: 1 }
+
+{ name: "Basic Mana Potion",                baseQuality: 0, dropRate: 50, minLevel: 1,    value: 10,      effects: [{ name: "Refresh", statBuff: 50 }],   weight: 1 }
+{ name: "Minor Mana Potion",                baseQuality: 0, dropRate: 50, minLevel: 5,    value: 50,      effects: [{ name: "Refresh", statBuff: 100 }],  weight: 1 }
+{ name: "Mana Potion",                      baseQuality: 0, dropRate: 50, minLevel: 15,   value: 250,     effects: [{ name: "Refresh", statBuff: 500 }],  weight: 1 }
+{ name: "Major Mana Potion",                baseQuality: 0, dropRate: 50, minLevel: 25,   value: 750,     effects: [{ name: "Refresh", statBuff: 1500 }], weight: 1 }
+{ name: "Advanced Mana Potion",             baseQuality: 0, dropRate: 50, minLevel: 35,   value: 2500,    effects: [{ name: "Refresh", statBuff: 5000 }], weight: 1 }
+{ name: "Full Mana Potion",                 baseQuality: 0, dropRate: 50, minLevel: 45,   value: 5000,    effects: [{ name: "Refresh", statBuff: 9999 }], weight: 1 }
+
+{ name: "Basic Rejuvenation Potion",        baseQuality: 0, dropRate: 35, minLevel: 3,    value: 75,      effects: [{ name: "Heal", statBuff: 35  },  { name: "Refresh", statBuff: 35 }],   weight: 1 }
+{ name: "Minor Rejuvenation Potion",        baseQuality: 0, dropRate: 35, minLevel: 8,    value: 150,     effects: [{ name: "Heal", statBuff: 70  },  { name: "Refresh", statBuff: 70 }],   weight: 1 }
+{ name: "Rejuvenation Potion",              baseQuality: 0, dropRate: 35, minLevel: 18,   value: 750,     effects: [{ name: "Heal", statBuff: 350 },  { name: "Refresh", statBuff: 350 }],  weight: 1 }
+{ name: "Major Rejuvenation Potion",        baseQuality: 0, dropRate: 35, minLevel: 28,   value: 2250,    effects: [{ name: "Heal", statBuff: 1250 }, { name: "Refresh", statBuff: 1250 }], weight: 1 }
+{ name: "Advanced Rejuvenation Potion",     baseQuality: 0, dropRate: 35, minLevel: 38,   value: 7500,    effects: [{ name: "Heal", statBuff: 3500 }, { name: "Refresh", statBuff: 3500 }], weight: 1 }
+{ name: "Full Rejuvenation Potion",         baseQuality: 0, dropRate: 35, minLevel: 48,   value: 25000,   effects: [{ name: "Heal", statBuff: 9999 }, { name: "Refresh", statBuff: 9999 }], weight: 1 }
+
+{ name: "Basic Strength Potion",            baseQuality: 0, dropRate: 15, minLevel: 1,    value: 150,     effects: [{ name: "STR+", duration: 5, statBuff: 5 }],   weight: 1 }
+{ name: "Basic Mental Potion",              baseQuality: 0, dropRate: 15, minLevel: 1,    value: 150,     effects: [{ name: "MNT+", duration: 5, statBuff: 5 }],   weight: 1 }
+{ name: "Basic Dexterity Potion",           baseQuality: 0, dropRate: 15, minLevel: 1,    value: 100,     effects: [{ name: "DEX+", duration: 5, statBuff: 5 }],   weight: 1 }
+{ name: "Basic Vitality Potion",            baseQuality: 0, dropRate: 15, minLevel: 1,    value: 200,     effects: [{ name: "VIT+", duration: 5, statBuff: 5 }],   weight: 1 }
+{ name: "Basic Luck Potion",                baseQuality: 0, dropRate: 15, minLevel: 1,    value: 300,     effects: [{ name: "LUK+", duration: 5, statBuff: 5 }],   weight: 1 }
+{ name: "Basic Accuracy Potion",            baseQuality: 0, dropRate: 15, minLevel: 1,    value: 150,     effects: [{ name: "ACC+", duration: 5, statBuff: 5 }],   weight: 1 }
+
+{ name: "Scorchleaf",                       baseQuality: 0, dropRate:  5, minLevel: 1,    value: 500,     effects: [{ name: "Burn",     duration: 5 }],   weight: 1 }
+{ name: "Frostbranch",                      baseQuality: 0, dropRate:  5, minLevel: 1,    value: 500,     effects: [{ name: "Freeze",   duration: 2 }],   weight: 1 }
+{ name: "Shockroot",                        baseQuality: 0, dropRate:  5, minLevel: 1,    value: 500,     effects: [{ name: "Shock",    duration: 5 }],   weight: 1 }
+{ name: "Pocket Sand",                      baseQuality: 0, dropRate:  5, minLevel: 1,    value: 500,     effects: [{ name: "Blind",    duration: 3 }],   weight: 1 }
+{ name: "Smoke Bomb",                       baseQuality: 0, dropRate:  5, minLevel: 1,    value: 500,     effects: [{ name: "Stealth",  duration: 5 }],   weight: 1 }
+
+{ name: "Astral Potion", baseQuality: 0, dropRate: 100, minLevel: 1, value: 50000, effects: [
+    { name: "STR+",     statBuff: 50 },
+    { name: "MNT+",     statBuff: 50 },
+    { name: "DEX+",     statBuff: 50 },
+    { name: "VIT+",     statBuff: 50 },
+    { name: "LUK+",     statBuff: 50 },
+    { name: "ACC+",     statBuff: 50 },
+    { name: "Heal",     statBuff: 5000 },
+    { name: "Refresh",  statBuff: 5000 }
+    ], weight: 0 }
+
+]

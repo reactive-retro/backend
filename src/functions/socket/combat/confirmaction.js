@@ -12,7 +12,7 @@ export default (socket, scWorker) => {
      * If this confirmaction is the last one needed, roundresults will run.
      */
 
-    const confirmAction = async ({ name, target, skill }, respond) => {
+    const confirmAction = async ({ name, target, skill, itemName }, respond) => {
 
         if(!name) {
             return respond({ msg: MESSAGES.NO_NAME });
@@ -24,6 +24,10 @@ export default (socket, scWorker) => {
 
         if(!skill) {
             return respond({ msg: MESSAGES.NO_COMBAT_SKILL });
+        }
+
+        if(skill === 'Item' && !itemName) {
+            return respond({ msg: MESSAGES.NO_ITEM_SPECIFIED });
         }
 
         let player = null;
@@ -38,7 +42,7 @@ export default (socket, scWorker) => {
             return respond({ msg: MESSAGES.NOT_IN_COMBAT });
         }
 
-        const battle = await addBattleAction(player.battleId, { name, target, skill });
+        const battle = await addBattleAction(player.battleId, { name, target, skill, itemName });
 
         respond(null, { msg: MESSAGES.CONFIRMED_SKILL });
 

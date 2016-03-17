@@ -4,7 +4,9 @@ import SpellEffect from '../../base/SpellEffect';
 export default class STRPlus extends SpellEffect {
     apply(target) {
         super.apply(target);
-        target.addBuff('str', this.statBuff * this.multiplier);
+        const appliedValue = this.statBuff * this.multiplier;
+        target.addBuff('str', appliedValue);
+        return `${target.name} is ${this.numberToUtility(appliedValue)} more physically powerful.`;
     }
 
     unapply(target) {

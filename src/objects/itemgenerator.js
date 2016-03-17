@@ -7,6 +7,7 @@ import Logger from '../objects/logger';
 
 import Weapon from '../items/Weapon';
 import Armor from '../items/Armor';
+import Consumable from '../items/Consumable';
 
 import dbPromise from './db';
 import { weightedChoice } from '../functions/helpers';
@@ -19,6 +20,12 @@ const QUALITY = [
     { tier: 3,  name: 'Rare',         weight: 1,     minLevel: 10 },
     { tier: 4,  name: 'Epic',         weight: -20,   minLevel: 25 },
     { tier: 10, name: 'Legendary',    weight: -100,  minLevel: 50 }
+];
+
+const ITEM_TYPES = [
+    { name: 'weapon', weight: 4 },
+    { name: 'armor', weight: 4 },
+    { name: 'consumable', weight: 1 }
 ];
 
 const determineBaseQuality = (playerLevel, luckBonus = 0, seed = Date.now(), baseTier = 0) => {
@@ -44,6 +51,7 @@ const getProto = (type) => {
     switch(type) {
         case 'armor': return Armor;
         case 'weapon': return Weapon;
+        case 'consumable': return Consumable;
     }
 };
 
@@ -71,7 +79,7 @@ export default class ItemGenerator {
     }
 
     static init() {
-        const typesToLoad = ['armor', 'weapon', 'attribute', 'prefix', 'suffix', 'zone'];
+        const typesToLoad = ['armor', 'weapon', 'consumable', 'attribute', 'prefix', 'suffix', 'zone'];
         this.typeData = _.map(typesToLoad, this.loadType);
     }
 
@@ -90,12 +98,24 @@ export default class ItemGenerator {
     static async generate({ playerReference, type, seed, minQuality = 0 }) {
 
         const luckBonus = playerReference.stats.luk;
-        const baseItemQuality = determineBaseQuality(playerReference.currentLevel, luckBonus, seed, minQuality);
 
         const rng = seedrandom(seed);
-        if(!type) type = ['armor', 'weapon'][Math.round(rng())];
+        if(!type) type = weightedChoice(ITEM_TYPES, seed).name;
 
-        const item = await this.getRandom(type, { baseQuality: { $lte: baseItemQuality.tier } }, rng);
+        let baseItemQuality = null;
+        if(_.contains(['weapon', 'armor'], type)) {
+            baseItemQuality = determineBaseQuality(playerReference.currentLevel, luckBonus, seed, minQuality);
+        } else {
+
+            // all consumables are created equally
+            baseItemQuality = _.find(QUALITY, { tier: 0 });
+        }
+
+        const item = await this.getRandom(type, {
+            weight: { $gt: 0 },
+            minLevel: { $lte: playerReference.currentLevel },
+            baseQuality: { $lte: baseItemQuality.tier }
+        }, rng);
 
         const extraValidity = { minLevel: { $lte: playerReference.currentLevel } };
 
@@ -104,6 +124,10 @@ export default class ItemGenerator {
         let currentLevelRequirement = baseItemQuality.minLevel;
 
         const chosenAttrs = [];
+
+        const canHaveAttrs = () => {
+            return !_.contains(['consumable'], type);
+        };
 
         const canChooseMoreAttrs = () => {
 
@@ -117,7 +141,7 @@ export default class ItemGenerator {
                    (chosenAttrs.length < 3 && baseItemQuality.tier > 9);
         };
 
-        while(canChooseMoreAttrs() || this.rollCheck(attributeMaxDice, luckBonus, rng)) {
+        while(canHaveAttrs() && (canChooseMoreAttrs() || this.rollCheck(attributeMaxDice, luckBonus, rng))) {
 
             // 10 times harder to roll subsequent attributes
             attributeMaxDice *= 10;
@@ -134,7 +158,7 @@ export default class ItemGenerator {
             currentLevelRequirement += attribute.levelMod || 0;
         }
 
-        if(baseItemQuality.tier > 2 || this.rollCheck(100, luckBonus, rng)) {
+        if(canHaveAttrs() && (baseItemQuality.tier > 2 || this.rollCheck(100, luckBonus, rng))) {
             const prefix = await this.getRandom('prefix', extraValidity, rng);
             item.stats = this.mergeItemStats(item.stats, prefix.stats);
             item.name = `${prefix.name} ${item.name}`;
@@ -142,7 +166,7 @@ export default class ItemGenerator {
             currentLevelRequirement += prefix.levelMod || 0;
         }
 
-        if(baseItemQuality.tier > 3 || this.rollCheck(100, luckBonus, rng)) {
+        if(canHaveAttrs() && (baseItemQuality.tier > 3 || this.rollCheck(100, luckBonus, rng))) {
             const suffix = await this.getRandom('suffix', extraValidity, rng);
             item.stats = this.mergeItemStats(item.stats, suffix.stats);
             item.name = `${item.name} ${suffix.name}`;
@@ -152,7 +176,7 @@ export default class ItemGenerator {
 
         // set the quality to whatever was generated
         item.quality = currentQuality;
-        item.levelRequirement = Math.min(SETTINGS.MAX_LEVEL, currentLevelRequirement);
+        item.levelRequirement = canHaveAttrs() ? Math.min(SETTINGS.MAX_LEVEL, currentLevelRequirement) : item.minLevel;
         item.seed = seed;
         const constructedItem = new (getProto(type))(item);
         constructedItem.dropRate = item.dropRate;

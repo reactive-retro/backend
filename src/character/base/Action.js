@@ -21,5 +21,6 @@ export const ActionTargets = {
     SINGLE_ALLY: 'Single Ally',
     ALL_ENEMY: 'All Enemies',
     ALL_ALLY: 'All Allies',
-    ALL: 'All'
+    ALL: 'All',
+    ANY: 'Any'
 };

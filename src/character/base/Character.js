@@ -10,13 +10,15 @@ import DEFAULTS from '../../static/chardefaults';
 import SETTINGS from '../../static/settings';
 
 export default class Character {
-    constructor({ name, profession, professionLevels, unlockedProfessions, stats, skills, inventory, equipment, statusEffects, cooldowns }) {
+    constructor({ name, profession, professionLevels, unlockedProfessions, stats, skills, items, inventory, equipment, statusEffects, cooldowns, itemUses }) {
         this.name = name;
         this.profession = profession;
         this.skills = skills;
         this.professionLevels = professionLevels || {};
         this.statusEffects = statusEffects || [];
         this.stats = stats || _.cloneDeep(DEFAULTS.stats);
+        this.items = items || [];
+        this.itemUses = itemUses;
         this.skills = SkillManager.getValidSkills(this) || _.cloneDeep(DEFAULTS.skills);
         this.inventory = inventory || [];
         this.equipment = equipment || DEFAULTS.equipment[this.profession]();
@@ -38,11 +40,50 @@ export default class Character {
     }
 
     addToInventory(item) {
+        if(!item) return;
+        if(item.quantity) {
+            const existingItem = _.find(this.inventory, { name: item.name });
+            if(existingItem) {
+                existingItem.quantity += item.quantity;
+                return;
+            }
+        }
         this.inventory.push(item);
     }
 
     removeFromInventory(item) {
         _.remove(this.inventory, item);
+    }
+
+    validateItemSlots(item) {
+        if(!_.contains(this.items, item.name)) return;
+        const numEquipped = _(this.items).filter(itemName => itemName === item.name).size();
+        const numAvailable = item.quantity;
+
+        if(numAvailable >= numEquipped) return;
+        let unequipCount = numEquipped - numAvailable;
+
+        for(let i = 0; i<this.items.length; i++) {
+            if(unequipCount <= 0) return;
+            if(this.items[i] === item.name) {
+                this.items[i] = null;
+                unequipCount -= 1;
+            }
+        }
+    }
+
+    useItem(item) {
+        item.quantity -= 1;
+        if(item.quantity <= 0) _.remove(this.inventory, { name: item.name });
+        this.validateItemSlots(item);
+    }
+
+    canSlotItem(item) {
+        return _(this.items).filter(itemName => itemName === item.name).size() < item.quantity;
+    }
+
+    slotItem(item, slot) {
+        this.items[slot] = item ? item.name : null;
     }
 
     equip(item) {

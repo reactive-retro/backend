@@ -33,6 +33,15 @@ export default class SpellEffect {
         _.remove(target.statusEffects, { effectName: this.effectName });
     }
 
+    numberToUtility(number) {
+        if(number >= 100) return 'immensely';
+        if(number >= 75)  return 'significantly';
+        if(number >= 50)  return 'majorly';
+        if(number >= 25)  return 'minorly';
+        if(number >= 10)  return 'somewhat';
+        return 'slightly';
+    }
+
     preTurn() {}
     // postTurn() {} // not used
 

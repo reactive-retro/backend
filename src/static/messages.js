@@ -23,6 +23,9 @@ export default {
     BAD_ITEM: 'Item not present in inventory.',
     EQUIP_SUCCESS: 'Successfully changed equipment.',
     TOO_LOW_LEVEL: 'Level requirement not met.',
+    ITEM_CHANGE_SUCCESS: 'Item successfully slotted.',
+    NOT_ENOUGH_OF_ITEM: 'You do not have enough of that item!',
+    BAD_ITEM_QUANTITY: 'The specified item quantity is invalid!',
 
     NO_HOMEPOINT: 'Invalid Beacon of Light location specified.',
     HOMEPOINT_CHANGE_SUCCESS: 'Successfully changed Beacon of Light location.',
@@ -45,6 +48,7 @@ export default {
     NO_COMBAT_SKILL: 'No skill selected.',
     CONFIRMED_SKILL: 'Confirmed skill usage.',
     MONSTER_ALREADY_DEAD: 'Monster already dead!',
+    NO_ITEM_SPECIFIED: 'No item specified!',
 
     NO_SETTINGS: 'No option changes specified.',
     SETTING_SUCCESS: 'Options changed successfully!',

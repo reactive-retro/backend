@@ -39,6 +39,7 @@ export default class Battle {
 
         switch(skill.spellTargets) {
             case ActionTargets.ALL: return this.playerData.concat(this.monsters);
+            case ActionTargets.ANY: return fallback ? [fallback] : _.sample(this.playerData.concat(this.monsters));
             case ActionTargets.ALL_ALLY: return allyArray;
             case ActionTargets.ALL_ENEMY: return enemyArray;
             case ActionTargets.SELF: return [me];
@@ -98,17 +99,17 @@ export default class Battle {
 
                     let appliedEffect = null;
 
-                    if(effData.instant) {
+                    if(effData.instant && !effData.duration) {
                         appliedEffect = new Proto({
                             multiplier,
-                            statBuff: caster.rollDice(skill.spellName, effData.roll),
+                            statBuff: effData.statBuff || caster.rollDice(skill.spellName, effData.roll),
                             casterName: caster.name,
                             skillName: skill.spellName
                         });
 
                     } else {
                         appliedEffect = new Proto({
-                            duration: caster.rollDice(skill.spellName, effData.roll),
+                            duration: effData.duration || caster.rollDice(skill.spellName, effData.roll),
                             multiplier,
                             statBuff: effData.statBuff,
                             casterName: caster.name,
@@ -116,10 +117,11 @@ export default class Battle {
                         });
                     }
 
-                    const applyMessage = appliedEffect.apply(target, caster);
+                    const applyMessage = appliedEffect.apply(target, caster, { actionData: this.actions[caster.name], selfCallback: tryEffects });
 
                     return applyMessage;
                 })
+                .flatten()
                 .compact()
                 .value();
         };
@@ -191,6 +193,7 @@ export default class Battle {
                 messages.push(this.stringFormat(skill.spellUseString, {
                     target: target.name,
                     origin: caster.name,
+                    itemName: this.actions[caster.name].itemName,
                     skillName: skill.spellName
                 }));
                 messages.push(...tryEffects(skill, target));
@@ -224,7 +227,7 @@ export default class Battle {
 
         const canAct = this.canAct(me);
         if(_.isString(canAct)) {
-            return _.compact([canAct]);
+            return preTurnMessages.concat(_.compact([canAct]));
         }
 
         const validSkills = SkillManager.getSkills(me);
@@ -235,14 +238,18 @@ export default class Battle {
         let skillRef = null;
 
         if(!isMonster) {
-            const { skill, target } = this.actions[me.name];
+            const { skill, target, itemName } = this.actions[me.name];
 
             skillRef = _.find(validSkills, { spellName: skill });
 
             // no cheating
             const multiplier = me.calculateMultiplier(skillRef);
+
+            const isValidItem = () => me.itemUses[itemName] > 0;
+
             const isInvalidSkill = !skillRef
-                                || !_.contains(me.skills.concat(['Flee']), skill)
+                                || !_.contains(me.skills.concat(['Flee', 'Item']), skill)
+                                || (itemName && !isValidItem())
                                 || me.stats.mp.lessThan(skillRef.spellCost * multiplier)
                                 || me.isCoolingDown(skill);
 
@@ -252,8 +259,8 @@ export default class Battle {
 
             targets = this.getTargets(me, skillRef, this.getById(target));
         } else {
-            // monsters can't flee :(
-            const allSkills = _.reject(SkillManager.getSkills(me), skill => skill.spellName === 'Flee');
+            // monsters can't flee or use items :(
+            const allSkills = _.reject(SkillManager.getSkills(me), skill => _.contains(['Flee', 'Item'], skill.spellName));
             const mySkillObjects = _.map(me.skills.concat('Attack'), skillName => _.find(allSkills, { spellName: skillName }));
             skillRef = _.sample(SkillManager.getCombatSkills(me, mySkillObjects));
             targets = this.getTargets(me, skillRef);
@@ -309,7 +316,7 @@ export default class Battle {
             return [
                 armor && armor.dropRate  && +Dice.roll('1d100') <= armor.dropRate  + totalLuckBonus ? armor : null,
                 weapon && weapon.dropRate && +Dice.roll('1d100') <= weapon.dropRate + totalLuckBonus ? weapon : null
-            ];
+            ].concat(_.filter(monster.inventory, item => +Dice.roll('1d100') <= item.dropRate));
         }).flatten().compact().value();
 
         const messages = [
@@ -401,10 +408,11 @@ export default class Battle {
         this.save();
     }
 
-    stringFormat(string = '', { target = '', origin = '', damage = 0, skillName = '', result = '' }) {
+    stringFormat(string = '', { target = '', origin = '', damage = 0, itemName = '', skillName = '', result = '' }) {
         return string
             .split('%t').join(target)
             .split('%o').join(origin)
+            .split('%i').join(itemName)
             .split('%d').join(Math.abs(damage).toString())
             .split('%r').join(result)
             .split('%n').join(skillName);

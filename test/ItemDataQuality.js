@@ -1,7 +1,7 @@
 
 import test from 'ava';
 
-import { loadDataFile } from './helpers';
+import { loadDataFile } from './_helpers';
 
 let armorData = null;
 let weaponData = null;

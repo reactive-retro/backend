@@ -14,7 +14,7 @@ export const run = (worker) => {
 
         socket.on('error', e => Logger.error('SC:Socket', e));
 
-        socket.on('disconnect', function() {
+        socket.on('disconnect', () => {
             if(!socket.getAuthToken()) return;
             const { heroname } = socket.getAuthToken();
             if(!heroname) return;

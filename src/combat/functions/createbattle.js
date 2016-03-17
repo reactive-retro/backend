@@ -23,10 +23,11 @@ export default async ({ players, monsters }) => {
 
             const playerSaves = _.map(players, player => {
                 player.battleId = res.insertedId;
-                return player.save();
+                player.itemUses = _.countBy(player.items);
+                return player.selectiveSave(['battleId', 'itemUses']);
             });
 
-            await Promise.all(playerSaves);
+            newBattle.playerData = await Promise.all(playerSaves);
             await newBattle.isReady;
             resolve(newBattle);
         });

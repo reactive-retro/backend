@@ -7,7 +7,7 @@ import updatePlayer from '../../updaters/player';
 
 export default (socket) => {
 
-    const sell = async ({ name, itemId }, respond) => {
+    const sell = async ({ name, itemId, itemQuantity }, respond) => {
 
         if(!socket.getAuthToken()) {
             return respond({ msg: MESSAGES.INVALID_TOKEN });
@@ -35,12 +35,32 @@ export default (socket) => {
 
         const item = _.findWhere(player.inventory, { itemId: itemId });
 
-        if (!item) {
+        if(!item) {
             return respond({ msg: MESSAGES.BAD_ITEM });
         }
 
-        _.remove(player.inventory, item);
-        player.addGold(Math.floor(item.value / player.sellModifier));
+        if(item.quantity > 1) {
+
+            if(!_.isNumber(itemQuantity) || itemQuantity <= 0) {
+                return respond({ msg: MESSAGES.BAD_ITEM_QUANTITY });
+            }
+
+            itemQuantity = ~~itemQuantity;
+
+            item.quantity -= itemQuantity;
+
+            if(item.quantity <= 0) {
+                _.remove(player.inventory, item);
+            }
+
+            player.validateItemSlots(item);
+
+            player.addGold(itemQuantity * Math.floor(item.value / player.sellModifier));
+
+        } else {
+            player.addGold(Math.floor(item.value / player.sellModifier));
+            _.remove(player.inventory, item);
+        }
 
         player.save();
 

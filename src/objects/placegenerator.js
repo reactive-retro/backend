@@ -43,7 +43,7 @@ const TYPE_MAP = {
 const getPlaceType = (place) => {
     const typeMatches = (type) => _.intersection(place.types, TYPE_MAP[type]).length > 0;
 
-    // if(typeMatches(TYPES.ITEM_SHOP)) return TYPES.ITEM_SHOP;
+    if(typeMatches(TYPES.ITEM_SHOP)) return TYPES.ITEM_SHOP;
     if(typeMatches(TYPES.WEAPON_SHOP)) return TYPES.WEAPON_SHOP;
     if(typeMatches(TYPES.ARMOR_SHOP)) return TYPES.ARMOR_SHOP;
     if(typeMatches(TYPES.MIXED_SHOP)) return TYPES.MIXED_SHOP;
@@ -68,6 +68,7 @@ const getItemType = (placeType) => {
     switch(placeType) {
         case TYPES.WEAPON_SHOP: return 'weapon';
         case TYPES.ARMOR_SHOP: return 'armor';
+        case TYPES.ITEM_SHOP: return 'consumable';
         default: return '';
     }
 };
@@ -76,6 +77,7 @@ const getItemCountForPlace = (placeType) => {
     switch(placeType) {
         case TYPES.WEAPON_SHOP:
         case TYPES.ARMOR_SHOP:
+        case TYPES.ITEM_SHOP:
         case TYPES.MIXED_SHOP: return 3;
 
         case TYPES.DUNGEON_CHEST: return 3;
