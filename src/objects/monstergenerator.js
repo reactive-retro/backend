@@ -68,7 +68,7 @@ export default async (baseOpts, availableMonsters) => {
                 monster.equip(await ItemGenerator.generate({ playerReference: monster, type: 'armor',  seed: opts.seed+'armor' }));
 
             if(items && items.length > 0) {
-                const numItems = 2 || weightedChoice(_.filter(ITEM_WEIGHTS, w => _.contains(items, w.name)), opts.seed+'itemcount').name;
+                const numItems = weightedChoice(_.filter(ITEM_WEIGHTS, w => _.contains(items, w.name)), opts.seed+'itemcount').name;
                 for(let i = 0; i < numItems; i++) {
                     monster.addToInventory(await ItemGenerator.generate({ playerReference: monster, type: 'consumable', seed: opts.seed+'item'+i }));
                 }
