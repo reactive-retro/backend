@@ -137,9 +137,9 @@ export default class Battle {
                 }
 
                 if(target.isFled) {
-                    messages.push(`${caster.name} swung at ${target.name}, but ${target.name} has fled the battle!`);
                     return;
                 }
+
                 if(target.stats.hp.atMin()) {
                     messages.push(`${caster.name} swung at ${target.name}, but ${target.name} is already dead!`);
                     return;
@@ -382,6 +382,7 @@ export default class Battle {
     }
 
     playerFled() {
+        this.isFled = true;
         return [
             'Heroes fled!'
         ];
