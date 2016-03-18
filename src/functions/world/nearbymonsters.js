@@ -11,7 +11,7 @@ const normalBetween = (rng = Math.random, min, max) => {
     return randomBetween(normalRng, min, max);
 };
 const normalAround = (rng = Math.random, min, max) => {
-    const normalRng = () => (3 / (rng() + rng() + rng() + rng() + rng() + rng() - 3)) / 3;
+    const normalRng = () => 1 / (rng() + rng() + rng() + rng() + rng() + rng() - 3) / 3;
     return randomBetween(normalRng, min, max);
 };
 
@@ -61,8 +61,8 @@ export default async ({ lat, lon, playerLevel, ratingOffset, offsets, amounts, s
     const monsters = [];
 
     for(let i = 0; i < numMonsters; i++) {
-        const monLat = normalFunction(rng, lat-offsets.lat, lat+offsets.lat) + offsets.lat;
-        const monLon = normalFunction(rng, lon-offsets.lon, lon+offsets.lon) + offsets.lon;
+        const monLat = Math.max(lat-offsets.lat, Math.min(lat+offsets.lat, normalFunction(rng, lat-offsets.lat, lat+offsets.lat) + offsets.lat));
+        const monLon = Math.max(lon-offsets.lon, Math.min(lon+offsets.lon, normalFunction(rng, lon-offsets.lon, lon+offsets.lon) + offsets.lon));
 
         const distanceBetweenHomepointAndMonster = calcDistanceBetween(lat, lon, monLat, monLon);
         const rating = rateMonster(distanceBetweenHomepointAndMonster) + ratingOffset;

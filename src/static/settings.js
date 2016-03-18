@@ -28,8 +28,8 @@ export default {
                 max: 5
             },
             offsets: {
-                lat: 0.00005,
-                lon: 0.00005
+                lat: 0.0005,
+                lon: 0.0005
             },
             amounts: {
                 min: 5,
