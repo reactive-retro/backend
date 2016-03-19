@@ -23,7 +23,7 @@ export default async ({ players, monsters }) => {
 
             const playerSaves = _.map(players, player => {
                 player.battleId = res.insertedId;
-                player.itemUses = _.countBy(player.items);
+                player.itemUses = _(player.items).compact().countBy().value();
                 return player.selectiveSave(['battleId', 'itemUses']);
             });
 
