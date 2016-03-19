@@ -180,6 +180,7 @@ export default class Battle {
                 messages.push(damageMessage);
                 if(target.stats.hp.atMin()) {
                     messages.push(`${target.name} was slain by ${caster.name}!`);
+                    _.each(target.statusEffects, effect => effect.unapply(target));
                 } else {
                     const applyMessages = tryEffects(skill, target);
                     messages.push(...applyMessages);
