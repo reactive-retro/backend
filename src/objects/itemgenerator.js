@@ -117,6 +117,8 @@ export default class ItemGenerator {
             baseQuality: { $lte: baseItemQuality.tier }
         }, rng);
 
+        baseItemQuality.tier += item.qualityMod || 0;
+
         const extraValidity = { minLevel: { $lte: playerReference.currentLevel } };
 
         let attributeMaxDice = 20;

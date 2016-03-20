@@ -1,5 +1,12 @@
 [
 
+{ name: "Red",            minLevel: 1, weight: 1, levelMod: 0,  stats: { str: 1, mnt: -1 } }
+{ name: "Green",          minLevel: 1, weight: 1, levelMod: 0,  stats: { vit: 1, str: -1 } }
+{ name: "Blue",           minLevel: 1, weight: 1, levelMod: 0,  stats: { mnt: 1, vit: -1 } }
+{ name: "Yellow",         minLevel: 1, weight: 1, levelMod: 0,  stats: { acc: 1, dex: -1 } }
+{ name: "Orange",         minLevel: 1, weight: 1, levelMod: 0,  stats: { dex: 1, luk: -1 } }
+{ name: "Violet",         minLevel: 1, weight: 1, levelMod: 0,  stats: { luk: 1, acc: -1 } }
+
 { name: "Fragile",        minLevel: 1, weight: 1, levelMod: -1, stats: { vit: -1 } }
 { name: "Weak",           minLevel: 1, weight: 1, levelMod: -1, stats: { str: -1 } }
 { name: "Sluggish",       minLevel: 1, weight: 1, levelMod: -1, stats: { dex: -1 } }
@@ -13,5 +20,13 @@
 { name: "Lucky",          minLevel: 1, weight: 1, levelMod: 1,  stats: { luk: 2 } }
 { name: "Wise",           minLevel: 1, weight: 1, levelMod: 1,  stats: { mnt: 2 } }
 { name: "Accurate",       minLevel: 1, weight: 1, levelMod: 1,  stats: { acc: 2 } }
+
+{ name: "Offensive",      minLevel: 7, weight: 1, levelMod: 1,  stats: { str: 3, mnt: 3, acc: 2 } }
+{ name: "Defensive",      minLevel: 7, weight: 1, levelMod: 1,  stats: { dex: 3, vit: 3, luk: 2 } }
+{ name: "Mithril",        minLevel: 7, weight: 1, levelMod: 2,  stats: { str: 2, dex: 2, vit: 2, mnt: 2, luk: 2, acc: 2 } }
+
+{ name: "Orichalcum",     minLevel: 21, weight: 1, levelMod: 3, stats: { str: 10, dex: 10, vit: 10, mnt: 10, luk: 10, acc: 10 } }
+
+{ name: "Adamantine",     minLevel: 35, weight: 1, levelMod: 4, stats: { str: 25, dex: 25, vit: 25, mnt: 25, luk: 25, acc: 25 } }
 
 ]

@@ -1,16 +1,22 @@
 [
 
-{ name: "Knight's",     minLevel: 1, levelMod: 2, weight: 1, stats: { vit: 5 } }
-{ name: "Berserker's",  minLevel: 1, levelMod: 2, weight: 1, stats: { str: 5 } }
-{ name: "Seer's",       minLevel: 1, levelMod: 2, weight: 1, stats: { mnt: 5 } }
-{ name: "Sniper's",     minLevel: 1, levelMod: 2, weight: 1, stats: { dex: 5 } }
+{ name: "Cleric's",     minLevel: 1, levelMod: 2, weight: 1, stats: { vit: 5 } }
+{ name: "Fighter's",    minLevel: 1, levelMod: 2, weight: 1, stats: { str: 5 } }
+{ name: "Mage's",       minLevel: 1, levelMod: 2, weight: 1, stats: { mnt: 5 } }
+{ name: "Thief's",      minLevel: 1, levelMod: 2, weight: 1, stats: { dex: 5 } }
 { name: "Gambler's",    minLevel: 1, levelMod: 2, weight: 1, stats: { luk: 5 } }
 
-{ name: "Marauder's",   minLevel: 1, levelMod: 1, weight: 1, stats: { str: 3, vit: 2 } }
-{ name: "Shaman's",     minLevel: 1, levelMod: 1, weight: 1, stats: { vit: 3, mnt: 2 } }
-{ name: "Cavalier's",   minLevel: 1, levelMod: 1, weight: 1, stats: { dex: 3, vit: 2 } }
-{ name: "Rogue's",      minLevel: 1, levelMod: 1, weight: 1, stats: { dex: 3, str: 2 } }
-{ name: "Warmage's",    minLevel: 1, levelMod: 1, weight: 1, stats: { mnt: 3, str: 2 } }
-{ name: "Spellthief's", minLevel: 1, levelMod: 1, weight: 1, stats: { mnt: 2, dex: 2, luk: 1 } }
+{ name: "Marauder's",   minLevel: 3, levelMod: 2, weight: 1, stats: { str: 3, vit: 2 } }
+{ name: "Shaman's",     minLevel: 3, levelMod: 2, weight: 1, stats: { vit: 3, mnt: 2 } }
+{ name: "Cavalier's",   minLevel: 3, levelMod: 2, weight: 1, stats: { dex: 3, vit: 2 } }
+{ name: "Knight's",     minLevel: 3, levelMod: 2, weight: 1, stats: { dex: 3, str: 2 } }
+{ name: "Warmage's",    minLevel: 3, levelMod: 2, weight: 1, stats: { mnt: 3, str: 2 } }
+{ name: "Spellthief's", minLevel: 3, levelMod: 2, weight: 1, stats: { mnt: 2, dex: 2, luk: 1 } }
+
+{ name: "Berserker's",  minLevel: 7, levelMod: 2, weight: 1, stats: { str: 5, vit: 5, mnt: -2 } }
+{ name: "Seer's",       minLevel: 7, levelMod: 2, weight: 1, stats: { vit: 5, mnt: 5, dex: -2 } }
+{ name: "Monk's",       minLevel: 7, levelMod: 2, weight: 1, stats: { str: 5, mnt: 5, luk: -2 } }
+{ name: "Sniper's",     minLevel: 7, levelMod: 2, weight: 1, stats: { dex: 5, acc: 5, str: -4 } }
+{ name: "Paladin's",    minLevel: 7, levelMod: 2, weight: 1, stats: { vit: 5, dex: 5, str: -2 } }
 
 ]

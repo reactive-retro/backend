@@ -46,6 +46,10 @@ const validateItem = (t, item) => {
     t.ok(item.minLevel);
     t.ok(item.dropRate);
 
+    if(item.qualityMod) {
+        t.true(item.qualityMod > -1 && item.qualityMod < 3, 'Quality modifiers cannot be too absurd.');
+    }
+
     t.true(item.dropRate > 0 && item.dropRate <= 100);
     t.true(item.minLevel > 0 && item.minLevel < 100);
     t.true(item.baseQuality > -1 && item.baseQuality < 5);
@@ -58,6 +62,8 @@ const validateAttribute = (t, attr) => {
     t.ok(attr.name);
     t.ok(attr.weight);
     t.ok(attr.minLevel);
+
+    t.notOk(attr.qualityMod, 'Attributes cannot have quality modifiers.');
 
     const keys = Object.keys(attr.stats);
     t.true(keys.length > 0);

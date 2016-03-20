@@ -2,8 +2,14 @@
 
 { name: "of the Eagle",     minLevel: 1, levelMod: 2, weight: 1, stats: { dex: 5 } }
 { name: "of the Bear",      minLevel: 1, levelMod: 2, weight: 1, stats: { vit: 5 } }
-{ name: "of the Lion",      minLevel: 1, levelMod: 2, weight: 1, stats: { str: 5 } }
+{ name: "of the Boar",      minLevel: 1, levelMod: 2, weight: 1, stats: { str: 5 } }
 { name: "of the Crow",      minLevel: 1, levelMod: 2, weight: 1, stats: { mnt: 5 } }
 { name: "of the Dodo",      minLevel: 1, levelMod: 2, weight: 1, stats: { luk: 5 } }
+
+{ name: "of the Lynx",      minLevel: 7, levelMod: 2, weight: 1, stats: { dex: 10, str: -3 } }
+{ name: "of the Koala",     minLevel: 7, levelMod: 2, weight: 1, stats: { vit: 10, mnt: -3 } }
+{ name: "of the Lion",      minLevel: 7, levelMod: 2, weight: 1, stats: { str: 10, luk: -3 } }
+{ name: "of the Iguana",    minLevel: 7, levelMod: 2, weight: 1, stats: { mnt: 10, dex: -3 } }
+{ name: "of the Rabbit",    minLevel: 7, levelMod: 2, weight: 1, stats: { luk: 10, str: -2, mnt: -2, dex: -2, vit: -2 } }
 
 ]
