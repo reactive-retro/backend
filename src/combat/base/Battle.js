@@ -84,13 +84,16 @@ export default class Battle {
         const messages = [];
 
         const tryEffects = (skill, target) => {
+
+            const showUnsuccessful = !skill.spellEffects.Damage;
+
             return _(skill.spellEffects)
                 .pairs()
                 .map(pair => {
                     const [effect, effData] = pair;
                     if(effect === 'Damage') return '';
 
-                    if(Dice.roll('1d100') > effData.chance) return '... but it was unsuccessful!';
+                    if(Dice.roll('1d100') > effData.chance) return showUnsuccessful ? '... but it was unsuccessful!' : '';
                     const Proto = SpellEffectManager.getEffectByName(effect);
                     if(!Proto) {
                         Logger.error('Combat:Effects', new Error(`ERROR: No valid proto: ${Proto}`));
