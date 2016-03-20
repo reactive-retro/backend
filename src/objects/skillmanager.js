@@ -9,6 +9,10 @@ const skills = _(skillsHash)
             .values()
             .pluck('default')
             .map(x => x.prototype)
+            .each(spell => {
+                if(_.isUndefined(spell.spellAICallback)) spell.spellAICallback = (targets) => _.sample(targets);
+                if(_.isUndefined(spell.spellTimes))      spell.spellTimes = 1;
+            })
             .value();
     })
     .flatten()

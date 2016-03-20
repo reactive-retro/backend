@@ -46,19 +46,30 @@ export default class Battle {
             return choice;
         };
 
-        switch(skill.spellTargets) {
-            case ActionTargets.ALL: return this.playerData.concat(this.monsters);
-            case ActionTargets.ANY: return fallback ? [fallback] : _.sample(this.playerData.concat(this.monsters));
-            case ActionTargets.ALL_ALLY: return allyArray;
-            case ActionTargets.ALL_ENEMY: return enemyArray;
-            case ActionTargets.SELF: return [me];
+        const getBaseTarget = () => {
+            switch(skill.spellTargets) {
+                case ActionTargets.ALL: return this.playerData.concat(this.monsters);
+                case ActionTargets.ANY: return fallback ? [fallback] : _.sample(this.playerData.concat(this.monsters));
+                case ActionTargets.ALL_ALLY: return allyArray;
+                case ActionTargets.ALL_ENEMY: return enemyArray;
+                case ActionTargets.SELF: return [me];
 
-            case ActionTargets.SINGLE_ALLY: return fallback ? [fallback] : [doRandomChoice(allyArray)];
-            case ActionTargets.SINGLE_ENEMY: return fallback ? [fallback] : [doRandomChoice(enemyArray)];
-            default:
-                Logger.error('Combat:Target', new Error('Invalid enemy targetting'), skill);
-                return [];
+                case ActionTargets.SINGLE_ALLY: return fallback ? [fallback] : [doRandomChoice(allyArray)];
+                case ActionTargets.SINGLE_ENEMY: return fallback ? [fallback] : [doRandomChoice(enemyArray)];
+                default:
+                    Logger.error('Combat:Target', new Error('Invalid enemy targetting'), skill);
+                    return [];
+            }
+        };
+
+        const baseTargetArray = getBaseTarget();
+        const retArray = [];
+
+        for(let i = 0; i < skill.spellTimes; i++) {
+            retArray.push(...baseTargetArray);
         }
+
+        return retArray;
     }
 
     canAct(target) {

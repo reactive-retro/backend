@@ -16,8 +16,10 @@ allSkills.forEach(skill => {
     test(`${skill.spellName} spell data is valid`, t => {
 
         t.ok(skill.spellName);
-        if (skill.spellCost) t.true(skill.spellCost >= 0);
-        if (skill.spellCooldown) t.true(skill.spellCooldown >= 0);
+        if(skill.spellCost) t.true(skill.spellCost >= 0);
+        if(skill.spellCooldown) t.true(skill.spellCooldown >= 0);
+
+        t.true(skill.spellTimes > 0);
 
         const usedProfessions = Object.keys(skill.spellClasses);
         t.true(usedProfessions.length > 0);
@@ -33,8 +35,8 @@ allSkills.forEach(skill => {
         t.true(Object.keys(skill.spellEffects).length > 0);
 
         Object.keys(skill.spellEffects).forEach(skillEffect => {
-            if (skillEffect.chance) t.true(skillEffect.chance > 0 && skillEffect.chance <= 100);
-            if (skillEffect.roll) {
+            if(skillEffect.chance) t.true(skillEffect.chance > 0 && skillEffect.chance <= 100);
+            if(skillEffect.roll) {
                 const testRoll = +Dice.roll(skillEffect.roll, player);
                 t.false(isNaN(testRoll));
             }
