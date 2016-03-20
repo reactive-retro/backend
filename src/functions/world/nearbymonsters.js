@@ -2,12 +2,21 @@
 import seedrandom from 'seedrandom';
 
 import monstergenerate from '../../objects/monstergenerator';
-import { calcDistanceBetween } from '../helpers';
+import { calcDistanceBetween, clamp as clampNumber } from '../helpers';
 import availableMonsters from './availablemonsters';
 
 const randomBetween = (rng = Math.random, min, max) => rng() * (max - min) + min;
+
+const nRng = (rng, n = 2) => {
+    let ret = 0;
+    for(let i = 0; i < n; i++) ret += rng();
+    ret -= n/2;
+    ret /= n/2;
+    return ret;
+};
+
 const normalBetween = (rng = Math.random, min, max) => {
-    const normalRng = () => (rng() + rng() + rng() + rng() - 2) / 2;
+    const normalRng = () => nRng(rng, 1);
     return randomBetween(normalRng, min, max);
 };
 const normalAround = (rng = Math.random, min, max) => {
@@ -43,6 +52,25 @@ export const monstertoken = (extraData = '') => {
     return getSeed() + extraData;
 };
 
+const getMonsterLocation = ({ normalFunction, offsets, lat, lon, clamp = false }) => {
+
+    const angle     = normalFunction(0, 2 * Math.PI);
+    const distance  = normalFunction(0, offsets.radius);
+
+    let monLat = lat + distance * Math.cos(angle);
+    let monLon = lon + distance * Math.sin(angle);
+
+    if(clamp) {
+        monLat = clampNumber(lat - offsets.lat, lat + offsets.lat, monLat);
+        monLon = clampNumber(lon - offsets.lon, lon + offsets.lon, monLon);
+    }
+
+    return {
+        monLat,
+        monLon
+    };
+};
+
 export default async ({ lat, lon, playerLevel, ratingOffset, offsets, amounts, seed, zone, statBuff }) => {
     if(!seed) seed = getSeed();
     if(!ratingOffset) ratingOffset = 0;
@@ -51,18 +79,17 @@ export default async ({ lat, lon, playerLevel, ratingOffset, offsets, amounts, s
 
     // monster generation for places has a tight generation area
     // placing them right on top of the place makes them hard to hit
-    const normalFunction = ratingOffset > 0 ? normalAround : normalBetween;
+    const rng = seedrandom(seed);
+    const normalFunction = (ratingOffset > 0 ? normalAround : normalBetween).bind(null, rng);
 
     const possibleMonsters = await availableMonsters(playerLevel, zone);
 
-    const rng = seedrandom(seed);
     const numMonsters = randomBetween(rng, amounts.min, amounts.max);
 
     const monsters = [];
 
     for(let i = 0; i < numMonsters; i++) {
-        const monLat = Math.max(lat-offsets.lat, Math.min(lat+offsets.lat, normalFunction(rng, lat-offsets.lat, lat+offsets.lat) + offsets.lat));
-        const monLon = Math.max(lon-offsets.lon, Math.min(lon+offsets.lon, normalFunction(rng, lon-offsets.lon, lon+offsets.lon) + offsets.lon));
+        const { monLat, monLon } = getMonsterLocation({ normalFunction, offsets, lat, lon, clamp: ratingOffset > 0 });
 
         const distanceBetweenHomepointAndMonster = calcDistanceBetween(lat, lon, monLat, monLon);
         const rating = rateMonster(distanceBetweenHomepointAndMonster) + ratingOffset;

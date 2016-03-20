@@ -18,6 +18,12 @@ const prng = (seed) => () => {
 export const itemId = (seed = Date.now()) => uuid.v4({ rng: prng(seed) });
 export const monsterId = (seed = Date.now()) => uuid.v4({ rng: prng(seed) });
 
+export const clamp = (min, max, num) => Math.max(min, Math.min(max, num));
+
+export const simpleDistanceBetween = (x1, y1, x2, y2) => {
+    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+};
+
 export const calcDistanceBetween = (lat1, lon1, lat2, lon2) => {
     const R = 6371;
     const toRad = (num) => num * (Math.PI / 180);

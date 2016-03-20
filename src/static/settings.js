@@ -14,8 +14,9 @@ export default {
     MONSTER_GENERATION: {
         PLAYER: {
             offsets: {
-                lat: 0.025,
-                lon: 0.025
+                lat:    0.050,
+                lon:    0.045,
+                radius: 0.045
             },
             amounts: {
                 min: 500,
@@ -28,8 +29,9 @@ export default {
                 max: 5
             },
             offsets: {
-                lat: 0.0005,
-                lon: 0.0005
+                lat:    0.001,
+                lon:    0.001,
+                radius: 0.001
             },
             amounts: {
                 min: 5,
