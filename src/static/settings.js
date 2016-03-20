@@ -16,7 +16,7 @@ export default {
             offsets: {
                 lat:    0.050,
                 lon:    0.045,
-                radius: 0.045
+                radius: 0.043
             },
             amounts: {
                 min: 500,
