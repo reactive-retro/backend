@@ -6,7 +6,7 @@ import { damage } from '../../../static/decorators/aitarget';
 @name('Shadow Stab')
 @cost(0)
 @cooldown(3)
-@classes({ Thief: 10 })
+@classes({ Thief: 15 })
 @targets(ActionTargets.SINGLE_ENEMY)
 @description('Stab an enemy from the shadows. Does not remove stealth, and does more damage if stealthed.')
 @useString('%o used %n on %t and dealt %d damage!')
