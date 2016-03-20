@@ -7,7 +7,7 @@ import { name, cost, cooldown, classes, targets, description, effect, useString 
 @cooldown(0)
 @classes({ Cleric: 17 })
 @targets(ActionTargets.ALL_ALLY)
-@description('Send out a wave of healing that reaches all allies.')
+@description('Send out a wave of support that reaches all allies.')
 @useString('%o healed %t for %d hp!')
 @effect('Heal', { roll: '3df([mnt] / 5)', string: 'HP', instant: true })
 export default class HealingWave extends Action {

@@ -1,6 +1,7 @@
 
 import Action, { ActionTargets } from '../../base/Action';
-import { name, cost, cooldown, classes, targets, description, effect, useString, unblockable } from '../../../static/decorators/spell';
+import { name, cost, cooldown, classes, targets, description, effect, useString, unblockable, targeting } from '../../../static/decorators/spell';
+import { damage } from '../../../static/decorators/aitarget';
 
 @name('Shocking Touch')
 @cost(7)
@@ -12,6 +13,7 @@ import { name, cost, cooldown, classes, targets, description, effect, useString,
 @effect('Damage', { roll: '1df([mnt] / 2) + 1' })
 @effect('Shock', { chance: 25, roll: '1d4 + 1', string: 'round' })
 @unblockable
+@targeting(damage)
 export default class ShockingTouch extends Action {
 
 }

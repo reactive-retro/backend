@@ -1,6 +1,7 @@
 
 import Action, { ActionTargets } from '../../base/Action';
-import { name, cost, cooldown, classes, targets, description, effect, useString } from '../../../static/decorators/spell';
+import { name, cost, cooldown, classes, targets, description, effect, useString, targeting } from '../../../static/decorators/spell';
+import { support } from '../../../static/decorators/aitarget';
 
 @name('Regenerate')
 @cost(30)
@@ -10,6 +11,7 @@ import { name, cost, cooldown, classes, targets, description, effect, useString 
 @description('Cast a regenerative aura on an ally.')
 @useString('%o cast %n on %t!')
 @effect('Regenerate', { chance: 100, roll: '1d4 + 3', string: 'round' })
+@targeting(support)
 export default class Regenerate extends Action {
 
 }

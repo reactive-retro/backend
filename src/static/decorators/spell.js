@@ -9,6 +9,7 @@ export const useString  = (useStr)   => (target) => { return target.prototype.sp
 export const disabled   =               (target) => { return target.prototype.spellDisabled = true, target; };
 export const unblockable=               (target) => { return target.prototype.spellUnblockable = true, target; };
 export const unstackable=               (target) => { return target.prototype.spellUnstackable = true, target; };
+export const targeting  = (callback) => (target) => { return target.prototype.spellAICallback = callback, target; };
 
 export const effect     = (effect, effVal) => (target) => {
     if(!target.prototype.spellEffects) {

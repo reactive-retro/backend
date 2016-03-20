@@ -1,6 +1,7 @@
 
 import Action, { ActionTargets } from '../../base/Action';
-import { name, cost, cooldown, classes, targets, description, effect, useString, unblockable } from '../../../static/decorators/spell';
+import { name, cost, cooldown, classes, targets, description, effect, useString, unblockable, targeting } from '../../../static/decorators/spell';
+import { damage } from '../../../static/decorators/aitarget';
 
 @name('Shocking Burst')
 @cost(26)
@@ -13,6 +14,7 @@ import { name, cost, cooldown, classes, targets, description, effect, useString,
 @effect('Shock', { chance: 35, roll: '1d4 + 1', string: 'round' })
 @effect('Burn', { chance: 15, roll: '1d2 + 1', string: 'round' })
 @unblockable
+@targeting(damage)
 export default class ShockingBurst extends Action {
 
 }

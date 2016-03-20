@@ -1,6 +1,7 @@
 
 import Action, { ActionTargets } from '../../base/Action';
-import { name, cost, cooldown, classes, targets, description, effect, useString } from '../../../static/decorators/spell';
+import { name, cost, cooldown, classes, targets, description, effect, useString, targeting } from '../../../static/decorators/spell';
+import { damage } from '../../../static/decorators/aitarget';
 
 @name('Steal')
 @cost(0)
@@ -10,6 +11,7 @@ import { name, cost, cooldown, classes, targets, description, effect, useString 
 @description('Attempt to steal an item from a foe.')
 @useString('%o attempted to steal items from %t!')
 @effect('Steal', { chance: 75, roll: '1d1', string: 'item' })
+@targeting(damage)
 export default class Steal extends Action {
 
 }

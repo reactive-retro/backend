@@ -37,6 +37,15 @@ export default class Battle {
         const allyArray = isMonster ? this.monsters : this.playerData;
         const enemyArray = isMonster ? this.playerData : this.monsters;
 
+        const doRandomChoice = (array) => {
+            if(!isMonster) return _.sample(array);
+
+            let choice = skill.spellAICallback(array);
+            if(!choice) choice = _.sample(array);
+
+            return choice;
+        };
+
         switch(skill.spellTargets) {
             case ActionTargets.ALL: return this.playerData.concat(this.monsters);
             case ActionTargets.ANY: return fallback ? [fallback] : _.sample(this.playerData.concat(this.monsters));
@@ -44,8 +53,8 @@ export default class Battle {
             case ActionTargets.ALL_ENEMY: return enemyArray;
             case ActionTargets.SELF: return [me];
 
-            case ActionTargets.SINGLE_ALLY: return fallback ? [fallback] : [_.sample(allyArray)];
-            case ActionTargets.SINGLE_ENEMY: return fallback ? [fallback] : [_.sample(enemyArray)];
+            case ActionTargets.SINGLE_ALLY: return fallback ? [fallback] : [doRandomChoice(allyArray)];
+            case ActionTargets.SINGLE_ENEMY: return fallback ? [fallback] : [doRandomChoice(enemyArray)];
             default:
                 Logger.error('Combat:Target', new Error('Invalid enemy targetting'), skill);
                 return [];

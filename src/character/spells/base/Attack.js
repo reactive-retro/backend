@@ -1,6 +1,7 @@
 
 import Action, { ActionTargets } from '../../base/Action';
-import { name, cost, cooldown, classes, targets, description, effect, useString, unstackable } from '../../../static/decorators/spell';
+import { name, cost, cooldown, classes, targets, description, effect, useString, unstackable, targeting } from '../../../static/decorators/spell';
+import { damage } from '../../../static/decorators/aitarget';
 
 @name('Attack')
 @cost(0)
@@ -11,6 +12,7 @@ import { name, cost, cooldown, classes, targets, description, effect, useString,
 @useString('%o attacked %t and dealt %d damage!')
 @effect('Damage', { roll: '1df([str] / 2) + f([str] / 6)' })
 @unstackable
+@targeting(damage)
 export default class Attack extends Action {
 
 }

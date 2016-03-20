@@ -1,6 +1,7 @@
 
 import Action, { ActionTargets } from '../../base/Action';
-import { name, cost, cooldown, classes, targets, description, effect, useString } from '../../../static/decorators/spell';
+import { name, cost, cooldown, classes, targets, description, effect, useString, targeting } from '../../../static/decorators/spell';
+import { damage } from '../../../static/decorators/aitarget';
 
 @name('Smash')
 @cost(0)
@@ -10,6 +11,7 @@ import { name, cost, cooldown, classes, targets, description, effect, useString 
 @description('Smash an enemy, dealing low damage with very high accuracy.')
 @useString('%o used %n on %t and dealt %d damage!')
 @effect('Damage', { chance: 120, roll: '1df([str] / 2) + 1' })
+@targeting(damage)
 export default class Smash extends Action {
 
 }

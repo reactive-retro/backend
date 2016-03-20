@@ -11,6 +11,7 @@ export default class Action {
         if(_.isUndefined(this.spellClasses))    Logger.error('Action:Create', new Error('No spell classes set.'), this);
         if(_.isUndefined(this.spellDescription))Logger.error('Action:Create', new Error('No spell desc set.'), this);
         if(_.isUndefined(this.spellUseString))  Logger.error('Action:Create', new Error('No spell use string set.'), this);
+        if(_.isUndefined(this.spellAICallback)) this.spellAICallback = (targets) => _.sample(targets);
     }
 
 }

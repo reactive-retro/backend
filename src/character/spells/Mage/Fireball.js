@@ -1,6 +1,7 @@
 
 import Action, { ActionTargets } from '../../base/Action';
-import { name, cost, cooldown, classes, targets, description, effect, useString, unblockable } from '../../../static/decorators/spell';
+import { name, cost, cooldown, classes, targets, description, effect, useString, unblockable, targeting } from '../../../static/decorators/spell';
+import { damage } from '../../../static/decorators/aitarget';
 
 @name('Fireball')
 @cost(22)
@@ -12,6 +13,7 @@ import { name, cost, cooldown, classes, targets, description, effect, useString,
 @effect('Damage', { roll: '2df([mnt] / 2) + 1' })
 @effect('Burn', { chance: 45, roll: '1d4 + 1', string: 'round' })
 @unblockable
+@targeting(damage)
 export default class Fireball extends Action {
 
 }
