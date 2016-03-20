@@ -141,10 +141,10 @@ export default class Battle {
         // if you can do damage, you have to do damage for auxillary effects to occur
         if(skill.spellEffects.Damage) {
             _.each(targets, target => {
-                const { chance, roll } = skill.spellEffects.Damage;
+                const { chance, roll, spareEffect, bonusEffect, bonusMultiplier = 1 } = skill.spellEffects.Damage;
                 const accuracyBonus = caster.stats.acc;
 
-                if(caster.findStatus('Stealth')) {
+                if(caster.findStatus('Stealth') && spareEffect !== 'Stealth') {
                     caster.removeStatus('Stealth');
                 }
 
@@ -179,7 +179,7 @@ export default class Battle {
                 }
 
                 // do at least 1 damage
-                const damage = Math.max(1, caster.rollDice(skill.spellName, roll));
+                const damage = Math.floor(Math.max(1, caster.rollDice(skill.spellName, roll)) * (caster.findStatus(bonusEffect) ? bonusMultiplier : 1));
                 const damageMessage = this.stringFormat(skill.spellUseString, {
                     target: target.name,
                     origin: caster.name,
