@@ -13,7 +13,9 @@
   },
   "scripts": {
     "start": "node index.js",
-    "test": "eslint src/** && ava ext/test",
+    "test": "npm run test:local && npm run test:analysis",
+    "test:local": "eslint src/** && ava ext/test",
+    "test:analysis": "node ext/runanalysis.js",
     "bump:patch": "npm-bump patch",
     "bump:minor": "npm-bump minor",
     "bump:major": "npm-bump major"
