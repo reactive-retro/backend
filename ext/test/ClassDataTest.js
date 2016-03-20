@@ -1,8 +1,8 @@
 
 import test from 'ava';
 
-import { allProfessions } from '../src/objects/professionmanager';
-const professionHash = require('require-dir')('../src/character/professions');
+import { allProfessions } from '../../src/objects/professionmanager';
+const professionHash = require('require-dir')('../../src/character/professions');
 
 Object.keys(allProfessions).forEach(profName => {
     const prof = allProfessions[profName];

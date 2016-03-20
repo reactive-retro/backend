@@ -2,9 +2,9 @@
 import test from 'ava';
 import Dice from 'dice.js';
 
-import { allSkills } from '../src/objects/skillmanager';
+import { allSkills } from '../../src/objects/skillmanager';
 
-const allProfessions = require('require-dir')('../src/character/professions');
+const allProfessions = require('require-dir')('../../src/character/professions');
 
 const player = {
     str: 10, dex: 10, vit: 10, mnt: 10, luk: 10, acc: 10,

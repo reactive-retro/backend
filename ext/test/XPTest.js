@@ -1,7 +1,7 @@
 
 import test from 'ava';
 
-import XPCalculator from '../src/objects/xpcalculator';
+import XPCalculator from '../../src/objects/xpcalculator';
 
 test('XP needed for level 2 = 100 XP', t => {
     t.true(XPCalculator.calculate(1) === 100);

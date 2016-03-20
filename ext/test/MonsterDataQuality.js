@@ -5,7 +5,7 @@ import { loadDataFile } from './_helpers';
 
 let monsterData = null;
 
-const validProfessions = require('require-dir')('../src/character/professions');
+const validProfessions = require('require-dir')('../../src/character/professions');
 const isValidProfession = (profession) => validProfessions[profession];
 
 test.serial('Monster data is valid hjson', t => {

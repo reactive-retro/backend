@@ -13,7 +13,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "test": "eslint src/** && ava",
+    "test": "eslint src/** && ava ext/test",
     "bump:patch": "npm-bump patch",
     "bump:minor": "npm-bump minor",
     "bump:major": "npm-bump major"
