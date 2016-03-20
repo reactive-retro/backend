@@ -3,6 +3,7 @@ import _ from 'lodash';
 import RestrictedNumber from 'restricted-number';
 import Dice from 'dice.js';
 
+import Item from '../../items/Item';
 import SkillManager from '../../objects/skillmanager';
 import SpellEffectManager from '../../objects/spelleffectmanager';
 
@@ -25,6 +26,9 @@ export default class Character {
         this.unlockedProfessions = unlockedProfessions || _.cloneDeep(DEFAULTS.unlockedProfessions);
         this.cooldowns = cooldowns || {};
 
+        this.equipment.weapon = new Item(this.equipment.weapon);
+        this.equipment.armor = new Item(this.equipment.armor);
+        this.inventory = _.map(this.inventory, i => new Item(i));
         _.each(this.unlockedProfessions, (prof) => { this.professionLevels[prof] = this.professionLevels[prof] || 1; });
 
         this.slug = `${this.profession.substring(0, 3).toUpperCase()}-${this.professionLevels[this.profession]}`;
