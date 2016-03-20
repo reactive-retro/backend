@@ -9,12 +9,13 @@ import { longestString, startTravis, endTravis } from '../test/_helpers';
 startTravis('Skill Learning Analysis');
 
 _.each(allProfessions, profession => {
-    console.log(`${profession} Skills`);
 
     const skillsLearned = _(allSkills)
         .filter(skill => skill.spellClasses[profession])
         .sortBy(skill => skill.spellClasses[profession])
         .value();
+
+    console.log(`${profession} Skills (${skillsLearned.length} total)`);
 
     if(!skillsLearned.length) {
         return console.log('No skills for this class.\n');
