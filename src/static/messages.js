@@ -38,7 +38,7 @@ export default {
     SKILL_CHANGE_SUCCESS: 'Successfully changed skill.',
     SKILL_DISABLED: 'That skill is currently disabled.',
 
-    BAD_MONSTER: 'That monster is not valid.',
+    BAD_MONSTER: 'That encounter is not valid.',
     NOT_IN_COMBAT: 'You are not in combat!',
     CURRENTLY_IN_COMBAT: 'You are currently in combat!',
     ALREADY_IN_COMBAT: 'You are already in combat!',

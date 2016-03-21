@@ -200,6 +200,8 @@ export default class Battle {
 
                 target.stats.hp.sub(damage);
 
+                console.log(target.name, damage, target.stats.hp);
+
                 messages.push(damageMessage);
                 if(target.stats.hp.atMin()) {
                     messages.push(`${target.name} was slain by ${caster.name}!`);

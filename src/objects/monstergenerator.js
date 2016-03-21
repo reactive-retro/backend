@@ -61,11 +61,15 @@ export default async (baseOpts, availableMonsters) => {
     if(chosenMonster.equipment) {
         const { weapon, armor, items } = chosenMonster.equipment;
         try {
-            if(weapon && +Dice.roll('1d100') <= weapon)
-                monster.equip(await ItemGenerator.generate({ playerReference: monster, type: 'weapon', seed: opts.seed+'weapon' }));
+            if(weapon && +Dice.roll('1d100') <= weapon) {
+                const newWeapon = await ItemGenerator.generate({ playerReference: monster, type: 'weapon', seed: opts.seed+'weapon' });
+                monster.equip(newWeapon);
+            }
 
-            if(armor  && +Dice.roll('1d100') <= armor)
-                monster.equip(await ItemGenerator.generate({ playerReference: monster, type: 'armor',  seed: opts.seed+'armor' }));
+            if(armor  && +Dice.roll('1d100') <= armor) {
+                const newArmor = await ItemGenerator.generate({ playerReference: monster, type: 'armor',  seed: opts.seed+'armor' });
+                monster.equip(newArmor);
+            }
 
             if(items && items.length > 0) {
                 const numItems = weightedChoice(_.filter(ITEM_WEIGHTS, w => _.contains(items, w.name)), opts.seed+'itemcount').name;

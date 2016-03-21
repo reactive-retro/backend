@@ -1,25 +1,11 @@
 [
 
-{ name: "Goblin",                   zones: ["All", "Cave"],     profession: "Monster",  goldDrop: "1d4",  weight: 4,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 1,  maxLevel: 5 }
-{ name: "Goblin Thief",             zones: ["All", "Cave"],     profession: "Thief",    goldDrop: "5d10", weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 1,  maxLevel: 7 }
-{ name: "Goblin Fighter",           zones: ["All", "Cave"],     profession: "Fighter",  goldDrop: "2d4",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 1,  maxLevel: 7 }
-{ name: "Goblin Mage",              zones: ["All", "Cave"],     profession: "Mage",     goldDrop: "4d4",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 1,  maxLevel: 7 }
-{ name: "Goblin Warmage",           zones: ["All", "Cave"],     profession: "Mage",     goldDrop: "4d5",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 5,  maxLevel: 15, bonusXp: 10, extendProfessions: { Fighter: 5 } }
-{ name: "Goblin Berserker",         zones: ["All", "Cave"],     profession: "Fighter",  goldDrop: "2d3",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 5,  maxLevel: 15, bonusXp: 10, skills: ["Attack", "Attack"] }
+{ name: "Zoobat",                   zones: ["Cave", "Tower"],   profession: "Monster",  goldDrop: "1d4",   weight: 1, equipment: { armor: 0, weapon: 0 },                   minLevel: 1,   maxLevel: 50 }
+{ name: "Gopher",                   zones: ["Plains"],          profession: "Monster",  goldDrop: "1d4",   weight: 1, equipment: { armor: 0, weapon: 0 },                   minLevel: 1,   maxLevel: 50 }
+{ name: "Guardian",                 zones: ["Fortress"],        profession: "Monster",  goldDrop: "1d4",   weight: 1, equipment: { armor: 0, weapon: 0 },                   minLevel: 1,   maxLevel: 50 }
+{ name: "Cultist",                  zones: ["Temple"],          profession: "Mage",     goldDrop: "1d4",   weight: 1, equipment: { armor: 50, weapon: 50, items: [0, 1, 2] },  minLevel: 1,   maxLevel: 50 }
 
-{ name: "Kobold",                   zones: ["All", "Plains"],   profession: "Monster",  goldDrop: "2d4",  weight: 4,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 10,  maxLevel: 15 }
-{ name: "Kobold Thief",             zones: ["All", "Plains"],   profession: "Thief",    goldDrop: "7d10", weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 10,  maxLevel: 17 }
-{ name: "Kobold Fighter",           zones: ["All", "Plains"],   profession: "Fighter",  goldDrop: "4d4",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 10,  maxLevel: 17 }
-{ name: "Kobold Mage",              zones: ["All", "Plains"],   profession: "Mage",     goldDrop: "6d4",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 10,  maxLevel: 17 }
-{ name: "Kobold Warmage",           zones: ["All", "Plains"],   profession: "Mage",     goldDrop: "6d5",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 16,  maxLevel: 25, bonusXp: 20, extendProfessions: { Fighter: 5 } }
-{ name: "Kobold Berserker",         zones: ["All", "Plains"],   profession: "Fighter",  goldDrop: "4d3",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 16,  maxLevel: 25, bonusXp: 20, skills: ["Attack", "Attack"] }
-
-{ name: "Hobgoblin",                zones: ["All", "Plains"],   profession: "Monster",  goldDrop: "6d4",  weight: 4,  equipment: { armor: 50, weapon: 50, items: [0, 1, 2, 3] },  minLevel: 20,  maxLevel: 25 }
-{ name: "Hobgoblin Thief",          zones: ["All", "Plains"],   profession: "Thief",    goldDrop: "9d10", weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1, 2, 3] },  minLevel: 20,  maxLevel: 27 }
-{ name: "Hobgoblin Fighter",        zones: ["All", "Plains"],   profession: "Fighter",  goldDrop: "6d4",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1, 2, 3] },  minLevel: 20,  maxLevel: 27 }
-{ name: "Hobgoblin Mage",           zones: ["All", "Plains"],   profession: "Mage",     goldDrop: "8d4",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1, 2, 3] },  minLevel: 20,  maxLevel: 27 }
-{ name: "Hobgoblin Warmage",        zones: ["All", "Plains"],   profession: "Mage",     goldDrop: "8d5",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1, 2, 3] },  minLevel: 26,  maxLevel: 35, bonusXp: 30, extendProfessions: { Fighter: 5 } }
-{ name: "Hobgoblin Berserker",      zones: ["All", "Plains"],   profession: "Fighter",  goldDrop: "6d3",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1, 2, 3] },  minLevel: 26,  maxLevel: 35, bonusXp: 30, skills: ["Attack", "Attack"] }
+{ name: "Dragon",                   zones: ["All", "Cave"],     profession: "Monster",  goldDrop: "20d4",  weight: 4, equipment: { armor: 0, weapon: 0 },                   minLevel: 45,  maxLevel: 50, bonusXp: 100 }
 
 { name: "Ogre",                     zones: ["All", "Cave"],     profession: "Monster",  goldDrop: "8d4",   weight: 4, equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 30,  maxLevel: 35 }
 { name: "Ogre Thief",               zones: ["All", "Cave"],     profession: "Thief",    goldDrop: "11d10", weight: 1, equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 30,  maxLevel: 37 }
@@ -28,11 +14,25 @@
 { name: "Ogre Warmage",             zones: ["All", "Cave"],     profession: "Mage",     goldDrop: "10d5",  weight: 1, equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 36,  maxLevel: 46, bonusXp: 40, extendProfessions: { Fighter: 5 } }
 { name: "Ogre Berserker",           zones: ["All", "Cave"],     profession: "Fighter",  goldDrop: "8d3",   weight: 1, equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 36,  maxLevel: 46, bonusXp: 40, skills: ["Attack", "Attack"] }
 
-{ name: "Dragon",                   zones: ["All", "Cave"],     profession: "Monster",  goldDrop: "20d4",  weight: 4, equipment: { armor: 0, weapon: 0 },                   minLevel: 45,  maxLevel: 50, bonusXp: 100 }
+{ name: "Hobgoblin Warmage",        zones: ["All", "Plains"],   profession: "Mage",     goldDrop: "8d5",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1, 2, 3] },  minLevel: 26,  maxLevel: 35, bonusXp: 30, extendProfessions: { Fighter: 5 } }
+{ name: "Hobgoblin Berserker",      zones: ["All", "Plains"],   profession: "Fighter",  goldDrop: "6d3",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1, 2, 3] },  minLevel: 26,  maxLevel: 35, bonusXp: 30, skills: ["Attack", "Attack"] }
+{ name: "Hobgoblin",                zones: ["All", "Plains"],   profession: "Monster",  goldDrop: "6d4",  weight: 4,  equipment: { armor: 50, weapon: 50, items: [0, 1, 2, 3] },  minLevel: 20,  maxLevel: 25 }
+{ name: "Hobgoblin Thief",          zones: ["All", "Plains"],   profession: "Thief",    goldDrop: "9d10", weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1, 2, 3] },  minLevel: 20,  maxLevel: 27 }
+{ name: "Hobgoblin Fighter",        zones: ["All", "Plains"],   profession: "Fighter",  goldDrop: "6d4",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1, 2, 3] },  minLevel: 20,  maxLevel: 27 }
+{ name: "Hobgoblin Mage",           zones: ["All", "Plains"],   profession: "Mage",     goldDrop: "8d4",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1, 2, 3] },  minLevel: 20,  maxLevel: 27 }
 
-{ name: "Zoobat",                   zones: ["Cave", "Tower"],   profession: "Monster",  goldDrop: "1d4",   weight: 1, equipment: { armor: 0, weapon: 0 },                   minLevel: 1,   maxLevel: 50 }
-{ name: "Gopher",                   zones: ["Plains"],          profession: "Monster",  goldDrop: "1d4",   weight: 1, equipment: { armor: 0, weapon: 0 },                   minLevel: 1,   maxLevel: 50 }
-{ name: "Guardian",                 zones: ["Fortress"],        profession: "Monster",  goldDrop: "1d4",   weight: 1, equipment: { armor: 0, weapon: 0 },                   minLevel: 1,   maxLevel: 50 }
-{ name: "Cultist",                  zones: ["Temple"],          profession: "Mage",     goldDrop: "1d4",   weight: 1, equipment: { armor: 50, weapon: 50, items: [0, 1, 2] },  minLevel: 1,   maxLevel: 50 }
+{ name: "Kobold Warmage",           zones: ["All", "Plains"],   profession: "Mage",     goldDrop: "6d5",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 16,  maxLevel: 25, bonusXp: 20, extendProfessions: { Fighter: 5 } }
+{ name: "Kobold Berserker",         zones: ["All", "Plains"],   profession: "Fighter",  goldDrop: "4d3",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 16,  maxLevel: 25, bonusXp: 20, skills: ["Attack", "Attack"] }
+{ name: "Kobold",                   zones: ["All", "Plains"],   profession: "Monster",  goldDrop: "2d4",  weight: 4,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 10,  maxLevel: 15 }
+{ name: "Kobold Thief",             zones: ["All", "Plains"],   profession: "Thief",    goldDrop: "7d10", weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 10,  maxLevel: 17 }
+{ name: "Kobold Fighter",           zones: ["All", "Plains"],   profession: "Fighter",  goldDrop: "4d4",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 10,  maxLevel: 17 }
+{ name: "Kobold Mage",              zones: ["All", "Plains"],   profession: "Mage",     goldDrop: "6d4",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 10,  maxLevel: 17 }
+
+{ name: "Goblin Warmage",           zones: ["All", "Cave"],     profession: "Mage",     goldDrop: "4d5",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 5,  maxLevel: 15, bonusXp: 10, extendProfessions: { Fighter: 5 } }
+{ name: "Goblin Berserker",         zones: ["All", "Cave"],     profession: "Fighter",  goldDrop: "2d3",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 5,  maxLevel: 15, bonusXp: 10, skills: ["Attack", "Attack"] }
+{ name: "Goblin",                   zones: ["All", "Cave"],     profession: "Monster",  goldDrop: "1d4",  weight: 4,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 1,  maxLevel: 5 }
+{ name: "Goblin Thief",             zones: ["All", "Cave"],     profession: "Thief",    goldDrop: "5d10", weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 1,  maxLevel: 7 }
+{ name: "Goblin Fighter",           zones: ["All", "Cave"],     profession: "Fighter",  goldDrop: "2d4",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 1,  maxLevel: 7 }
+{ name: "Goblin Mage",              zones: ["All", "Cave"],     profession: "Mage",     goldDrop: "4d4",  weight: 1,  equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 1,  maxLevel: 7 }
 
 ]

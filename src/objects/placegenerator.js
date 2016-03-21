@@ -157,6 +157,19 @@ const getDungeonName = async (place) => {
     return new Promise(resolve => resolve({ name, zoneName: zone.name, stats: rollingStats }));
 };
 
+const randomArrayChunks = (array, seed, min = 1, max = 1) => {
+    const allArrs = [];
+
+    const rng = seedrandom(seed);
+
+    while(array.length > 0) {
+        const size = Math.min(max, Math.floor((rng() * max) + min));
+        allArrs.push(array.splice(0, size));
+    }
+
+    return allArrs;
+};
+
 export default async (baseOpts, playerReference) => {
     const place = _.clone(baseOpts);
 
@@ -178,9 +191,18 @@ export default async (baseOpts, playerReference) => {
         place.contents = await Promise.all(getContents(place, playerReference));
         const requirements = await getRequirements(place, playerReference, dungeonAttributes);
 
-        _.each(requirements, r => r.isDungeon = true);
         place.requirements = _.map(requirements, 'id');
-        place.fullRequirements = requirements;
+        const monsterArrays = randomArrayChunks(requirements, place.seed, 1, 3);
+
+        place.fullRequirements = _.map(monsterArrays, monsterSet => {
+            return {
+                isDungeon: true,
+                monsters: monsterSet,
+                location: monsterSet[0].location
+            };
+        });
+
+        // chunk place.fullRequirements into N sized chunks. add all monsters to a monsters array. take monsters[0].location and put it on the base object
         place.verifyToken = generate(place, playerReference);
 
         resolve(_.pick(place, ['name', 'dungeonName', 'requirements', 'location', 'contents', 'derivedType', 'seed', 'fullRequirements', 'verifyToken']));

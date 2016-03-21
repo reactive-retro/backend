@@ -1,6 +1,8 @@
 
 import seedrandom from 'seedrandom';
 
+import Logger from '../../objects/logger';
+
 import monstergenerate from '../../objects/monstergenerator';
 import { calcDistanceBetween, clamp as clampNumber } from '../helpers';
 import availableMonsters from './availablemonsters';
@@ -94,27 +96,36 @@ export default async ({ lat, lon, playerLevel, ratingOffset, offsets, amounts, s
         const distanceBetweenHomepointAndMonster = calcDistanceBetween(lat, lon, monLat, monLon);
         const rating = rateMonster(distanceBetweenHomepointAndMonster) + ratingOffset;
 
-        const monster = monstergenerate({
-            location: {
-                lat: monLat,
-                lon: monLon
-            },
+        try {
+            const monster = monstergenerate({
+                location: {
+                    lat: monLat,
+                    lon: monLon
+                },
 
-            // no negative level monsters
-            baseLevel: Math.max(1, playerLevel + rating),
-            rating,
-            statBuff,
+                // no negative level monsters
+                baseLevel: Math.max(1, playerLevel + rating),
+                rating,
+                statBuff,
 
-            // if they are all the same seed, they will all be the same monster, which is bad
-            seed: seed+i
-        }, possibleMonsters);
+                // if they are all the same seed, they will all be the same monster, which is bad
+                seed: seed+i
+            }, possibleMonsters);
 
-        monsters.push(monster);
+            monsters.push(monster);
+        } catch(e) {
+            Logger.error('NearbyMonsters:Generate', e);
+        }
     }
 
-    return new Promise(async (resolve) => {
-        const allMonsters = await Promise.all(monsters);
-        resolve(allMonsters);
+    return new Promise(async (resolve, reject) => {
+        try {
+            const allMonsters = await Promise.all(monsters);
+            resolve(allMonsters);
+        } catch(e) {
+            Logger.error('NearbyMonsters:Promise', e);
+            reject(e);
+        }
     });
 
 };

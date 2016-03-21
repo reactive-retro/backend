@@ -34,8 +34,8 @@ export default {
                 radius: 0.001
             },
             amounts: {
-                min: 5,
-                max: 10
+                min: 9,
+                max: 15
             }
         }
     }

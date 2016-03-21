@@ -26,8 +26,8 @@ export default class Character {
         this.unlockedProfessions = unlockedProfessions || _.cloneDeep(DEFAULTS.unlockedProfessions);
         this.cooldowns = cooldowns || {};
 
-        this.equipment.weapon = new Item(this.equipment.weapon);
-        this.equipment.armor = new Item(this.equipment.armor);
+        if(this.equipment.weapon) this.equipment.weapon = new Item(this.equipment.weapon);
+        if(this.equipment.armor)  this.equipment.armor  = new Item(this.equipment.armor);
         this.inventory = _.map(this.inventory, i => new Item(i));
         _.each(this.unlockedProfessions, (prof) => { this.professionLevels[prof] = this.professionLevels[prof] || 1; });
 
@@ -182,8 +182,8 @@ export default class Character {
 
         const hpMult = this.constructor.name === 'Player' ? 2 : 1;
 
-        const curHp = this.battleId && this.stats.hp.__current === 0 ? 0 : this.stats.hp.__current || profession.hp(this) * hpMult;
-        const curMp = this.battleId && this.stats.mp.__current === 0 ? 0 : this.stats.mp.__current || profession.mp(this);
+        const curHp = (this.battleId || this.verifyToken) && this.stats.hp.__current === 0 ? 0 : this.stats.hp.__current || profession.hp(this) * hpMult;
+        const curMp = (this.battleId || this.verifyToken) && this.stats.mp.__current === 0 ? 0 : this.stats.mp.__current || profession.mp(this);
         this.stats.hp = new RestrictedNumber(0, profession.hp(this) * hpMult, curHp);
         this.stats.mp = new RestrictedNumber(0, profession.mp(this), curMp);
     }
