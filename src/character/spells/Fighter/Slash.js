@@ -10,7 +10,7 @@ import { damage } from '../../../static/decorators/aitarget';
 @targets(ActionTargets.SINGLE_ENEMY)
 @description('Slash an enemy, dealing medium damage with above-average accuracy.')
 @useString('%o used %n on %t and dealt %d damage!')
-@effect('Damage', { chance: 85, roll: '2df([str] / 2) + 2' })
+@effect('Damage', { chance: 85, roll: '2df([str] / 2) + f([str] / 4)' })
 @targeting(damage)
 export default class Slash extends Action {
 

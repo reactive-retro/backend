@@ -11,7 +11,7 @@ import { damage } from '../../../static/decorators/aitarget';
 @description('Sweep your weapon towards all of your enemies and knock them down, possibly stunning them.')
 @useString('%o used %n on %t and dealt %d damage!')
 @effect('Stun', { chance: 40, roll: '1d1', string: 'round' })
-@effect('Damage', { roll: '1df([str] / 4) + 1' })
+@effect('Damage', { roll: '1df([str] / 4) + f([str] / 8)' })
 @targeting(damage)
 export default class SweepStrike extends Action {
 

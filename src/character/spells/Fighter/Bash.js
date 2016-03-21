@@ -11,7 +11,7 @@ import { damage } from '../../../static/decorators/aitarget';
 @description('Deal low damage to an enemy with a chance to stun them.')
 @useString('%o used %n on %t and dealt %d damage!')
 @effect('Stun', { chance: 25, roll: '1d1', string: 'round' })
-@effect('Damage', { roll: '1df([str] / 2) + 1' })
+@effect('Damage', { roll: '1df([str] / 4) + f([str] / 7)' })
 @targeting(damage)
 export default class Bash extends Action {
 

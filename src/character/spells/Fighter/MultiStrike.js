@@ -10,7 +10,7 @@ import { damage } from '../../../static/decorators/aitarget';
 @targets(ActionTargets.ALL_ENEMY)
 @description('Attack all enemies.')
 @useString('%o used %n on %t and dealt %d damage!')
-@effect('Damage', { roll: '2df([str] / 3) + 1' })
+@effect('Damage', { roll: '2df([str] / 3) + f([str] / 7)' })
 @targeting(damage)
 export default class MultiStrike extends Action {
 

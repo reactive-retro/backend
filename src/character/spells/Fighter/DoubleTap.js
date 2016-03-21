@@ -11,7 +11,7 @@ import { damage } from '../../../static/decorators/aitarget';
 @targets(ActionTargets.SINGLE_ENEMY)
 @description('Attack an enemy twice.')
 @useString('%o used %n on %t and dealt %d damage!')
-@effect('Damage', { roll: '2df([str] / 3) + 1' })
+@effect('Damage', { roll: '2df([str] / 3) + f([str] / 6)' })
 @targeting(damage)
 export default class DoubleTap extends Action {
 

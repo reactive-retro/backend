@@ -10,7 +10,7 @@ import { support } from '../../../static/decorators/aitarget';
 @targets(ActionTargets.SINGLE_ALLY)
 @description('Provide a powerful surge of support for an ally.')
 @useString('%o healed %t for %d hp!')
-@effect('Heal', { roll: '6df([mnt] / 6)', string: 'HP', instant: true })
+@effect('Heal', { roll: '6df([mnt] / 6) + f([mnt] / 6)', string: 'HP', instant: true })
 @targeting(support)
 export default class MajorHeal extends Action {
 
