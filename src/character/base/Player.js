@@ -232,6 +232,7 @@ export default class Player extends Character {
         this.calculate();
         this.skills = [];
         this.fullheal();
+        this.checkForNewMonsters();
     }
 
     clearDataOnLogin() {

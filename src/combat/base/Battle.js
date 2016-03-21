@@ -199,7 +199,7 @@ export default class Battle {
                 });
 
                 target.stats.hp.sub(damage);
-                
+
                 messages.push(damageMessage);
                 if(target.stats.hp.atMin()) {
                     messages.push(`${target.name} was slain by ${caster.name}!`);
@@ -231,7 +231,7 @@ export default class Battle {
     checkPreTurnEffects(player) {
         const messages = [];
 
-        _.each(player.statusEffects, (effect) => {
+        _.each(_.compact(player.statusEffects), (effect) => {
             const preTurn = effect.preTurn(player);
             if(preTurn) {
                 messages.push(preTurn);
