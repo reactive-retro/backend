@@ -8,6 +8,7 @@ let weaponData = null;
 let prefixData = null;
 let suffixData = null;
 let attributeData = null;
+let consumableData = null;
 let zoneData = null;
 
 test.serial('Armor data is valid hjson', t => {
@@ -35,23 +36,43 @@ test.serial('Suffix data is valid hjson', t => {
     t.pass();
 });
 
+test.serial('Consumable data is valid hjson', t => {
+    consumableData = loadDataFile('consumable');
+    t.pass();
+});
+
 test.serial('Zone data is valid hjson', t => {
     zoneData = loadDataFile('zone');
     t.pass();
 });
 
+const validateEffect = (t, effect) => {
+    t.ok(effect.name);
+    t.ok(effect.statBuff || effect.duration);
+};
+
+const validateConsumable = (t, item) => {
+    t.ok(item.name);
+    t.ok(item.description);
+    t.ok(item.weight);
+
+    t.true(item.value > 0);
+    t.true(item.minLevel > 0 && item.minLevel <= 50);
+    t.true(item.dropRate > 0 && item.dropRate <= 100);
+    t.true(item.effects.length > 0);
+    item.effects.forEach(effect => validateEffect(t, effect));
+};
+
 const validateItem = (t, item) => {
     t.ok(item.name);
     t.ok(item.weight);
-    t.ok(item.minLevel);
-    t.ok(item.dropRate);
 
     if(item.qualityMod) {
         t.true(item.qualityMod > -1 && item.qualityMod < 3, 'Quality modifiers cannot be too absurd.');
     }
 
     t.true(item.dropRate > 0 && item.dropRate <= 100);
-    t.true(item.minLevel > 0 && item.minLevel < 100);
+    t.true(item.minLevel > 0 && item.minLevel <= 50);
     t.true(item.baseQuality > -1 && item.baseQuality < 5);
 
     const keys = Object.keys(item.stats);
@@ -61,7 +82,8 @@ const validateItem = (t, item) => {
 const validateAttribute = (t, attr) => {
     t.ok(attr.name);
     t.ok(attr.weight);
-    t.ok(attr.minLevel);
+    t.true(attr.minLevel > 0 && attr.minLevel <= 50);
+    t.true(attr.levelMod > -5 && attr.levelMod <= 5, 'Level adjustment cannot be greater than 5.');
 
     t.notOk(attr.qualityMod, 'Attributes cannot have quality modifiers.');
 
@@ -99,6 +121,11 @@ test('Suffix data has valid attribute values', t => {
 
 test('Attribute data has valid attribute values', t => {
     attributeData.forEach(attr => validateAttribute(t, attr));
+    t.pass();
+});
+
+test('Consumable data has valid attribute values', t => {
+    consumableData.forEach(item => validateConsumable(t, item));
     t.pass();
 });
 
