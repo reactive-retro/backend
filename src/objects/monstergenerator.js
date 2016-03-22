@@ -7,6 +7,7 @@ import Logger from '../objects/logger';
 
 import Monster from '../character/base/Monster';
 import SkillManager from '../objects/skillmanager';
+import TraitManager from '../objects/traitmanager';
 import ItemGenerator from '../objects/itemgenerator';
 
 import { weightedChoice, singleChoice } from '../functions/helpers';
@@ -37,6 +38,22 @@ const chooseSkills = (possibleSkills, rating, seed, currentSkills = []) => {
     return skills;
 };
 
+const chooseTraits = (possibleTraits, rating, seed, currentTraits = []) => {
+    if(rating < 3) return currentTraits;
+    const traits = _.cloneDeep(currentTraits);
+    const availableTraits = _.reject(possibleTraits, trait => trait.traitDisabled);
+
+    // rating of 0 = 1 skill, rating of 5 = 6 skills
+    for(let i=0; i<rating+1-currentTraits.length; i++) {
+
+        // choose a skill based on seed+index
+        const chosenTrait = singleChoice(availableTraits, seed+i);
+        traits.push(chosenTrait.traitName);
+    }
+
+    return traits;
+};
+
 export default async (baseOpts, availableMonsters) => {
     const opts = _.clone(baseOpts);
 
@@ -55,6 +72,7 @@ export default async (baseOpts, availableMonsters) => {
     }
 
     opts.skills = chooseSkills(SkillManager.getSkills(opts), opts.rating, opts.seed, chosenMonster.skills);
+    opts.traits = chooseTraits(TraitManager.getTraits(opts), opts.rating, opts.seed, chosenMonster.traits);
 
     const monster = new Monster(opts);
 
@@ -85,12 +103,12 @@ export default async (baseOpts, availableMonsters) => {
     monster.verifyToken = generate(monster);
 
     return new Promise(resolve => {
-        resolve(_.pick(monster, ['id', 'name', 'profession', 'inventory', 'goldDrop', 'equipment', 'professionLevels', 'skills', 'location', 'rating', 'seed', 'verifyToken']));
+        resolve(_.pick(monster, ['id', 'name', 'profession', 'inventory', 'goldDrop', 'equipment', 'professionLevels', 'skills', 'traits', 'location', 'rating', 'seed', 'verifyToken']));
     });
 };
 
 export const generate = (monster) => {
-    const props = _.pick(monster, ['id', 'name', 'profession', 'inventory', 'goldDrop', 'equipment', 'professionLevels', 'skills', 'location', 'rating', 'seed']);
+    const props = _.pick(monster, ['id', 'name', 'profession', 'inventory', 'goldDrop', 'equipment', 'professionLevels', 'skills', 'traits', 'location', 'rating', 'seed']);
     return crypto.createHash('md5').update(serverSalt + JSON.stringify(props)).digest('hex');
 };
 
