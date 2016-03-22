@@ -1,6 +1,6 @@
 
-import Action, { ActionTargets } from '../../base/Action';
-import { name, cost, cooldown, classes, targets, description, effect, useString, targeting } from '../../../static/decorators/spell';
+import Action, { ActionTargets, ActionTypes } from '../../base/Action';
+import { name, cost, cooldown, classes, targets, description, effect, useString, targeting, family } from '../../../static/decorators/spell';
 import { support } from '../../../static/decorators/aitarget';
 
 @name('Regenerate')
@@ -12,6 +12,7 @@ import { support } from '../../../static/decorators/aitarget';
 @useString('%o cast %n on %t!')
 @effect('Regenerate', { chance: 100, roll: '1d4 + 3', string: 'round' })
 @targeting(support)
+@family([ActionTypes.BUFF])
 export default class Regenerate extends Action {
 
 }

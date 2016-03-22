@@ -1,6 +1,6 @@
 
-import Action, { ActionTargets } from '../../base/Action';
-import { name, cost, cooldown, classes, targets, description, effect, useString, targeting } from '../../../static/decorators/spell';
+import Action, { ActionTargets, ActionTypes } from '../../base/Action';
+import { name, cost, cooldown, classes, targets, description, effect, useString, targeting, family } from '../../../static/decorators/spell';
 import { damage } from '../../../static/decorators/aitarget';
 
 @name('Sweep Strike')
@@ -13,6 +13,7 @@ import { damage } from '../../../static/decorators/aitarget';
 @effect('Stun', { chance: 40, roll: '1d1', string: 'round' })
 @effect('Damage', { roll: '1df([str] / 4) + f([str] / 8)' })
 @targeting(damage)
+@family([ActionTypes.PHYSICAL])
 export default class SweepStrike extends Action {
 
 }

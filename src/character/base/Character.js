@@ -5,22 +5,25 @@ import Dice from 'dice.js';
 
 import Item from '../../items/Item';
 import SkillManager from '../../objects/skillmanager';
+import TraitManager from '../../objects/traitmanager';
 import SpellEffectManager from '../../objects/spelleffectmanager';
 
 import DEFAULTS from '../../static/chardefaults';
 import SETTINGS from '../../static/settings';
 
 export default class Character {
-    constructor({ name, profession, professionLevels, unlockedProfessions, stats, skills, items, inventory, equipment, statusEffects, cooldowns, itemUses }) {
+    constructor({ name, profession, professionLevels, unlockedProfessions, stats, skills, traits, items, inventory, equipment, statusEffects, cooldowns, itemUses }) {
         this.name = name;
         this.profession = profession;
         this.skills = skills;
+        this.traits = traits;
         this.professionLevels = professionLevels || {};
         this.statusEffects = statusEffects || [];
         this.stats = stats || _.cloneDeep(DEFAULTS.stats);
         this.items = items || [];
         this.itemUses = itemUses;
         this.skills = SkillManager.getValidSkills(this) || _.cloneDeep(DEFAULTS.skills);
+        this.traits = TraitManager.getValidTraits(this) || [];
         this.inventory = inventory || [];
         this.equipment = equipment || DEFAULTS.equipment[this.profession]();
         this.unlockedProfessions = unlockedProfessions || _.cloneDeep(DEFAULTS.unlockedProfessions);
@@ -159,6 +162,15 @@ export default class Character {
         this.calculate();
     }
 
+    getSkillBasedOnTraits(skill) {
+        _.each(_.compact(this.traits), trait => {
+            const traitInst = TraitManager.getTrait(trait);
+            if(!traitInst.canAffect(skill)) return;
+            skill = traitInst.affect(skill);
+        });
+        return skill;
+    }
+
     calculate() {
 
         const profession = require(`../../character/professions/${this.profession}`).default;
@@ -178,6 +190,18 @@ export default class Character {
 
         _.each(['str', 'mnt', 'dex', 'vit', 'luk', 'acc'], stat => {
             this.stats[stat] = Math.floor(profession.getStat(this, stat));
+            const { multiplier, boost } = _.reduce(_.compact(this.traits), (prev, trait) => {
+                const traitInst = TraitManager.getTrait(trait);
+                _.each(_.values(traitInst.traitEffects), effect => {
+                    if(!effect.stats || !effect.stats[stat]) return;
+                    prev.multiplier += effect.stats[stat].multiplier || 0;
+                    prev.boost += effect.stats[stat].boost || 0;
+                });
+
+                return prev;
+            }, { multiplier: 1, boost: 0 });
+
+            this.stats[stat] = Math.floor(multiplier * (this.stats[stat] + boost));
         });
 
         const hpMult = this.constructor.name === 'Player' ? 2 : 1;

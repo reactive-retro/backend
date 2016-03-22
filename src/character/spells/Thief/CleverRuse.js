@@ -1,6 +1,6 @@
 
-import Action, { ActionTargets } from '../../base/Action';
-import { name, cost, cooldown, classes, targets, description, effect, useString, targeting } from '../../../static/decorators/spell';
+import Action, { ActionTargets, ActionTypes } from '../../base/Action';
+import { name, cost, cooldown, classes, targets, description, effect, useString, targeting, family } from '../../../static/decorators/spell';
 import { support } from '../../../static/decorators/aitarget';
 
 @name('Clever Ruse')
@@ -12,6 +12,7 @@ import { support } from '../../../static/decorators/aitarget';
 @useString('%o created a %n for %t!')
 @effect('DEX+', { roll: '3d1', statRoll: 5, string: 'round' })
 @targeting(support)
+@family([ActionTypes.BUFF])
 export default class CleverRuse extends Action {
 
 }

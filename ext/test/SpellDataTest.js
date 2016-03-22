@@ -28,6 +28,8 @@ allSkills.forEach(skill => {
             t.true(skill.spellClasses[prof] > 0);
         });
 
+        t.true(Array.isArray(skill.spellFamily) && skill.spellFamily.length > 0);
+
         t.ok(skill.spellTargets);
         t.ok(skill.spellDescription);
         t.ok(skill.spellUseString);

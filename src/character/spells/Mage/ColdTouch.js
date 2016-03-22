@@ -1,6 +1,6 @@
 
-import Action, { ActionTargets } from '../../base/Action';
-import { name, cost, cooldown, classes, targets, description, effect, useString, unblockable, targeting } from '../../../static/decorators/spell';
+import Action, { ActionTargets, ActionTypes } from '../../base/Action';
+import { name, cost, cooldown, classes, targets, description, effect, useString, unblockable, targeting, family } from '../../../static/decorators/spell';
 import { damage } from '../../../static/decorators/aitarget';
 
 @name('Cold Touch')
@@ -14,6 +14,7 @@ import { damage } from '../../../static/decorators/aitarget';
 @effect('Freeze', { chance: 25, roll: '1d1', string: 'round' })
 @unblockable
 @targeting(damage)
+@family([ActionTypes.ICE])
 export default class ColdTouch extends Action {
 
 }

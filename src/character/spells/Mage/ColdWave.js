@@ -1,6 +1,6 @@
 
-import Action, { ActionTargets } from '../../base/Action';
-import { name, cost, cooldown, classes, targets, description, effect, useString, unblockable } from '../../../static/decorators/spell';
+import Action, { ActionTargets, ActionTypes } from '../../base/Action';
+import { name, cost, cooldown, classes, targets, description, effect, useString, unblockable, family } from '../../../static/decorators/spell';
 
 @name('Cold Wave')
 @cost(27)
@@ -12,6 +12,7 @@ import { name, cost, cooldown, classes, targets, description, effect, useString,
 @effect('Damage', { roll: '1df([mnt] / 2) + f([mnt] / 6)' })
 @effect('Freeze', { chance: 20, roll: '1d1', string: 'round' })
 @unblockable
+@family([ActionTypes.ICE])
 export default class ColdWave extends Action {
 
 }

@@ -1,6 +1,6 @@
 
-import Action, { ActionTargets } from '../../base/Action';
-import { name, cost, cooldown, classes, targets, description, effect, useString, unstackable, targeting } from '../../../static/decorators/spell';
+import Action, { ActionTargets, ActionTypes } from '../../base/Action';
+import { name, cost, cooldown, classes, targets, description, effect, useString, unstackable, targeting, family } from '../../../static/decorators/spell';
 import { damage } from '../../../static/decorators/aitarget';
 
 @name('Attack')
@@ -13,6 +13,7 @@ import { damage } from '../../../static/decorators/aitarget';
 @effect('Damage', { roll: '1df([str] / 2) + f([str] / 6)' })
 @unstackable
 @targeting(damage)
+@family([ActionTypes.PHYSICAL])
 export default class Attack extends Action {
 
 }

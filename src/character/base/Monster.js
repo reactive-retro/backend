@@ -5,7 +5,7 @@ import Character from './Character';
 
 export default class Monster extends Character {
     constructor({ seed, verifyToken, name, equipment, bonusXp,
-                  skills, goldDrop, profession, location, rating,
+                  skills, traits, goldDrop, profession, location, rating,
                   professionLevels, stats, statusEffects, cooldowns,
                   id, isDungeon, inventory }) {
 
@@ -15,6 +15,7 @@ export default class Monster extends Character {
             equipment,
             cooldowns,
             skills,
+            traits,
             stats,
             inventory,
             profession: profession || 'Monster',

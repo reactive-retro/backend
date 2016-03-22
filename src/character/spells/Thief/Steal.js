@@ -1,6 +1,6 @@
 
-import Action, { ActionTargets } from '../../base/Action';
-import { name, cost, cooldown, classes, targets, description, effect, useString, targeting } from '../../../static/decorators/spell';
+import Action, { ActionTargets, ActionTypes } from '../../base/Action';
+import { name, cost, cooldown, classes, targets, description, effect, useString, targeting, family } from '../../../static/decorators/spell';
 import { damage } from '../../../static/decorators/aitarget';
 
 @name('Steal')
@@ -12,6 +12,7 @@ import { damage } from '../../../static/decorators/aitarget';
 @useString('%o attempted to steal items from %t!')
 @effect('Steal', { chance: 75, roll: '1d1', string: 'item' })
 @targeting(damage)
+@family([ActionTypes.SPECIAL])
 export default class Steal extends Action {
 
 }

@@ -14,7 +14,7 @@ import { shoptoken as generateShopToken } from '../../functions/world/nearbyplac
 
 export default class Player extends Character {
     constructor({ name, profession, options,
-                  monsterToken, shopToken, skills, inventory,
+                  monsterToken, shopToken, skills, traits, inventory,
                   equipment, stats, unlockedProfessions,
                   professionLevels, userId, homepoint,
                   statusEffects, cooldowns, battleId,
@@ -29,6 +29,7 @@ export default class Player extends Character {
             statusEffects,
             stats,
             skills,
+            traits,
             inventory,
             cooldowns,
             equipment,

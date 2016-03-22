@@ -8,6 +8,7 @@ import MESSAGES from '../../static/messages';
 
 import Player from '../../character/base/Player';
 import SkillManager from '../../objects/skillmanager';
+import TraitManager from '../../objects/traitmanager';
 
 import SETTINGS from '../../static/settings';
 
@@ -49,6 +50,7 @@ const respondWithPlayer = async (socket, respond, msg, token, player) => {
 
     socket.emit('update:options', playerInst.options);
     socket.emit('update:skills', SkillManager.getSkills(playerInst));
+    socket.emit('update:traits', TraitManager.getTraits(playerInst));
 
     // just a check to make sure the character has a creation date, this will be useful
     if(!playerInst.creationDate) {

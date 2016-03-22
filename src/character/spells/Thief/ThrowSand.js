@@ -1,6 +1,6 @@
 
-import Action, { ActionTargets } from '../../base/Action';
-import { name, cost, cooldown, classes, targets, description, effect, useString, targeting } from '../../../static/decorators/spell';
+import Action, { ActionTargets, ActionTypes } from '../../base/Action';
+import { name, cost, cooldown, classes, targets, description, effect, useString, targeting, family } from '../../../static/decorators/spell';
 import { damage } from '../../../static/decorators/aitarget';
 
 @name('Throw Sand')
@@ -12,6 +12,7 @@ import { damage } from '../../../static/decorators/aitarget';
 @useString('%o used %n on %t and inflicted momentary blindness!')
 @effect('Blind', { roll: '1d1', string: 'round' })
 @targeting(damage)
+@family([ActionTypes.DEBUFF])
 export default class ThrowSand extends Action {
 
 }

@@ -1,6 +1,8 @@
 
 import _ from 'lodash';
 
+import { ActionTypes, ActionTargets } from '../character/base/Action';
+
 const skillsHash = require('require-dir')('../character/spells', { recurse: true });
 const skills = _(skillsHash)
     .values()
@@ -12,6 +14,12 @@ const skills = _(skillsHash)
             .each(spell => {
                 if(_.isUndefined(spell.spellAICallback)) spell.spellAICallback = (targets) => _.sample(targets);
                 if(_.isUndefined(spell.spellTimes))      spell.spellTimes = 1;
+                if(_.contains([ActionTargets.ALL, ActionTargets.ALL_ALLY, ActionTargets.ALL_ENEMY], spell.spellTargets)) {
+                    spell.spellFamily.push(ActionTypes.AOE);
+                } else {
+                    spell.spellFamily.push(ActionTypes.SINGLE);
+                }
+                spell.spellFamily.push(spell.spellName);
             })
             .value();
     })

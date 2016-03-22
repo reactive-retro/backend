@@ -38,6 +38,11 @@ export default {
     SKILL_CHANGE_SUCCESS: 'Successfully changed skill.',
     SKILL_DISABLED: 'That skill is currently disabled.',
 
+    NO_TRAIT: 'Invalid trait name specified.',
+    TRAIT_CHANGE_SUCCESS: 'Successfully changed trait.',
+    TRAIT_DISABLED: 'That trait is currently disabled.',
+    TRAIT_ALREADY_ASSIGNED: 'Traits cannot be stacked.',
+
     BAD_MONSTER: 'That encounter is not valid.',
     NOT_IN_COMBAT: 'You are not in combat!',
     CURRENTLY_IN_COMBAT: 'You are currently in combat!',

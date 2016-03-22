@@ -87,6 +87,10 @@ export default class Battle {
         return true;
     }
 
+    applyBoostAndMultiplier(base, { boost = 0, multiplier = 1 }) {
+        return Math.floor((base + boost) * multiplier);
+    }
+
     applySkill(caster, skill, targets) {
 
         /*
@@ -98,8 +102,13 @@ export default class Battle {
          */
         const multiplier = Math.max(1, caster.calculateMultiplier(skill.spellName)); // monsters get a default multiplier of 1 for all skills
 
-        caster.stats.mp.sub(skill.spellCost * multiplier);
-        caster.addCooldown(skill.spellName, skill.spellCooldown * multiplier);
+        const traitModDamage    = _.get(skill, 'traitMods.damage', { multiplier: 1, boost: 0 });
+        const traitModCooldown  = _.get(skill, 'traitMods.cooldown', { multiplier: 1, boost: 0 });
+        const traitModDuration  = _.get(skill, 'traitMods.duration', { multiplier: 1, boost: 0 });
+        const traitModCost      = _.get(skill, 'traitMods.cost', { multiplier: 1, boost: 0 });
+
+        caster.stats.mp.sub(this.applyBoostAndMultiplier(skill.spellCost * multiplier, traitModCost));
+        caster.addCooldown(skill.spellName, this.applyBoostAndMultiplier(skill.spellCooldown * multiplier, traitModCooldown));
 
         const messages = [];
 
@@ -132,7 +141,7 @@ export default class Battle {
 
                     } else {
                         appliedEffect = new Proto({
-                            duration: effData.duration || caster.rollDice(skill.spellName, effData.roll),
+                            duration: this.applyBoostAndMultiplier(effData.duration || caster.rollDice(skill.spellName, effData.roll), traitModDuration),
                             multiplier,
                             statBuff: effData.statBuff,
                             casterName: caster.name,
@@ -190,7 +199,10 @@ export default class Battle {
                 }
 
                 // do at least 1 damage
-                const damage = Math.floor(Math.max(1, caster.rollDice(skill.spellName, roll)) * (caster.findStatus(bonusEffect) ? bonusMultiplier : 1));
+                const damage = this.applyBoostAndMultiplier(
+                    Math.floor(Math.max(1, caster.rollDice(skill.spellName, roll)) * (caster.findStatus(bonusEffect) ? bonusMultiplier : 1)),
+                    traitModDamage
+                );
                 const damageMessage = this.stringFormat(skill.spellUseString, {
                     target: target.name,
                     origin: caster.name,
@@ -267,6 +279,12 @@ export default class Battle {
 
             skillRef = _.find(validSkills, { spellName: skill });
 
+            if(skillRef) {
+                skillRef = me.getSkillBasedOnTraits(skillRef);
+            }
+
+            const traitModCost = _.get(skillRef, 'traitMods.cost', { multiplier: 1, boost: 0 });
+
             // no cheating
             const multiplier = me.calculateMultiplier(skillRef);
 
@@ -275,11 +293,12 @@ export default class Battle {
             const isInvalidSkill = !skillRef
                                 || !_.contains(me.skills.concat(['Flee', 'Item']), skill)
                                 || (itemName && !isValidItem())
-                                || me.stats.mp.lessThan(skillRef.spellCost * multiplier)
+                                || me.stats.mp.lessThan(this.applyBoostAndMultiplier(skillRef.spellCost * multiplier, traitModCost))
                                 || me.isCoolingDown(skill);
 
             if(isInvalidSkill) {
                 skillRef = _.find(validSkills, { spellName: 'Attack' });
+                skillRef = me.getSkillBasedOnTraits(skillRef);
             }
 
             targets = this.getTargets(me, skillRef, this.getById(target));
@@ -288,6 +307,7 @@ export default class Battle {
             const allSkills = _.reject(SkillManager.getSkills(me), skill => _.contains(['Flee', 'Item'], skill.spellName));
             const mySkillObjects = _.map(me.skills.concat('Attack'), skillName => _.find(allSkills, { spellName: skillName }));
             skillRef = _.sample(SkillManager.getCombatSkills(me, mySkillObjects));
+            skillRef = me.getSkillBasedOnTraits(skillRef);
             targets = this.getTargets(me, skillRef);
         }
 
