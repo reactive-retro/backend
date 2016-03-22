@@ -108,8 +108,8 @@ export default class Battle {
         const traitModDuration  = _.get(skill, 'traitMods.duration', { multiplier: 1, boost: 0 });
         const traitModCost      = _.get(skill, 'traitMods.cost', { multiplier: 1, boost: 0 });
 
-        caster.stats.mp.sub(this.applyBoostAndMultiplier(skill.spellCost * multiplier, traitModCost));
-        caster.addCooldown(skill.spellName, this.applyBoostAndMultiplier(skill.spellCooldown * multiplier, traitModCooldown));
+        caster.stats.mp.sub(Math.max(0, this.applyBoostAndMultiplier(skill.spellCost * multiplier, traitModCost)));
+        caster.addCooldown(skill.spellName, Math.max(0, this.applyBoostAndMultiplier(skill.spellCooldown * multiplier, traitModCooldown)));
 
         const messages = [];
 
