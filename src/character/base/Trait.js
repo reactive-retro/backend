@@ -36,10 +36,11 @@ export default class Trait {
             if(!newSkill.traitMods) newSkill.traitMods = {};
 
             // copy damage to the skill
+            // copy hitchance to the skill
             // copy cooldown to the skill
             // copy effect duration to the skill
             // copy mp cost to the skill
-            _.each(['damage', 'cooldown', 'duration', 'cost'], type => {
+            _.each(['damage', 'hitchance', 'cooldown', 'duration', 'cost'], type => {
                 if(!traitEffect[type]) return;
                 if(!newSkill.traitMods[type]) newSkill.traitMods[type] = { multiplier: 1, boost: 0 };
                 const copyDamage = newSkill.traitMods[type];

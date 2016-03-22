@@ -103,6 +103,7 @@ export default class Battle {
         const multiplier = Math.max(1, caster.calculateMultiplier(skill.spellName)); // monsters get a default multiplier of 1 for all skills
 
         const traitModDamage    = _.get(skill, 'traitMods.damage', { multiplier: 1, boost: 0 });
+        const traitModHitChance = _.get(skill, 'traitMods.hitchance', { multiplier: 1, boost: 0 });
         const traitModCooldown  = _.get(skill, 'traitMods.cooldown', { multiplier: 1, boost: 0 });
         const traitModDuration  = _.get(skill, 'traitMods.duration', { multiplier: 1, boost: 0 });
         const traitModCost      = _.get(skill, 'traitMods.cost', { multiplier: 1, boost: 0 });
@@ -122,7 +123,7 @@ export default class Battle {
                     const [effect, effData] = pair;
                     if(effect === 'Damage') return '';
 
-                    if(Dice.roll('1d100') > effData.chance) return showUnsuccessful ? '... but it was unsuccessful!' : '';
+                    if(Dice.roll('1d100') > this.applyBoostAndMultiplier(effData.chance, traitModHitChance)) return showUnsuccessful ? '... but it was unsuccessful!' : '';
                     const Proto = SpellEffectManager.getEffectByName(effect);
                     if(!Proto) {
                         Logger.error('Combat:Effects', new Error(`ERROR: No valid proto: ${Proto}`));
@@ -182,7 +183,7 @@ export default class Battle {
                     return;
                 }
 
-                if(+Dice.roll('1d100') > chance + accuracyBonus) {
+                if(+Dice.roll('1d100') > this.applyBoostAndMultiplier(chance + accuracyBonus, traitModHitChance)) {
                     messages.push(`${caster.name} missed ${target.name}!`);
                     return;
                 }
