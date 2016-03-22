@@ -8,8 +8,7 @@ const allProfessions = require('require-dir')('../../src/character/professions')
 const validateTraitBoostMultObj = (t, checkObj) => {
     t.notOk(checkObj.boost && checkObj.multiplier);
 
-    if(checkObj.boost) t.ok(checkObj.boost);
-    if(checkObj.multiplier) t.ok(checkObj.multiplier);
+    t.ok(checkObj.boost || checkObj.multiplier);
 };
 
 allTraits.forEach(trait => {
@@ -47,7 +46,7 @@ allTraits.forEach(trait => {
 
             if(traitEffect.stats) {
                 t.ok(traitEffect.stats.str || traitEffect.stats.dex || traitEffect.stats.mnt || traitEffect.stats.luk || traitEffect.stats.vit || traitEffect.stats.acc);
-                
+
                 ['str', 'dex', 'mnt', 'luk', 'vit', 'acc'].forEach(key => {
                     if(!traitEffect.stats[key]) return;
                     validateTraitBoostMultObj(t, traitEffect.stats[key]);
