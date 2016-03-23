@@ -28,9 +28,16 @@ export default class Trait {
                 const copyEffect = newSkill.spellEffects[traitKey];
 
                 if(!copyEffect.chance) copyEffect.chance = 0;
-                if(!copyEffect.roll)   copyEffect.roll = 0;
-                copyEffect.chance += thisEffect.chance;
-                copyEffect.roll   += thisEffect.duration;
+                if(!copyEffect.roll)   copyEffect.roll = '0';
+                copyEffect.chance += thisEffect.chance || 0;
+                copyEffect.roll   += `+ ${thisEffect.duration || thisEffect.roll || 0}`;
+
+                copyEffect.effectDisplay = thisEffect.effectDisplay;
+                copyEffect.ignoreCreation = traitEffect.effect.ignoreCreation;
+            }
+
+            if(traitEffect.attachTo && skill.spellEffects[traitEffect.attachTo]) {
+                _.extend(skill.spellEffects[traitEffect.attachTo], traitEffect.attachAttr);
             }
 
             if(!newSkill.traitMods) newSkill.traitMods = {};

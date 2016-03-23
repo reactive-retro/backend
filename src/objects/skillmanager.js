@@ -20,6 +20,10 @@ const skills = _(skillsHash)
                     spell.spellFamily.push(ActionTypes.SINGLE);
                 }
                 spell.spellFamily.push(spell.spellName);
+
+                if(spell.spellEffects.Damage) {
+                    spell.spellFamily.push('Damage');
+                }
             })
             .value();
     })

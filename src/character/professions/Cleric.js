@@ -9,7 +9,7 @@ import { hp, mp, str, dex, vit, mnt, luk, prerequisite, description } from '../.
 @vit(1.5)
 @mnt(2)
 @luk(0.5)
-@prerequisite({ Mage: 5 })
+@prerequisite({ Fighter: 3, Mage: 3 })
 @description('Clerics are specialists in support, but can also do some damage to foes!')
 export default class Cleric extends Profession {
 }

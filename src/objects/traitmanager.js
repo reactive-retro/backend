@@ -56,10 +56,6 @@ export default class TraitManager {
                     .keys()
                     .any(profession => {
 
-                        if(profession === 'All' && player.professionLevels[player.profession] >= trait.traitClasses.All) {
-                            return true;
-                        }
-
                         // you need to be level x*2 to use a trait outside of a profession.
                         // some trait will not translate, as a result
                         let multiplier = 2;

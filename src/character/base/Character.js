@@ -162,6 +162,14 @@ export default class Character {
         this.calculate();
     }
 
+    hasTrait(trait) {
+        return _.contains(this.traits, trait);
+    }
+
+    hasTraitEffect(traitEffect) {
+        return _.any(_.compact(this.traits), trait => TraitManager.getTrait(trait).traitEffects[traitEffect]);
+    }
+
     getSkillBasedOnTraits(skill) {
         _.each(_.compact(this.traits), trait => {
             const traitInst = TraitManager.getTrait(trait);
@@ -188,7 +196,7 @@ export default class Character {
 
         this.equipment.buffs = this.equipment.buffs || { stats: {} };
 
-        _.each(['str', 'mnt', 'dex', 'vit', 'luk', 'acc'], stat => {
+        _.each(['str', 'mnt', 'dex', 'vit', 'luk', 'acc', 'itemgain', 'goldgain', 'xpgain'], stat => {
             this.stats[stat] = Math.floor(profession.getStat(this, stat));
             const { multiplier, boost } = _.reduce(_.compact(this.traits), (prev, trait) => {
                 const traitInst = TraitManager.getTrait(trait);

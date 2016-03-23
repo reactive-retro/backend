@@ -23,7 +23,7 @@ const ITEM_WEIGHTS = [
 
 
 const chooseSkills = (possibleSkills, rating, seed, currentSkills = []) => {
-    if(rating < 0) return currentSkills;
+    if(rating < 0 || possibleSkills.length === 0) return currentSkills;
     const skills = _.cloneDeep(currentSkills);
     const availableSkills = _.reject(possibleSkills, skill => skill.spellDisabled || _.contains(['Flee', 'Item'], skill.spellName));
 
@@ -39,7 +39,7 @@ const chooseSkills = (possibleSkills, rating, seed, currentSkills = []) => {
 };
 
 const chooseTraits = (possibleTraits, rating, seed, currentTraits = []) => {
-    if(rating < 3) return currentTraits;
+    if(rating < 3 || possibleTraits.length === 0) return currentTraits;
     const traits = _.cloneDeep(currentTraits);
     const availableTraits = _.reject(possibleTraits, trait => trait.traitDisabled);
 

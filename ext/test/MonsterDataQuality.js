@@ -3,6 +3,9 @@ import test from 'ava';
 
 import { loadDataFile } from './_helpers';
 
+import SkillManager from '../../src/objects/skillmanager';
+import TraitManager from '../../src/objects/traitmanager';
+
 let monsterData = null;
 
 const validProfessions = require('require-dir')('../../src/character/professions');
@@ -34,9 +37,19 @@ test('Monsters have valid attribute values', t => {
         if(monster.skills) {
             t.true(Array.isArray(monster.skills));
             t.true(monster.skills.length > 0);
+            monster.skills.forEach(skill => t.true(SkillManager.doesSkillExist(skill)));
+        }
+
+        if(monster.traits) {
+            t.true(Array.isArray(monster.traits));
+            t.true(monster.traits.length > 0);
+            monster.traits.forEach(trait => t.true(TraitManager.doesTraitExist(trait)));
         }
 
         if(monster.extendProfessions) {
+
+            t.notOk(monster.extendProfessions[monster.profession], 'Monsters cannot extend their own profession');
+
             Object.keys(monster.extendProfessions).forEach(profession => {
                 t.ok(isValidProfession(profession));
                 t.true(monster.extendProfessions[profession] > 0);

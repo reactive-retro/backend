@@ -122,9 +122,10 @@ export default class Battle {
                 .pairs()
                 .map(pair => {
                     const [effect, effData] = pair;
-                    if(effect === 'Damage') return '';
 
+                    if(effect === 'Damage' || effData.ignoreCreation) return '';
                     if(Dice.roll('1d100') > this.applyBoostAndMultiplier(effData.chance, traitModHitChance)) return showUnsuccessful ? '... but it was unsuccessful!' : '';
+
                     const Proto = SpellEffectManager.getEffectByName(effect);
                     if(!Proto) {
                         Logger.error('Combat:Effects', new Error(`ERROR: No valid proto: ${Proto}`));
@@ -163,10 +164,10 @@ export default class Battle {
         // if you can do damage, you have to do damage for auxillary effects to occur
         if(skill.spellEffects.Damage) {
             _.each(targets, target => {
-                const { chance, roll, spareEffect, bonusEffect, bonusMultiplier = 1 } = skill.spellEffects.Damage;
+                const { chance, roll, spareEffect, spareChance = 0, bonusEffect, bonusMultiplier = 1 } = skill.spellEffects.Damage;
                 const accuracyBonus = caster.stats.acc;
 
-                if(caster.findStatus('Stealth') && spareEffect !== 'Stealth') {
+                if(caster.findStatus('Stealth') && spareEffect !== 'Stealth' && +Dice.roll('1d100') > spareChance) {
                     caster.removeStatus('Stealth');
                 }
 
@@ -205,6 +206,7 @@ export default class Battle {
                     Math.floor(Math.max(1, caster.rollDice(skill.spellName, roll)) * (caster.findStatus(bonusEffect) ? bonusMultiplier : 1)),
                     traitModDamage
                 );
+
                 const damageMessage = this.stringFormat(skill.spellUseString, {
                     target: target.name,
                     origin: caster.name,
@@ -356,13 +358,17 @@ export default class Battle {
     }
 
     playerWin() {
-        const totalLuckBonus = 100 + _.reduce(this.playerData, (prev, cur) => prev + cur.stats.luk, 0);
+        const totalLuckBonus = _.reduce(this.playerData, (prev, cur) => prev + cur.stats.luk, 0);
+
+        const totalGoldGainBonus = _.reduce(this.playerData, (prev, cur) => prev + cur.stats.goldgain, 0);
+        const totalItemGainBonus = _.reduce(this.playerData, (prev, cur) => prev + cur.stats.itemgain, 0);
+        const totalXPGainBonus   = _.reduce(this.playerData, (prev, cur) => prev + cur.stats.xpgain, 0);
 
         const droppedItems = _(this.monsters).map(monster => {
             const { armor, weapon } = monster.equipment;
             return [
-                armor && armor.dropRate  && +Dice.roll('1d100') <= armor.dropRate  + totalLuckBonus ? armor : null,
-                weapon && weapon.dropRate && +Dice.roll('1d100') <= weapon.dropRate + totalLuckBonus ? weapon : null
+                armor  && armor.dropRate  && +Dice.roll('1d100') <= armor.dropRate + totalLuckBonus + totalItemGainBonus  ? armor : null,
+                weapon && weapon.dropRate && +Dice.roll('1d100') <= weapon.dropRate + totalLuckBonus + totalItemGainBonus ? weapon : null
             ].concat(_.filter(monster.inventory, item => +Dice.roll('1d100') <= item.dropRate));
         }).flatten().compact().value();
 
@@ -370,8 +376,8 @@ export default class Battle {
             'Heroes win!'
         ];
 
-        let goldGained = _.reduce(this.monsters, (prev, monster) => prev + +Dice.roll(monster.goldDrop), 0);
-        const xpGained = _.reduce(this.monsters, (prev, monster) => prev + XPCalculator.givenXp(monster), 0);
+        let goldGained = _.reduce(this.monsters, (prev, monster) => prev + +Dice.roll(monster.goldDrop), 0) * (1 + totalGoldGainBonus/100);
+        const xpGained = _.reduce(this.monsters, (prev, monster) => prev + XPCalculator.givenXp(monster), 0) * (1 + totalXPGainBonus/100);
 
         // adjust monster level back to normal
         const avgMonsterLevel = _.reduce(this.monsters, (prev, monster) => prev + monster.currentLevel - monster.rating, 0);

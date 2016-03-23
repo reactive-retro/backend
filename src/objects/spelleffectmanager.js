@@ -16,6 +16,7 @@ export default class SpellEffectManager {
     static getEffectByName(name) {
         if(!allSpellEffectsHash[name]) {
             Logger.error('Spell:Init', new Error(`${name} is not a valid spell effect.`));
+            return;
         }
         return allSpellEffectsHash[name].default;
     }

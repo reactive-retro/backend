@@ -4,9 +4,9 @@ import { hp, mp, str, dex, vit, mnt, luk, description } from '../../static/decor
 
 @hp(5)
 @mp(3)
-@str(1)
-@dex(1)
-@vit(1)
+@str(2)
+@dex(2)
+@vit(2)
 @mnt(2)
 @luk(0.3)
 @description('Monsters are monsters.')
