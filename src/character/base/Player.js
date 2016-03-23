@@ -230,8 +230,9 @@ export default class Player extends Character {
             this.equip(defaultWeapon);
         }
 
-        this.calculate();
         this.skills = [];
+        this.traits = [];
+        this.calculate();
         this.fullheal();
         this.checkForNewMonsters();
     }
