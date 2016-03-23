@@ -5,7 +5,7 @@
 { name: "Guardian",                 zones: ["Fortress"],        profession: "Monster",  goldDrop: "1d4",   weight: 1, equipment: { armor: 0, weapon: 0 },                   minLevel: 1,   maxLevel: 50 }
 { name: "Cultist",                  zones: ["Temple"],          profession: "Mage",     goldDrop: "1d4",   weight: 1, equipment: { armor: 50, weapon: 50, items: [0, 1, 2] },  minLevel: 1,   maxLevel: 50 }
 
-{ name: "Dragon",                   zones: ["All", "Cave"],     profession: "Mage",     goldDrop: "20d4",  weight: 4, equipment: { armor: 100, weapon: 0 }, minLevel: 45,  maxLevel: 50, bonusXp: 100, extendProfessions: { Elementalist: 25 }, skills: ["Sunburst", "Warm Touch", "Warm Wave", "Fireball", "Warm Touch", "Fireball"], traits: ["Fire Affinity", "Mental Acuity", "MNT Boost III", "MNT Boost II", "STR Boost III", "Magical Boost"] }
+{ name: "Dragon",                   zones: ["All", "Cave"],     profession: "Mage",     goldDrop: "20d4",  weight: 4, equipment: { armor: 100, weapon: 0 }, minLevel: 45,  maxLevel: 50, bonusXp: 100, extendProfessions: { Elementalist: 25 }, skills: ["Sunburst", "Warm Touch", "Warm Wave", "Fireball", "Warm Touch", "Fireball"], traits: ["Fire Affinity", "Mental Acuity", "MNT Boost III", "MNT Boost II", "STR Boost III"] }
 
 { name: "Ogre",                     zones: ["All", "Cave"],     profession: "Monster",  goldDrop: "8d4",   weight: 4, equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 30,  maxLevel: 35 }
 { name: "Ogre Thief",               zones: ["All", "Cave"],     profession: "Thief",    goldDrop: "11d10", weight: 1, equipment: { armor: 50, weapon: 50, items: [0, 1] },  minLevel: 30,  maxLevel: 37 }

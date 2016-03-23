@@ -30,11 +30,18 @@ allTraits.forEach(trait => {
         Object.keys(trait.traitEffects).forEach(traitKey => {
             const traitEffect = trait.traitEffects[traitKey];
 
-            t.ok(traitEffect.effect || traitEffect.damage || traitEffect.hitchance || traitEffect.cooldown || traitEffect.duration || traitEffect.cost || traitEffect.stats || traitEffect.effectDisplay);
+            t.ok(traitEffect.effect ||
+                 traitEffect.damage ||
+                 traitEffect.hitchance ||
+                 traitEffect.cooldown ||
+                 traitEffect.duration ||
+                 traitEffect.cost ||
+                 traitEffect.stats ||
+                 traitEffect.effectDisplay);
 
-            if(traitEffect.effect) {
+            if(traitEffect.effect && !traitEffect.effect.ignoreCreation) {
                 t.true(traitEffect.effect.chance > 0 && traitEffect.effect.chance <= 100);
-                t.true(traitEffect.effect.duration > 0);
+                t.true(traitEffect.effect.duration > 0 || !!traitEffect.effect.roll);
             }
 
             if(traitEffect.effectDisplay) t.true(traitEffect.effectDisplay.length > 0);
@@ -45,9 +52,17 @@ allTraits.forEach(trait => {
             });
 
             if(traitEffect.stats) {
-                t.ok(traitEffect.stats.str || traitEffect.stats.dex || traitEffect.stats.mnt || traitEffect.stats.luk || traitEffect.stats.vit || traitEffect.stats.acc);
+                t.ok(traitEffect.stats.str ||
+                     traitEffect.stats.dex ||
+                     traitEffect.stats.mnt ||
+                     traitEffect.stats.luk ||
+                     traitEffect.stats.vit ||
+                     traitEffect.stats.acc ||
+                     traitEffect.stats.goldgain ||
+                     traitEffect.stats.xpgain ||
+                     traitEffect.stats.itemgain);
 
-                ['str', 'dex', 'mnt', 'luk', 'vit', 'acc'].forEach(key => {
+                ['str', 'dex', 'mnt', 'luk', 'vit', 'acc', 'goldgain', 'xpgain', 'itemgain'].forEach(key => {
                     if(!traitEffect.stats[key]) return;
                     validateTraitBoostMultObj(t, traitEffect.stats[key]);
                 });

@@ -1,6 +1,4 @@
 
-import _ from 'lodash';
-
 import SpellEffect from '../../base/SpellEffect';
 
 export default class Libra extends SpellEffect {
