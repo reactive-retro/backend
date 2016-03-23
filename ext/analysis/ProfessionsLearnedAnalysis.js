@@ -6,7 +6,7 @@ import { allProfessions } from '../../src/objects/professionmanager';
 import { longestString, startTravis, endTravis } from '../test/_helpers';
 
 const padSize = longestString(_.values(allProfessions), 'name');
-console.log(padSize);
+
 
 startTravis('Profession Learning Analysis');
 console.log(`Total professions: (${_.keys(allProfessions).length})`);
