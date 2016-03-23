@@ -6,6 +6,7 @@ import Character from './Character';
 import DEFAULTS from '../../static/chardefaults';
 import SETTINGS from '../../static/settings';
 import SkillManager from '../../objects/skillmanager';
+import TraitManager from '../../objects/traitmanager';
 import ProfessionManager from '../../objects/professionmanager';
 import XPCalculator from '../../objects/xpcalculator';
 import save, { selectiveSave } from '../functions/save';
@@ -213,6 +214,8 @@ export default class Player extends Character {
             this.professionXp[this.profession] = this.stats.xp.getValue();
         }
 
+        this.storedClassPreferences[this.profession] = { skills: this.skills, traits: this.traits };
+
         this.profession = newProfession;
 
         if(!this.professionXp[this.profession]) {
@@ -231,8 +234,10 @@ export default class Player extends Character {
             this.equip(defaultWeapon);
         }
 
-        this.skills = [];
-        this.traits = [];
+        this.skills = _.get(this.storedClassPreferences, `${this.profession}.skills`, []);
+        this.traits = _.get(this.storedClassPreferences, `${this.profession}.traits`, []);
+        this.skills = SkillManager.getValidSkills(this) || [];
+        this.traits = TraitManager.getValidTraits(this) || [];
         this.calculate();
         this.fullheal();
         this.checkForNewMonsters();
