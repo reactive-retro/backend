@@ -19,7 +19,7 @@ export default class Player extends Character {
                   equipment, stats, unlockedProfessions,
                   professionLevels, userId, homepoint,
                   statusEffects, cooldowns, battleId,
-                  lastHomepointChange, professionXp, location, storedClassPreferences,
+                  lastHomepointChange, location, storedClassPreferences,
                   partyId, actionsTaken, items, creationDate, itemUses }) {
 
         super({
@@ -40,7 +40,6 @@ export default class Player extends Character {
 
         this.creationDate = creationDate;
         this.options = options || {};
-        this.professionXp = professionXp || {};
         this.actionsTaken = actionsTaken || {};
         this.monsterToken = monsterToken;
         this.shopToken = shopToken;
@@ -210,19 +209,11 @@ export default class Player extends Character {
             this.professionLevels[newProfession] = 1;
         }
 
-        if(!this.professionXp[this.profession]) {
-            this.professionXp[this.profession] = this.stats.xp.getValue();
-        }
-
-        this.storedClassPreferences[this.profession] = { skills: this.skills, traits: this.traits };
+        this.storedClassPreferences[this.profession] = { skills: this.skills, traits: this.traits, xp: this.stats.xp.getValue() };
 
         this.profession = newProfession;
 
-        if(!this.professionXp[this.profession]) {
-            this.professionXp[this.profession] = 0;
-        }
-
-        this.stats.xp = new RestrictedNumber(0, XPCalculator.calculate(this.currentLevel), this.professionXp[this.profession]);
+        this.stats.xp = new RestrictedNumber(0, XPCalculator.calculate(this.currentLevel), _.get(this.storedClassPreferences, `${this.profession}.xp`, 0));
 
         if(this.equipment.armor.levelRequirement > this.currentLevel) {
             const defaultArmor = _.findWhere(this.inventory, { type: 'armor', isDefault: true });
