@@ -15,7 +15,7 @@ import { damage } from '../../../static/decorators/aitarget';
 @effect('Burn', { chance: 15, roll: '1d2 + 1', string: 'round' })
 @unblockable
 @targeting(damage)
-@family([ActionTypes.ELECTRIC])
+@family([ActionTypes.ELECTRIC, ActionTypes.MAGICAL])
 export default class ShockingBurst extends Action {
 
 }

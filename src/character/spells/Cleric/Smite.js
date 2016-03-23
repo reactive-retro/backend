@@ -14,7 +14,7 @@ import { damage } from '../../../static/decorators/aitarget';
 @effect('Burn', { chance: 15, roll: '1d2 + 1', string: 'round' })
 @unblockable
 @targeting(damage)
-@family([ActionTypes.HOLY, ActionTypes.FIRE])
+@family([ActionTypes.HOLY, ActionTypes.FIRE, ActionTypes.MAGICAL])
 export default class Smite extends Action {
 
 }

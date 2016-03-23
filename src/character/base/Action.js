@@ -33,6 +33,7 @@ export const ActionTypes = {
     ICE: 'Ice',
     ELECTRIC: 'Electric',
     PHYSICAL: 'Physical',
+    MAGICAL: 'Magical',
 
     AOE: 'Area of Effect',
     SINGLE: 'Single Target',

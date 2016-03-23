@@ -14,7 +14,7 @@ import { damage } from '../../../static/decorators/aitarget';
 @effect('Freeze', { chance: 35, roll: '1d1', string: 'round' })
 @unblockable
 @targeting(damage)
-@family([ActionTypes.ICE])
+@family([ActionTypes.ICE, ActionTypes.MAGICAL])
 export default class ColdSnap extends Action {
 
 }

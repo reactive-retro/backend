@@ -12,7 +12,7 @@ import { name, cost, cooldown, classes, targets, description, effect, useString,
 @effect('Damage', { roll: '1df([mnt] / 2) + f([mnt] / 6)' })
 @effect('Burn', { chance: 20, roll: '1d4 + 1', string: 'round' })
 @unblockable
-@family([ActionTypes.FIRE])
+@family([ActionTypes.FIRE, ActionTypes.MAGICAL])
 export default class WarmWave extends Action {
 
 }

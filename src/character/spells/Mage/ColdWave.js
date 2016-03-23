@@ -12,7 +12,7 @@ import { name, cost, cooldown, classes, targets, description, effect, useString,
 @effect('Damage', { roll: '1df([mnt] / 2) + f([mnt] / 6)' })
 @effect('Freeze', { chance: 20, roll: '1d1', string: 'round' })
 @unblockable
-@family([ActionTypes.ICE])
+@family([ActionTypes.ICE, ActionTypes.MAGICAL])
 export default class ColdWave extends Action {
 
 }

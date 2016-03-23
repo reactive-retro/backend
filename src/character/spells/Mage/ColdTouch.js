@@ -14,7 +14,7 @@ import { damage } from '../../../static/decorators/aitarget';
 @effect('Freeze', { chance: 25, roll: '1d1', string: 'round' })
 @unblockable
 @targeting(damage)
-@family([ActionTypes.ICE])
+@family([ActionTypes.ICE, ActionTypes.MAGICAL])
 export default class ColdTouch extends Action {
 
 }

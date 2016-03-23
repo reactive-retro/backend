@@ -14,7 +14,7 @@ import { damage } from '../../../static/decorators/aitarget';
 @effect('Shock', { chance: 25, roll: '1d4 + 1', string: 'round' })
 @unblockable
 @targeting(damage)
-@family([ActionTypes.ELECTRIC])
+@family([ActionTypes.ELECTRIC, ActionTypes.MAGICAL])
 export default class ShockingTouch extends Action {
 
 }

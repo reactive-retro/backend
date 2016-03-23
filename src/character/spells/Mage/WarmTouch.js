@@ -14,7 +14,7 @@ import { damage } from '../../../static/decorators/aitarget';
 @effect('Burn', { chance: 25, roll: '1d4 + 1', string: 'round' })
 @unblockable
 @targeting(damage)
-@family([ActionTypes.FIRE])
+@family([ActionTypes.FIRE, ActionTypes.MAGICAL])
 export default class WarmTouch extends Action {
 
 }

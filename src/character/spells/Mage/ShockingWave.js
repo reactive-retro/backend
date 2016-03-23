@@ -12,7 +12,7 @@ import { name, cost, cooldown, classes, targets, description, effect, useString,
 @effect('Damage', { roll: '1df([mnt] / 2) + f([mnt] / 6)' })
 @effect('Shock', { chance: 20, roll: '1d4 + 1', string: 'round' })
 @unblockable
-@family([ActionTypes.ELECTRIC])
+@family([ActionTypes.ELECTRIC, ActionTypes.MAGICAL])
 export default class ShockingWave extends Action {
 
 }
