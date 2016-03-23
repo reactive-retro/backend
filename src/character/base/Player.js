@@ -18,7 +18,7 @@ export default class Player extends Character {
                   equipment, stats, unlockedProfessions,
                   professionLevels, userId, homepoint,
                   statusEffects, cooldowns, battleId,
-                  lastHomepointChange, professionXp, location,
+                  lastHomepointChange, professionXp, location, storedClassPreferences,
                   partyId, actionsTaken, items, creationDate, itemUses }) {
 
         super({
@@ -50,6 +50,7 @@ export default class Player extends Character {
         this.sellModifier = 4;
         this.lastHomepointChange = lastHomepointChange;
         this.location = location;
+        this.storedClassPreferences = storedClassPreferences || {};
         this.calculate();
 
         this.stats.xp = new RestrictedNumber(0, this.stats.xp.maximum || XPCalculator.calculate(2), this.stats.xp.__current || 0);
@@ -143,7 +144,7 @@ export default class Player extends Character {
 
         if(this.monsterToken !== checkToken) {
             this.needsMonsterRefresh = true;
-            this.actionsTaken.monsters = [];
+            this.actionsTaken.monster = [];
         }
         this.monsterToken = checkToken;
         selectiveSave(this, ['monsterToken', 'actionsTaken']);
