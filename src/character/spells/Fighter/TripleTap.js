@@ -9,7 +9,7 @@ import { damage } from '../../../static/decorators/aitarget';
 @times(3)
 @classes({ Fighter: 34 })
 @targets(ActionTargets.SINGLE_ENEMY)
-@description('Attack an enemy twice.')
+@description('Attack an enemy thrice.')
 @useString('%o used %n on %t and dealt %d damage!')
 @effect('Damage', { roll: '2df([str] / 4) + f([str] / 6)' })
 @targeting(damage)
