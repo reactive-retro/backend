@@ -108,7 +108,7 @@ export default class Character {
     }
 
     calculateMultiplier(skill) {
-        let baseMultiplier = 1 + Math.max(0, (_.filter(this.skills, check => check === skill).length - 1)) * 0.25;
+        const baseMultiplier = 1 + Math.max(0, (_.filter(this.skills, check => check === skill).length - 1)) * 0.25;
         return baseMultiplier;
     }
 
