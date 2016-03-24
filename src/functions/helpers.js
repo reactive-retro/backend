@@ -20,6 +20,8 @@ export const monsterId = (seed = Date.now()) => uuid.v4({ rng: prng(seed) });
 
 export const clamp = (min, max, num) => Math.max(min, Math.min(max, num));
 
+export const randBetween = (min, max) => Math.floor((Math.random() * (max - min + 1))) + min;
+
 export const simpleDistanceBetween = (x1, y1, x2, y2) => {
     return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
 };

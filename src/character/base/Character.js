@@ -8,6 +8,8 @@ import SkillManager from '../../objects/skillmanager';
 import TraitManager from '../../objects/traitmanager';
 import SpellEffectManager from '../../objects/spelleffectmanager';
 
+import { randBetween } from '../../functions/helpers';
+
 import DEFAULTS from '../../static/chardefaults';
 import SETTINGS from '../../static/settings';
 
@@ -101,18 +103,12 @@ export default class Character {
 
     rollDice(skill, roll) {
         const multiplier = this.calculateMultiplier(skill);
-        let result = 0;
-        for(let i = 0; i < multiplier; i++) {
-            result += +Dice.roll(roll, this.stats);
-        }
-        return result;
+        const stats = Dice.statistics(roll || '0', this.stats, 1);
+        return randBetween(Math.floor(stats.min_possible * multiplier), Math.floor(stats.max_possible * multiplier));
     }
 
     calculateMultiplier(skill) {
-        let baseMultiplier = _.filter(this.skills, check => check === skill).length;
-        if(skill === 'Attack') {
-            baseMultiplier += 1;
-        }
+        let baseMultiplier = 1 + Math.max(0, (_.filter(this.skills, check => check === skill).length - 1)) * 0.25;
         return baseMultiplier;
     }
 
