@@ -209,11 +209,30 @@ export default class Player extends Character {
             this.professionLevels[newProfession] = 1;
         }
 
-        this.storedClassPreferences[this.profession] = { skills: this.skills, traits: this.traits, xp: this.stats.xp.getValue() };
+        this.storedClassPreferences[this.profession] = {
+            skills: this.skills,
+            traits: this.traits,
+            weaponId: this.equipment.weapon.itemId,
+            armorId: this.equipment.armor.itemId,
+            xp: this.stats.xp.getValue()
+        };
 
         this.profession = newProfession;
 
         this.stats.xp = new RestrictedNumber(0, XPCalculator.calculate(this.currentLevel), _.get(this.storedClassPreferences, `${this.profession}.xp`, 0));
+
+        const oldWeaponId = _.get(this.storedClassPreferences, `${this.profession}.weaponId`, null);
+        const oldArmorId  = _.get(this.storedClassPreferences, `${this.profession}.armorId`, null);
+
+        if(oldWeaponId) {
+            const oldWeapon = _.findWhere(this.inventory, { type: 'weapon', itemId: oldWeaponId });
+            if(oldWeapon) this.equip(oldWeapon);
+        }
+
+        if(oldArmorId) {
+            const oldArmor = _.findWhere(this.inventory, { type: 'armor', itemId: oldArmorId });
+            if(oldArmor) this.equip(oldArmor);
+        }
 
         if(this.equipment.armor.levelRequirement > this.currentLevel) {
             const defaultArmor = _.findWhere(this.inventory, { type: 'armor', isDefault: true });

@@ -35,7 +35,7 @@ export default (socket) => {
 
         const item = _.findWhere(player.inventory, { itemId: itemId });
 
-        if(!item) {
+        if(!item || item.isDefault) {
             return respond({ msg: MESSAGES.BAD_ITEM });
         }
 
