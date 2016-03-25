@@ -177,7 +177,9 @@ export default async (baseOpts, playerReference) => {
 
         place.seed = getSeed() + place.place_id;
         place.derivedType = getPlaceType(place);
-        place.location = baseOpts.geometry.location;
+
+        const { lat, lng } = baseOpts.geometry.location;
+        place.location = { lat, lon: lng };
 
         let dungeonAttributes = {};
         if(place.derivedType === TYPES.DUNGEON_CHEST) {
