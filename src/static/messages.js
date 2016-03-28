@@ -2,6 +2,8 @@
 export default {
     GENERIC: 'Generic error.',
 
+    TOO_FAR_AWAY: 'That is too far away!',
+
     INVALID_NAME: 'Invalid hero name.',
     NAME_TOO_LONG: 'Hero name must be less than 20 characters.',
     NAME_TOO_SHORT: 'Hero name must be at least 2 characters.',

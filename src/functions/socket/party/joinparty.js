@@ -43,7 +43,7 @@ export default (socket, scWorker) => {
 
         if(party) {
             if(_.any(party.playerData, memberData => {
-                return SETTINGS.MAX_PARTY_JOIN_DISTANCE < calcDistanceBetween(player.location.latitude, player.location.longitude, memberData.location.latitude, memberData.location.longitude);
+                return SETTINGS.MAX_PARTY_JOIN_DISTANCE < calcDistanceBetween(player.location.lat, player.location.lon, memberData.location.lat, memberData.location.lon);
             })) {
                 return respond({ msg: MESSAGES.PARTY_TOO_FAR });
             }

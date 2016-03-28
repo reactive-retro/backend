@@ -12,6 +12,7 @@ import XPCalculator from '../../objects/xpcalculator';
 import save, { selectiveSave } from '../functions/save';
 import { monstertoken as generateMonsterToken } from '../../functions/world/nearbymonsters';
 import { shoptoken as generateShopToken } from '../../functions/world/nearbyplaces';
+import { calcDistanceBetween } from '../../functions/helpers';
 
 export default class Player extends Character {
     constructor({ name, profession, options,
@@ -60,6 +61,12 @@ export default class Player extends Character {
         this.checkShopsForNewInventory();
         this.checkIfCanChangeHomepoint();
         this.updateUnlockedProfessions();
+    }
+
+    canInteractWith(location) {
+        if(!process.env.NODE_ENV) return true;
+        if(!this.location || !location) return false;
+        return (1000 * calcDistanceBetween(this.location.lat, this.location.lon, location.lat, location.lon)).toFixed(0) < SETTINGS.INTERACT_RADIUS+1;
     }
 
     updateUnlockedProfessions() {
@@ -200,7 +207,7 @@ export default class Player extends Character {
     }
 
     setLocation(location) {
-        this.location = location;
+        this.location = { lat: location.latitude, lon: location.longitude };
         selectiveSave(this, ['location']);
     }
 

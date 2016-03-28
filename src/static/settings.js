@@ -3,6 +3,7 @@ import ProfessionManager from '../objects/professionmanager';
 
 export default {
     RADIUS: 5000,
+    INTERACT_RADIUS: 50,
     INVENTORY_SIZE: 50,
     HOMEPOINT_CHANGE_HOURS: 4,
     MAX_PARTY_MEMBERS: 5,

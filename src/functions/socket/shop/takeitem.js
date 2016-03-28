@@ -43,6 +43,10 @@ export default (socket) => {
             return respond({ msg: MESSAGES.REQUIREMENTS_NOT_MET });
         }
 
+        if(!player.canInteractWith(place.location)) {
+            return respond({ msg: MESSAGES.TOO_FAR_AWAY });
+        }
+
         if(player.hasTakenAction('shop', place.seed, itemId)) {
             return respond({ msg: MESSAGES.ALREADY_TAKEN_ITEM });
         }
