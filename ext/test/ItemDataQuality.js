@@ -10,6 +10,7 @@ let suffixData = null;
 let attributeData = null;
 let consumableData = null;
 let zoneData = null;
+let materialData = null;
 
 test.serial('Armor data is valid hjson', t => {
     armorData = loadDataFile('armor');
@@ -43,6 +44,11 @@ test.serial('Consumable data is valid hjson', t => {
 
 test.serial('Zone data is valid hjson', t => {
     zoneData = loadDataFile('zone');
+    t.pass();
+});
+
+test.serial('Material data is valid hjson', t => {
+    materialData = loadDataFile('material');
     t.pass();
 });
 
@@ -99,6 +105,14 @@ const validateZone = (t, attr) => {
     t.ok(attr.name);
 };
 
+const validateMaterial = (t, material) => {
+    t.ok(material.name);
+    t.true(material.baseQuality >= 0);
+    t.true(material.dropRate > 0 && material.dropRate <= 100);
+    t.true(material.value > 0);
+    t.ok(material.weight);
+};
+
 test('Armor data has valid attribute values', t => {
     armorData.forEach(armor => validateItem(t, armor));
     t.pass();
@@ -131,5 +145,10 @@ test('Consumable data has valid attribute values', t => {
 
 test('Zone data has valid attribute values', t => {
     zoneData.forEach(attr => validateZone(t, attr));
+    t.pass();
+});
+
+test('Material data has valid attribute values', t => {
+    materialData.forEach(material => validateMaterial(t, material));
     t.pass();
 });

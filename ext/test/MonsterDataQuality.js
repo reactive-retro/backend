@@ -7,6 +7,7 @@ import SkillManager from '../../src/objects/skillmanager';
 import TraitManager from '../../src/objects/traitmanager';
 
 let monsterData = null;
+const materialData = loadDataFile('material');
 
 const validProfessions = require('require-dir')('../../src/character/professions');
 const isValidProfession = (profession) => validProfessions[profession];
@@ -44,6 +45,15 @@ test('Monsters have valid attribute values', t => {
             t.true(Array.isArray(monster.traits));
             t.true(monster.traits.length > 0);
             monster.traits.forEach(trait => t.true(TraitManager.doesTraitExist(trait)));
+        }
+
+        if(monster.materials) {
+            t.true(Array.isArray(monster.materials));
+            t.true(monster.materials.length > 0);
+            monster.materials.forEach(material => {
+                const materialObject = materialData.find(obj => obj.name === material);
+                t.ok(materialObject);
+            });
         }
 
         if(monster.extendProfessions) {

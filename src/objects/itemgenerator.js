@@ -8,6 +8,7 @@ import Logger from '../objects/logger';
 import Weapon from '../items/Weapon';
 import Armor from '../items/Armor';
 import Consumable from '../items/Consumable';
+import Material from '../items/Material';
 
 import dbPromise from './db';
 import { weightedChoice } from '../functions/helpers';
@@ -52,6 +53,7 @@ const getProto = (type) => {
         case 'armor': return Armor;
         case 'weapon': return Weapon;
         case 'consumable': return Consumable;
+        case 'material': return Material;
     }
 };
 
@@ -79,7 +81,7 @@ export default class ItemGenerator {
     }
 
     static init() {
-        const typesToLoad = ['armor', 'weapon', 'consumable', 'attribute', 'prefix', 'suffix', 'zone'];
+        const typesToLoad = ['armor', 'weapon', 'consumable', 'attribute', 'material', 'prefix', 'suffix', 'zone'];
         this.typeData = _.map(typesToLoad, this.loadType);
     }
 
@@ -95,7 +97,7 @@ export default class ItemGenerator {
         return Math.floor(rng() * dice) <= 1 + luckBonus;
     }
 
-    static async generate({ playerReference, type, seed, minQuality = 0 }) {
+    static async generate({ playerReference, type, itemName, seed, minQuality = 0 }) {
 
         const luckBonus = playerReference.stats.luk;
 
@@ -111,11 +113,17 @@ export default class ItemGenerator {
             baseItemQuality = _.find(QUALITY, { tier: 0 });
         }
 
-        const item = await this.getRandom(type, {
+        const baseSearch = {
             weight: { $gt: 0 },
             minLevel: { $lte: playerReference.currentLevel },
             baseQuality: { $lte: baseItemQuality.tier }
-        }, rng);
+        };
+
+        if(itemName) {
+            baseSearch.name = itemName;
+        }
+
+        const item = await this.getRandom(type, baseSearch, rng);
 
         baseItemQuality.tier += item.qualityMod || 0;
 
@@ -128,7 +136,7 @@ export default class ItemGenerator {
         const chosenAttrs = [];
 
         const canHaveAttrs = () => {
-            return !_.contains(['consumable'], type);
+            return !_.contains(['consumable', 'material'], type);
         };
 
         const canChooseMoreAttrs = () => {
@@ -196,7 +204,7 @@ export default class ItemGenerator {
         const _id = Math.floor(rng() * diff);
 
         return new Promise((resolve, reject) => {
-            const filter = _.extend({ _id: { $gte: _id } }, extraFilter);
+            const filter = _.extend(type === 'material' ? {} : { _id: { $gte: _id } }, extraFilter);
             itemData.findOne(
                 filter,
                 { sort: { _id: 1 }, limit: 1 },

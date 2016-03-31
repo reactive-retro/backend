@@ -92,7 +92,14 @@ export default async (baseOpts, availableMonsters) => {
             if(items && items.length > 0) {
                 const numItems = weightedChoice(_.filter(ITEM_WEIGHTS, w => _.contains(items, w.name)), opts.seed+'itemcount').name;
                 for(let i = 0; i < numItems; i++) {
-                    monster.addToInventory(await ItemGenerator.generate({ playerReference: monster, type: 'consumable', seed: opts.seed+'item'+i }));
+                    const seed = `${opts.seed}item${i}`;
+                    const type = singleChoice(['consumable', 'material'], seed);
+                    if(type === 'material' && chosenMonster.materials && chosenMonster.materials.length > 0) {
+                        const chosenMaterial = singleChoice(chosenMonster.materials, seed);
+                        monster.addToInventory(await ItemGenerator.generate({ playerReference: monster, itemName: chosenMaterial, type: 'material', seed }));
+                    } else {
+                        monster.addToInventory(await ItemGenerator.generate({ playerReference: monster, type: 'consumable', seed }));
+                    }
                 }
             }
         } catch(e) {

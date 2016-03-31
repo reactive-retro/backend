@@ -40,7 +40,7 @@ const connectionPromise = new Promise((resolve, reject) => {
             monsters.insertMany(loadHjson('monster'), _.noop);
         });
 
-        const itemsLoaded = _.map(['armor', 'attribute', 'consumable', 'prefix', 'suffix', 'weapon', 'zone'], type => {
+        const itemsLoaded = _.map(['armor', 'attribute', 'material', 'consumable', 'prefix', 'suffix', 'weapon', 'zone'], type => {
             const itemData = db.collection(`item.${type}Data`);
             itemData.createIndex({ name: 1 }, { unique: true }, _.noop);
             return new Promise((resolve, reject) => {
