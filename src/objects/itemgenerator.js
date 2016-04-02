@@ -189,7 +189,6 @@ export default class ItemGenerator {
         item.levelRequirement = canHaveAttrs() ? Math.min(SETTINGS.MAX_LEVEL, currentLevelRequirement) : item.minLevel;
         item.seed = seed;
         const constructedItem = new (getProto(type))(item);
-        constructedItem.dropRate = item.dropRate;
 
         return constructedItem;
     }
