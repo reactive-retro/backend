@@ -1,8 +1,64 @@
 [
 
+# level 49
+{ name: "Luckiestmail", baseQuality: 1, dropRate: 25, minLevel: 49, weight: 1, stats: { luk: 70 }, qualityMod: 1 }
+{ name: "Breastplate",  baseQuality: 0, dropRate: 25, minLevel: 49, weight: 1, stats: { vit: 143 } }
+{ name: "Fullplate",    baseQuality: 0, dropRate: 25, minLevel: 49, weight: 1, stats: { vit: 189, dex: -45, acc: -15 } }
+{ name: "Hauberk",      baseQuality: 0, dropRate: 25, minLevel: 49, weight: 1, stats: { vit: 127, dex: 43, acc: 16, str: -42 } }
+{ name: "Lamellar",     baseQuality: 0, dropRate: 25, minLevel: 49, weight: 1, stats: { dex: 99, vit: 64 } }
+{ name: "Splintmail",   baseQuality: 0, dropRate: 25, minLevel: 49, weight: 1, stats: { str: 94, vit: 89, dex: -44, acc: -20 } }
+{ name: "Toga",         baseQuality: 0, dropRate: 25, minLevel: 49, weight: 1, stats: { mnt: 98, dex: 43, vit: -33 } }
+{ name: "Gi",           baseQuality: 0, dropRate: 25, minLevel: 49, weight: 1, stats: { dex: 80, mnt: 44, vit: 43 } }
+{ name: "Mantle",       baseQuality: 0, dropRate: 25, minLevel: 49, weight: 1, stats: { mnt: 82, str: -52, vit: 82 } }
+
+# level 42
+{ name: "Chainmail",    baseQuality: 0, dropRate: 25, minLevel: 42, weight: 1, stats: { vit: 93, dex: 25, str: 25 } }
+{ name: "Coat",         baseQuality: 0, dropRate: 25, minLevel: 42, weight: 1, stats: { mnt: 92, vit: 25, dex: 25 } }
+{ name: "Garb",         baseQuality: 0, dropRate: 25, minLevel: 42, weight: 1, stats: { mnt: 96, vit: 39 } }
+{ name: "Robe",         baseQuality: 0, dropRate: 25, minLevel: 42, weight: 1, stats: { mnt: 105 } }
+{ name: "Scalemail",    baseQuality: 0, dropRate: 25, minLevel: 42, weight: 1, stats: { vit: 27, dex: 27, mnt: 27, acc: 15, str: 27 } }
+{ name: "Vest",         baseQuality: 0, dropRate: 25, minLevel: 42, weight: 1, stats: { vit: 54, dex: 44, acc: 15 } }
+
+# level 35
+{ name: "Luckiermail",  baseQuality: 1, dropRate: 25, minLevel: 35, weight: 1, stats: { luk: 30 }, qualityMod: 1 }
+{ name: "Breastplate",  baseQuality: 0, dropRate: 25, minLevel: 35, weight: 1, stats: { vit: 73 } }
+{ name: "Fullplate",    baseQuality: 0, dropRate: 25, minLevel: 35, weight: 1, stats: { vit: 89, dex: -15, acc: -8 } }
+{ name: "Hauberk",      baseQuality: 0, dropRate: 25, minLevel: 35, weight: 1, stats: { vit: 57, dex: 23, acc: 8, str: -22 } }
+{ name: "Lamellar",     baseQuality: 0, dropRate: 25, minLevel: 35, weight: 1, stats: { dex: 59, vit: 34 } }
+{ name: "Splintmail",   baseQuality: 0, dropRate: 25, minLevel: 35, weight: 1, stats: { str: 54, vit: 39, dex: -24, acc: -10 } }
+{ name: "Toga",         baseQuality: 0, dropRate: 25, minLevel: 35, weight: 1, stats: { mnt: 58, dex: 23, vit: -23 } }
+{ name: "Gi",           baseQuality: 0, dropRate: 25, minLevel: 35, weight: 1, stats: { dex: 30, mnt: 24, vit: 33 } }
+{ name: "Mantle",       baseQuality: 0, dropRate: 25, minLevel: 35, weight: 1, stats: { mnt: 42, str: -32, vit: 52 } }
+
+# level 28
+{ name: "Chainmail",    baseQuality: 0, dropRate: 25, minLevel: 28, weight: 1, stats: { vit: 33, dex: 15, str: 15 } }
+{ name: "Coat",         baseQuality: 0, dropRate: 25, minLevel: 28, weight: 1, stats: { mnt: 32, vit: 15, dex: 15 } }
+{ name: "Garb",         baseQuality: 0, dropRate: 25, minLevel: 28, weight: 1, stats: { mnt: 36, vit: 29 } }
+{ name: "Robe",         baseQuality: 0, dropRate: 25, minLevel: 28, weight: 1, stats: { mnt: 55 } }
+{ name: "Scalemail",    baseQuality: 0, dropRate: 25, minLevel: 28, weight: 1, stats: { vit: 17, dex: 17, mnt: 17, acc: 10, str: 17 } }
+{ name: "Vest",         baseQuality: 0, dropRate: 25, minLevel: 28, weight: 1, stats: { vit: 34, dex: 24, acc: 10 } }
+
+# level 21
+{ name: "Luckmail",     baseQuality: 1, dropRate: 25, minLevel: 21, weight: 1, stats: { luk: 15 }, qualityMod: 1 }
+{ name: "Breastplate",  baseQuality: 0, dropRate: 25, minLevel: 21, weight: 1, stats: { vit: 33 } }
+{ name: "Fullplate",    baseQuality: 0, dropRate: 25, minLevel: 21, weight: 1, stats: { vit: 39, dex: -5, acc: -3 } }
+{ name: "Hauberk",      baseQuality: 0, dropRate: 25, minLevel: 21, weight: 1, stats: { vit: 27, dex: 13, acc: 3, str: -12 } }
+{ name: "Lamellar",     baseQuality: 0, dropRate: 25, minLevel: 21, weight: 1, stats: { dex: 29, vit: 14 } }
+{ name: "Splintmail",   baseQuality: 0, dropRate: 25, minLevel: 21, weight: 1, stats: { str: 24, vit: 19, dex: -14, acc: -5 } }
+{ name: "Toga",         baseQuality: 0, dropRate: 25, minLevel: 21, weight: 1, stats: { mnt: 28, dex: 13, vit: -13 } }
+{ name: "Gi",           baseQuality: 0, dropRate: 25, minLevel: 21, weight: 1, stats: { dex: 20, mnt: 14, vit: 13 } }
+{ name: "Mantle",       baseQuality: 0, dropRate: 25, minLevel: 21, weight: 1, stats: { mnt: 22, str: -12, vit: 22 } }
+
+# level 14
+{ name: "Chainmail",    baseQuality: 0, dropRate: 25, minLevel: 14, weight: 1, stats: { vit: 13, dex: 5, str: 5 } }
+{ name: "Coat",         baseQuality: 0, dropRate: 25, minLevel: 14, weight: 1, stats: { mnt: 12, vit: 5, dex: 5 } }
+{ name: "Garb",         baseQuality: 0, dropRate: 25, minLevel: 14, weight: 1, stats: { mnt: 16, vit: 9 } }
+{ name: "Robe",         baseQuality: 0, dropRate: 25, minLevel: 14, weight: 1, stats: { mnt: 25 } }
+{ name: "Scalemail",    baseQuality: 0, dropRate: 25, minLevel: 14, weight: 1, stats: { vit: 7, dex: 7, mnt: 7, acc: 4, str: 7 } }
+{ name: "Vest",         baseQuality: 0, dropRate: 25, minLevel: 14, weight: 1, stats: { vit: 14, dex: 14, acc: 4 } }
+
 # level 7
 { name: "Luckmail",     baseQuality: 1, dropRate: 25, minLevel: 7, weight: 1, stats: { luk: 5 }, qualityMod: 1 }
-
 { name: "Breastplate",  baseQuality: 0, dropRate: 25, minLevel: 7, weight: 1, stats: { vit: 7 } }
 { name: "Fullplate",    baseQuality: 0, dropRate: 25, minLevel: 7, weight: 1, stats: { vit: 8, dex: -2, acc: -1 } }
 { name: "Hauberk",      baseQuality: 0, dropRate: 25, minLevel: 7, weight: 1, stats: { vit: 7, dex: 3, acc: 1, str: -2 } }

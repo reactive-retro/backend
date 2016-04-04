@@ -1,5 +1,65 @@
 [
 
+# level 49
+{ name: "Hatchet",      baseQuality: 0, dropRate: 25, minLevel: 49, weight: 1, stats: { str: 81, dex: 20, vit: -23 } }
+{ name: "Kris",         baseQuality: 0, dropRate: 25, minLevel: 49, weight: 1, stats: { str: 45, dex: 32, acc: 15 } }
+{ name: "Longbow",      baseQuality: 0, dropRate: 25, minLevel: 49, weight: 1, stats: { dex: 66, acc: 20, str: -26, vit: -26 } }
+{ name: "Rifle",        baseQuality: 0, dropRate: 25, minLevel: 49, weight: 1, stats: { dex: 60, str: 30, acc: -20 } }
+{ name: "Shield",       baseQuality: 0, dropRate: 25, minLevel: 49, weight: 1, stats: { vit: 77, str: 25, acc: -20 } }
+{ name: "Broadsword",   baseQuality: 0, dropRate: 25, minLevel: 49, weight: 1, stats: { str: 68, vit: 26, dex: -20 } }
+{ name: "Staff",        baseQuality: 0, dropRate: 25, minLevel: 49, weight: 1, stats: { mnt: 71, str: 24, dex: -20 } }
+
+# level 42
+{ name: "Axe",          baseQuality: 0, dropRate: 25, minLevel: 42, weight: 1, stats: { str: 65, dex: -18 } }
+{ name: "Club",         baseQuality: 0, dropRate: 25, minLevel: 42, weight: 1, stats: { str: 62, vit: -16 } }
+{ name: "Dagger",       baseQuality: 0, dropRate: 25, minLevel: 42, weight: 1, stats: { str: 36, dex: 26, acc: 20 } }
+{ name: "Focus",        baseQuality: 0, dropRate: 25, minLevel: 42, weight: 1, stats: { mnt: 65, str: -16, dex: -16 } }
+{ name: "Shortbow",     baseQuality: 0, dropRate: 25, minLevel: 42, weight: 1, stats: { dex: 38, acc: 18, str: -18, vit: -18 } }
+{ name: "Pistol",       baseQuality: 0, dropRate: 25, minLevel: 42, weight: 1, stats: { dex: 65, str: -19 } }
+{ name: "Buckler",      baseQuality: 0, dropRate: 25, minLevel: 42, weight: 1, stats: { vit: 65, str: -19 } }
+{ name: "Sword",        baseQuality: 0, dropRate: 25, minLevel: 42, weight: 1, stats: { str: 60 } }
+{ name: "Wand",         baseQuality: 0, dropRate: 25, minLevel: 42, weight: 1, stats: { mnt: 38, dex: 23 } }
+
+# level 35
+{ name: "Hatchet",      baseQuality: 0, dropRate: 25, minLevel: 35, weight: 1, stats: { str: 41, dex: 10, vit: -13 } }
+{ name: "Kris",         baseQuality: 0, dropRate: 25, minLevel: 35, weight: 1, stats: { str: 25, dex: 22, acc: 10 } }
+{ name: "Longbow",      baseQuality: 0, dropRate: 25, minLevel: 35, weight: 1, stats: { dex: 36, acc: 15, str: -16, vit: -16 } }
+{ name: "Rifle",        baseQuality: 0, dropRate: 25, minLevel: 35, weight: 1, stats: { dex: 30, str: 20, acc: -10 } }
+{ name: "Shield",       baseQuality: 0, dropRate: 25, minLevel: 35, weight: 1, stats: { vit: 47, str: 15, acc: -10 } }
+{ name: "Broadsword",   baseQuality: 0, dropRate: 25, minLevel: 35, weight: 1, stats: { str: 48, vit: 16, dex: -10 } }
+{ name: "Staff",        baseQuality: 0, dropRate: 25, minLevel: 35, weight: 1, stats: { mnt: 41, str: 14, dex: -10 } }
+
+# level 28
+{ name: "Axe",          baseQuality: 0, dropRate: 25, minLevel: 28, weight: 1, stats: { str: 35, dex: -8 } }
+{ name: "Club",         baseQuality: 0, dropRate: 25, minLevel: 28, weight: 1, stats: { str: 32, vit: -6 } }
+{ name: "Dagger",       baseQuality: 0, dropRate: 25, minLevel: 28, weight: 1, stats: { str: 16, dex: 16, acc: 13 } }
+{ name: "Focus",        baseQuality: 0, dropRate: 25, minLevel: 28, weight: 1, stats: { mnt: 35, str: -6, dex: -6 } }
+{ name: "Shortbow",     baseQuality: 0, dropRate: 25, minLevel: 28, weight: 1, stats: { dex: 18, acc: 14, str: -8, vit: -8 } }
+{ name: "Pistol",       baseQuality: 0, dropRate: 25, minLevel: 28, weight: 1, stats: { dex: 35, str: -9 } }
+{ name: "Buckler",      baseQuality: 0, dropRate: 25, minLevel: 28, weight: 1, stats: { vit: 35, str: -9 } }
+{ name: "Sword",        baseQuality: 0, dropRate: 25, minLevel: 28, weight: 1, stats: { str: 30 } }
+{ name: "Wand",         baseQuality: 0, dropRate: 25, minLevel: 28, weight: 1, stats: { mnt: 18, dex: 13 } }
+
+# level 21
+{ name: "Hatchet",      baseQuality: 0, dropRate: 25, minLevel: 21, weight: 1, stats: { str: 21, dex: 4, vit: -3 } }
+{ name: "Kris",         baseQuality: 0, dropRate: 25, minLevel: 21, weight: 1, stats: { str: 16, dex: 12, acc: 6 } }
+{ name: "Longbow",      baseQuality: 0, dropRate: 25, minLevel: 21, weight: 1, stats: { dex: 16, acc: 10, str: -6, vit: -6 } }
+{ name: "Rifle",        baseQuality: 0, dropRate: 25, minLevel: 21, weight: 1, stats: { dex: 20, str: 10, acc: -5 } }
+{ name: "Shield",       baseQuality: 0, dropRate: 25, minLevel: 21, weight: 1, stats: { vit: 27, str: 5, acc: -4 } }
+{ name: "Broadsword",   baseQuality: 0, dropRate: 25, minLevel: 21, weight: 1, stats: { str: 18, vit: 6, dex: -4 } }
+{ name: "Staff",        baseQuality: 0, dropRate: 25, minLevel: 21, weight: 1, stats: { mnt: 21, str: 4, dex: -3 } }
+
+# level 14
+{ name: "Axe",          baseQuality: 0, dropRate: 25, minLevel: 14, weight: 1, stats: { str: 15, dex: -4 } }
+{ name: "Club",         baseQuality: 0, dropRate: 25, minLevel: 14, weight: 1, stats: { str: 12, vit: -2 } }
+{ name: "Dagger",       baseQuality: 0, dropRate: 25, minLevel: 14, weight: 1, stats: { str: 6, dex: 6, acc: 6 } }
+{ name: "Focus",        baseQuality: 0, dropRate: 25, minLevel: 14, weight: 1, stats: { mnt: 15, str: -2, dex: -2 } }
+{ name: "Shortbow",     baseQuality: 0, dropRate: 25, minLevel: 14, weight: 1, stats: { dex: 8, acc: 4, str: -2, vit: -2 } }
+{ name: "Pistol",       baseQuality: 0, dropRate: 25, minLevel: 14, weight: 1, stats: { dex: 15, str: -4 } }
+{ name: "Buckler",      baseQuality: 0, dropRate: 25, minLevel: 14, weight: 1, stats: { vit: 15, str: -4 } }
+{ name: "Sword",        baseQuality: 0, dropRate: 25, minLevel: 14, weight: 1, stats: { str: 10 } }
+{ name: "Wand",         baseQuality: 0, dropRate: 25, minLevel: 14, weight: 1, stats: { mnt: 8, dex: 3 } }
+
 # level 7
 { name: "Hatchet",      baseQuality: 0, dropRate: 25, minLevel: 7, weight: 1, stats: { str: 7, dex: 1, vit: -1 } }
 { name: "Kris",         baseQuality: 0, dropRate: 25, minLevel: 7, weight: 1, stats: { str: 4, dex: 4, acc: 3 } }
