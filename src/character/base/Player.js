@@ -63,6 +63,15 @@ export default class Player extends Character {
         this.updateUnlockedProfessions();
     }
 
+    reinforceItem(item, material) {
+        _.each(_.keys(material.stats), stat => {
+            item.stats[stat] = item.stats[stat] || 0;
+            item.stats[stat] += material.stats[stat];
+        });
+        item.numMods++;
+        this.inventory = _.without(this.inventory, material);
+    }
+
     canInteractWith(location) {
         if(!process.env.NODE_ENV) return true;
         if(!this.location || !location) return false;

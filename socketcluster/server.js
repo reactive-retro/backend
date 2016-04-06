@@ -31,3 +31,7 @@ var socketCluster = new SocketCluster({
     socketChannelLimit: 100,
     rebootWorkerOnCrash: argv['auto-reboot'] != false
 });
+
+socketCluster.on('fail', function(e) {
+    console.error(e);
+});

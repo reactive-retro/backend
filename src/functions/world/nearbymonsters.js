@@ -84,7 +84,12 @@ export default async ({ lat, lon, playerLevel, ratingOffset, offsets, amounts, s
     const rng = seedrandom(seed);
     const normalFunction = (ratingOffset > 0 ? normalAround : normalBetween).bind(null, rng);
 
-    const possibleMonsters = await availableMonsters(playerLevel, zone);
+    let possibleMonsters = null;
+    try {
+        possibleMonsters = await availableMonsters(playerLevel, zone);
+    } catch(e) {
+        Logger.error('NearbyMonsters:AvailableMonsters', e);
+    }
 
     const numMonsters = randomBetween(rng, amounts.min, amounts.max);
 

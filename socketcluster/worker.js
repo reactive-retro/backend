@@ -8,6 +8,9 @@ import logout from '../src/character/functions/logout';
 export const run = (worker) => {
     const scServer = worker.scServer;
 
+    process.on('uncaughtException', (e) => Logger.error('Process:UncaughtException', e));
+    process.on('unhandledRejection', (reason) => Logger.error('Process:UnhandledRejection', new Error(reason)));
+
     scServer.on('error', e => Logger.error('SC:Server', e));
 
     scServer.on('connection', socket => {

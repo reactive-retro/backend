@@ -3,6 +3,8 @@ import _ from 'lodash';
 import crypto from 'crypto';
 import seedrandom from 'seedrandom';
 
+import Logger from '../objects/logger';
+
 import SETTINGS from '../static/settings';
 import ItemGenerator from '../objects/itemgenerator';
 
@@ -13,6 +15,7 @@ import { singleChoice } from '../functions/helpers';
 const serverSalt = crypto.createHash('md5').update(''+Math.random()).digest('hex');
 
 const TYPES = {
+    CRAFTING_STATION: 'Crafting Station',
     ITEM_SHOP: 'Item Store',
     WEAPON_SHOP: 'Weapon Store',
     ARMOR_SHOP: 'Armor Store',
@@ -22,6 +25,10 @@ const TYPES = {
 };
 
 const TYPE_MAP = {
+    [TYPES.CRAFTING_STATION]: [
+        'accounting', 'lawyer', 'locksmith', 'painter', 'physiotherapist',
+        'plumber', 'doctor', 'dentist', 'stadium', 'florist', 'gym', 'lodging'
+    ],
     [TYPES.ITEM_SHOP]: [
         'liquor_store', 'bar', 'bicycle_store', 'meal_delivery', 'meal_takeaway', 'book_store',
         'cafe', 'pet_store', 'pharmacy', 'restaurant', 'florist', 'food'],
@@ -42,6 +49,8 @@ const TYPE_MAP = {
 
 const getPlaceType = (place) => {
     const typeMatches = (type) => _.intersection(place.types, TYPE_MAP[type]).length > 0;
+
+    if(typeMatches(TYPES.CRAFTING_STATION)) return TYPES.CRAFTING_STATION;
 
     if(typeMatches(TYPES.ITEM_SHOP)) return TYPES.ITEM_SHOP;
     if(typeMatches(TYPES.WEAPON_SHOP)) return TYPES.WEAPON_SHOP;
@@ -100,7 +109,7 @@ const getRequirements = ({ location, derivedType, seed, ratingOffset }, playerRe
     const args = _.extend(
         _.cloneDeep(monsterSettings),
         { playerLevel: playerReference.currentLevel, ratingOffset },
-        { lat: location.lat, lon: location.lng },
+        { lat: location.lat, lon: location.lon },
         { seed },
         { zone: dungeonAttributes.zoneName, statBuff: dungeonAttributes.stats }
     );
@@ -191,18 +200,22 @@ export default async (baseOpts, playerReference) => {
         place.ratingOffset = singleChoice(_.range(min, max), place.seed);
 
         place.contents = await Promise.all(getContents(place, playerReference));
-        const requirements = await getRequirements(place, playerReference, dungeonAttributes);
+        try {
+            const requirements = await getRequirements(place, playerReference, dungeonAttributes);
 
-        place.requirements = _.map(requirements, 'id');
-        const monsterArrays = randomArrayChunks(requirements, place.seed, 1, 3);
+            place.requirements = _.map(requirements, 'id');
+            const monsterArrays = randomArrayChunks(requirements, place.seed, 1, 3);
 
-        place.fullRequirements = _.map(monsterArrays, monsterSet => {
-            return {
-                isDungeon: true,
-                monsters: monsterSet,
-                location: monsterSet[0].location
-            };
-        });
+            place.fullRequirements = _.map(monsterArrays, monsterSet => {
+                return {
+                    isDungeon: true,
+                    monsters: monsterSet,
+                    location: monsterSet[0].location
+                };
+            });
+        } catch(e) {
+            Logger.error('PlaceGenerator:Requirements', e);
+        }
 
         // chunk place.fullRequirements into N sized chunks. add all monsters to a monsters array. take monsters[0].location and put it on the base object
         place.verifyToken = generate(place, playerReference);

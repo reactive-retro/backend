@@ -42,7 +42,7 @@ const connectionPromise = new Promise((resolve, reject) => {
 
         const itemsLoaded = _.map(['armor', 'attribute', 'material', 'consumable', 'prefix', 'suffix', 'weapon', 'zone'], type => {
             const itemData = db.collection(`item.${type}Data`);
-            itemData.createIndex({ name: 1 }, { unique: true }, _.noop);
+            // itemData.createIndex({ name: 1 }, { unique: true }, _.noop);
             return new Promise((resolve, reject) => {
                 itemData.deleteMany({}, () => {
                     itemData.insertMany(formatHjson(type), (err) => {

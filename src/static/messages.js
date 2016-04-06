@@ -84,5 +84,9 @@ export default {
     SUCCESSFUL_BUY: 'Successfully bought item!',
     NOT_A_SHOP: 'This is not a shop!',
     NOT_A_CHEST: 'This is not a chest!',
-    REQUIREMENTS_NOT_MET: 'You cannot loot that yet; you have more monsters to kill.'
+    REQUIREMENTS_NOT_MET: 'You cannot loot that yet; you have more monsters to kill.',
+
+    SUCCESSFUL_REINFORCE: 'Successfully reinforced item!',
+    NOT_A_CRAFTING_STATION: 'This is not a crafting station!',
+    NOT_MODDABLE: 'This item is not able to be reinforced further!'
 };

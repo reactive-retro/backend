@@ -2,6 +2,8 @@
 import _ from 'lodash';
 import rest from 'restler';
 
+import Logger from '../../objects/logger';
+
 import dbPromise from '../../objects/db';
 import SETTINGS from '../../static/settings';
 
@@ -11,9 +13,13 @@ const RADIUS = SETTINGS.RADIUS;
 const KEY = process.env.GOOGLE_PLACES_API_KEY;
 
 const handlePlaces = async (resolve, places, genOpts) => {
-    const placePromises = _.map(places, place => placeGenerator(place, genOpts));
-    const allPlaces = await Promise.all(placePromises);
-    resolve(allPlaces);
+    try {
+        const placePromises = _.map(places, place => placeGenerator(place, genOpts));
+        const allPlaces = await Promise.all(placePromises);
+        resolve(allPlaces);
+    } catch(e) {
+        Logger.error('NearbyPlaces:BadGenerator', e);
+    }
 };
 
 const isPlaceAllowed = (place) => _.intersection(['locality'], place.types).length === 0;
