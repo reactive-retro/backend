@@ -34,14 +34,12 @@ export default (socket) => {
             return respond({ msg: MESSAGES.CURRENTLY_IN_COMBAT });
         }
 
-        const item = _.find(player.inventory, { itemId });
+        let item = _.find(player.inventory, { itemId });
 
-        /*
         if(!item) {
-            item = player.equipment.weapon.itemId === itemId ? player.equipment.weapon : item;
-            item = player.equipment.armor.itemId === itemId ? player.equipment.armor : item;
+            if(player.equipment.weapon.itemId === itemId) item = player.equipment.weapon;
+            if(player.equipment.armor.itemId === itemId)  item = player.equipment.armor;
         }
-        */
 
         if(!item || !_.contains(['weapon', 'armor'], item.type)) {
             return respond({ msg: MESSAGES.ITEM_NONEXISTENT });
@@ -52,7 +50,7 @@ export default (socket) => {
         }
 
         const material = _.find(player.inventory, { itemId: materialId });
-        if(!material || item.type !== 'material') {
+        if(!material || material.type !== 'material') {
             return respond({ msg: MESSAGES.ITEM_NONEXISTENT });
         }
 
@@ -60,15 +58,12 @@ export default (socket) => {
             return respond({ msg: MESSAGES.TOO_FAR_AWAY });
         }
 
-        /*
-
-        TODO cost?
-        if(player.gold < item.value) {
+        if(player.gold < item.calcModCost(material)) {
             return respond({ msg: MESSAGES.NOT_ENOUGH_GOLD });
         }
 
-        player.addGold(-item.value);
-        */
+        player.addGold(-item.calcModCost(material));
+
         player.reinforceItem(item, material);
         player.save();
 
@@ -77,5 +72,5 @@ export default (socket) => {
         respond({ msg: MESSAGES.SUCCESSFUL_REINFORCE });
     };
 
-    socket.on('craft:reinforce', reinforceItem);
+    socket.on('player:craft:reinforce', reinforceItem);
 };

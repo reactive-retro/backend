@@ -64,12 +64,8 @@ export default class Player extends Character {
     }
 
     reinforceItem(item, material) {
-        _.each(_.keys(material.stats), stat => {
-            item.stats[stat] = item.stats[stat] || 0;
-            item.stats[stat] += material.stats[stat];
-        });
-        item.numMods++;
-        this.inventory = _.without(this.inventory, material);
+        item.doMod(material);
+        this._reduceItemQuantity(material);
     }
 
     canInteractWith(location) {

@@ -104,8 +104,10 @@ export default class ItemGenerator {
         const rng = seedrandom(seed);
         if(!type) type = weightedChoice(ITEM_TYPES, seed).name;
 
+        const isGear = _.contains(['weapon', 'armor'], type);
+
         let baseItemQuality = null;
-        if(_.contains(['weapon', 'armor'], type)) {
+        if(isGear) {
             baseItemQuality = determineBaseQuality(playerReference.currentLevel, luckBonus, seed, minQuality);
         } else {
 
@@ -123,7 +125,15 @@ export default class ItemGenerator {
             baseSearch.name = itemName;
         }
 
-        const item = await this.getRandom(type, baseSearch, rng);
+        if(isGear) {
+            baseSearch.minLevel.$gte = playerReference.currentLevel - 7;
+        }
+
+        let item = null;
+
+        while(item === null) {
+            item = await this.getRandom(type, baseSearch, rng);
+        }
 
         baseItemQuality.tier += item.qualityMod || 0;
 
@@ -131,7 +141,7 @@ export default class ItemGenerator {
 
         let attributeMaxDice = 20;
         let currentQuality = 0;
-        let currentLevelRequirement = baseItemQuality.minLevel;
+        let currentLevelRequirement = item.minLevel;
 
         const chosenAttrs = [];
 

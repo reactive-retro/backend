@@ -6,5 +6,6 @@ export default class Material extends Item {
         super(opts);
 
         this.type = 'material';
+        this.quantity = opts.quantity || 1;
     }
 }

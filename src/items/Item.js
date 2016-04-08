@@ -18,12 +18,31 @@ export default class Item {
         this.effects = effects || [];
         this.type = type;
         this.description = description;
+        this.setMaxMods();
 
         if(_.isNaN(this.levelRequirement)) this.levelRequirement = 1;
     }
 
+    setMaxMods() {
+        if(!_.contains(['weapon', 'armor'], this.type)) return;
+        this.maxMods = ((Math.floor(this.levelRequirement / 5) * 5) / 5);
+    }
+
     canMod() {
-        return this.numMods < ((Math.round(this.level / 5) * 5) / 5);
+        return this.numMods < this.maxMods;
+    }
+
+    calcModCost(material) {
+        return material.value + Math.floor(this.value / (this.numMods + 1));
+    }
+
+    doMod(material) {
+        _.each(_.keys(material.stats), stat => {
+            this.stats[stat] = this.stats[stat] || 0;
+            this.stats[stat] += material.stats[stat];
+        });
+        this.numMods++;
+        this.value = this.calcValue();
     }
 
     calcValue() {

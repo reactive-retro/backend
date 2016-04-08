@@ -81,9 +81,13 @@ export default class Character {
         }
     }
 
-    useItem(item) {
+    _reduceItemQuantity(item) {
         item.quantity -= 1;
         if(item.quantity <= 0) _.remove(this.inventory, { name: item.name });
+    }
+
+    useItem(item) {
+        this._reduceItemQuantity(item);
         this.validateItemSlots(item);
     }
 
